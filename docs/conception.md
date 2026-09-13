@@ -10,15 +10,41 @@ Je souhaite développer une application qui comprend les fonctionnalités dont j
 
 Ce que je ne veux pas: j'ai développé dev-docs, une application web qui était accessible facilement de partout et dans laquelle je pouvais stocker du savoir de développement. Elle ne me permettait pas de suivre mes projets facilement, et il fallait que je clone le projet pour y coller des fichiers .md pour créer des pages ou pour les modifier. Ce n'était pas pratique.
 
-## Stack
+## Stack technique
 
-Frontend: Nuxt4/Vue3 + NuxtUi
-BFF Nuxt avec Backend C# OU Backend Nuxt OU autre (cloud, technologie inconnue, etc) ??? -> à déterminer
+| Brique | Technologie | Rôle |
+|---|---|---|
+| Framework | [Nuxt 4](https://nuxt.com/docs/4.x/getting-started/introduction) | Full-stack (frontend + server routes, pas de backend séparé) |
+| UI | [Nuxt UI 3](https://ui.nuxt.com/) | Composants UI, thème, responsive |
+| Éditeur | [Tiptap](https://tiptap.dev/docs/editor/getting-started/install/nuxt) (@tiptap/vue-3) | Éditeur bloc riche (formatage, réorganisation drag & drop) |
+| Backend/BDD | [NuxtHub](https://hub.nuxt.com/) (@nuxthub/core) | Intégration Cloudflare D1 (SQLite), KV, Blob storage |
+| Auth | [nuxt-auth-utils](https://nuxt.com/modules/auth-utils) | Authentification mono-utilisateur, sessions cookies sécurisés |
+| Hébergement | [Cloudflare Pages](https://pages.cloudflare.com/) (free tier) | Déploiement edge, via `npx nuxthub deploy` |
+| Package manager | [pnpm](https://pnpm.io/) | Rapide, compatible Nuxt/NuxtHub sans friction |
 
-## CLAUDE
+### Justifications
 
-On va commencer par réfléchir à l'architecture et à une stack qui collerait facilement, en prenant en compte mes besoins.
+- **Nuxt full-stack** : les server routes Nuxt couvrent tous les besoins API. Pas de backend C# ou Node séparé — un seul projet, un seul déploiement.
+- **NuxtHub** : abstraction zero-config au-dessus de Cloudflare D1/KV/R2. Dev local sans compte Cloudflare (émulation via wrangler). Multi-vendor depuis v0.10 (migration possible vers Vercel/Netlify plus tard).
+- **Tiptap** : standard de l'éditeur riche dans l'écosystème Vue. Open source, StarterKit gratuit suffisant. Le contenu est sérialisé en JSON (stocké en D1).
+- **nuxt-auth-utils** : créé par Atinux (créateur de Nuxt/NuxtHub), intégration native. Sessions par cookies scellés, support OAuth et mot de passe. Pour l'instant : mono-utilisateur (login simple ou OAuth GitHub).
+- **Cloudflare free tier** : illimité en requêtes, 10M reads D1/jour, 100k writes/jour, 5GB D1. Suffisant pour un usage personnel.
+- **pnpm** : mature, rapide, zéro problème de compatibilité connu avec la stack. Bun écarté pour l'instant (frictions documentées avec Nuxt 4 + wrangler).
 
-Actuellement, rien n'est figé. Je pars naturellement vers Nuxt/C# car ce sont des technologies avec lesquelles je travaille tous les jours en entreprise, mais je ne connais pas les alternatives et/ou nouveautés, je souhaite explorer ce qui existe et ce qui est possible tant que cela répond à mes besoins.
+## Fonctionnalités
 
-On posera les bases dans ce dossier avant de mettre en place notre environnement de travail.
+### MVP (V0) — Minimum utilisable
+- Créer, éditer, supprimer une page (éditeur Tiptap)
+- Navigation par arborescence libre (pages / sous-pages illimitées, comme Notion)
+- Recherche basique par titre
+- Authentification (accès protégé dès le départ)
+
+### V1 — Besoin complet
+- Kanban (suivi de projets)
+- Recherche full-text (contenu des pages)
+- Réorganisation de l'arborescence (drag & drop dans la sidebar)
+- Fonctionnalités de partage rapide (à définir)
+
+## Architecture
+
+> À définir — prochaine étape.
