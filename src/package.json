@@ -7,13 +7,17 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",
+    "@nuxt/eslint": "1.17.0",
     "@nuxt/ui": "^4.11.1",
     "@nuxthub/core": "0.10.8",
     "drizzle-orm": "^0.45.2",
+    "eslint": "^10.10.0",
     "nuxt": "^4.5.2",
     "tailwindcss": "^4.3.3",
     "vue": "^3.5.42",

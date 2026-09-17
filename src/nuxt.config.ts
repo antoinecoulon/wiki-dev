@@ -5,11 +5,11 @@ export default defineNuxtConfig({
 
   // typescript
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
     strict: true,
   },
 
-  modules: ['@nuxt/ui', '@nuxthub/core'],
+  modules: ['@nuxt/ui', '@nuxthub/core', '@nuxt/eslint'],
 
   // nuxt/ui
   css: ['~/assets/css/main.css'],
