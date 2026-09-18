@@ -1,5 +1,7 @@
 <template>
-  <UHeader>
-    <h1>wiki.dev</h1>
-  </UHeader>
+  <div>
+    <h2>
+      HOME
+    </h2>
+  </div>
 </template>
