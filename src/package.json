@@ -9,7 +9,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "db:generate": "pnpm drizzle-kit generate",
+    "db:migrate": "pnpm drizzle-kit migrate"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.133",
+    "@types/node": "^26.6.1",
     "drizzle-kit": "^0.31.10",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.9"
