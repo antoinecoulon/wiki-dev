@@ -9,7 +9,12 @@ export default defineNuxtConfig({
     strict: true,
   },
 
-  modules: ['@nuxt/ui', '@nuxthub/core', '@nuxt/eslint'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxthub/core',
+    '@nuxt/eslint',
+    'nuxt-auth-utils'
+  ],
 
   // nuxt/ui
   css: ['~/assets/css/main.css'],
