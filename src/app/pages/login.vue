@@ -29,7 +29,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     await navigateTo('/')
   } catch {
     toast.add({ 
-      title: 'Erreur de connextion',
+      title: 'Erreur lors de la connextion',
       description: 'Impossible de se connecter.',
       color: 'error'
     })
