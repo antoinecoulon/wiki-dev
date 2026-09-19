@@ -16,11 +16,15 @@ export default defineNuxtConfig({
     'nuxt-auth-utils'
   ],
 
+  runtimeConfig: {
+    adminPasswordHash: '',
+  },
+
   // nuxt/ui
   css: ['~/assets/css/main.css'],
 
   // NuxtHub
   hub: {
     db: "sqlite"
-  }
+  },
 })

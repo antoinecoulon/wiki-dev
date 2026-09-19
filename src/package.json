@@ -30,6 +30,7 @@
     "@iconify-json/lucide": "^1.2.133",
     "@types/node": "^26.6.1",
     "drizzle-kit": "^0.31.10",
+    "tsx": "^4.23.13",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.9"
   }
