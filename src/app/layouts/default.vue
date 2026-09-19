@@ -1,15 +1,17 @@
 <script setup lang="ts">
 const toast = useToast()
-const { loggedIn } = useUserSession()
+const { loggedIn, clear } = useUserSession()
 
 async function handleLogout() {
   try {
-    await $fetch('/api/auth/logout', { method: 'POST' })
+    await clear()
     toast.add({
       title: 'Déconnecté',
       description: 'Vous avez été déconnecté avec succès.',
       color: 'success'
     })
+    
+    await navigateTo('/login')
   } catch {
     toast.add({ 
       title: 'Erreur lors de la déconnextion',

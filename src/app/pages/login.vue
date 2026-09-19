@@ -3,6 +3,8 @@ import type { FormError, FormSubmitEvent } from '@nuxt/ui';
 
 const toast = useToast()
 
+const { fetch: refreshSession } = useUserSession()
+
 const state = reactive({ password: undefined })
 type Schema = typeof state
 
@@ -26,6 +28,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       description: 'Bonjour Antoine !',
       color: 'success'
     })
+
+    await refreshSession()
     await navigateTo('/')
   } catch {
     toast.add({ 
