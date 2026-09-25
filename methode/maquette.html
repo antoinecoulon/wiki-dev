@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Méthode Colonne · maquette</title>
+<style>
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-2: #f0f0ec;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --border: #e2e2dc;
+  --primary: #0f8a5f;
+  --primary-soft: #e3f4ec;
+  --primary-text: #ffffff;
+  --doing: #c27a00;
+  --doing-soft: #fdf0d8;
+  --todo: #9a9a93;
+  --todo-soft: #f0f0ec;
+  --danger: #c0392b;
+  --info: #2f6fb3;
+  --info-soft: #e5eef8;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141413; --surface: #1d1d1b; --surface-2: #262624; --text: #ecece8; --muted: #a0a09a;
+    --border: #34342f; --primary: #3cc48e; --primary-soft: #16382a; --primary-text: #0b1f16;
+    --doing: #f0b040; --doing-soft: #3a2c12; --todo: #85857e; --todo-soft: #262624;
+    --danger: #ef6b5b; --info: #6fa8e8; --info-soft: #1a2a3d;
+    --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141413; --surface: #1d1d1b; --surface-2: #262624; --text: #ecece8; --muted: #a0a09a;
+  --border: #34342f; --primary: #3cc48e; --primary-soft: #16382a; --primary-text: #0b1f16;
+  --doing: #f0b040; --doing-soft: #3a2c12; --todo: #85857e; --todo-soft: #262624;
+  --danger: #ef6b5b; --info: #6fa8e8; --info-soft: #1a2a3d;
+  --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
+}
+
+/* ---------- Mode wireframe : illustre la fidélité basse ---------- */
+html.wire {
+  --primary: #555; --primary-soft: #e8e8e8; --primary-text: #fff;
+  --doing: #555; --doing-soft: #e8e8e8; --todo: #999; --todo-soft: #f4f4f4;
+  --info: #555; --info-soft: #eee; --danger: #555;
+  --bg: #fafafa; --surface: #fff; --surface-2: #f2f2f2; --text: #222; --muted: #777; --border: #999;
+  --shadow: none;
+  --font: "Segoe Print", "Comic Sans MS", "Chalkboard SE", cursive;
+  color-scheme: light;
+}
+html.wire * { border-style: dashed !important; }
+html.wire .pill, html.wire .cell-chip, html.wire .btn { background: transparent !important; color: var(--text) !important; }
+html.wire .bar > span { background: repeating-linear-gradient(45deg,#999 0 4px,transparent 4px 8px) !important; }
+html.wire .wire-note { display: block; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font); }
+button, input, textarea, select { font: inherit; color: inherit; }
+a { color: var(--primary); }
+
+/* ---------- Layout ---------- */
+.topbar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 5;
+}
+.brand { font-weight: 700; letter-spacing: -.01em; margin-right: auto; }
+.brand small { font-weight: 400; color: var(--muted); margin-left: 6px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: transparent; padding: 4px 10px; cursor: pointer; font-size: 13px; }
+.seg button[aria-pressed="true"] { background: var(--primary); color: var(--primary-text); }
+.seg-label { font-size: 12px; color: var(--muted); }
+
+.shell { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 53px); }
+nav.side { border-right: 1px solid var(--border); background: var(--surface); padding: 12px 8px; }
+nav.side h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 10px 6px; }
+nav.side button {
+  display: block; width: 100%; text-align: left; border: 0; background: transparent;
+  padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 14px;
+}
+nav.side button:hover { background: var(--surface-2); }
+nav.side button[aria-current="page"] { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+main { padding: 20px 24px 60px; max-width: 1150px; width: 100%; min-width: 0; }
+
+@media (max-width: 760px) {
+  .shell { grid-template-columns: 1fr; }
+  nav.side { display: flex; gap: 4px; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); padding: 8px 16px; }
+  nav.side h3 { display: none; }
+  nav.side button { white-space: nowrap; width: auto; }
+  main { padding: 16px 16px 60px; }
+}
+
+/* ---------- Composants ---------- */
+h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -.01em; }
+h2 { font-size: 16px; margin: 0 0 10px; }
+.sub { color: var(--muted); margin: 0 0 18px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stack > * + * { margin-top: 14px; }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 4px; }
+.big { font-size: 17px; font-weight: 600; }
+.pill { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 99px; border: 1px solid transparent; white-space: nowrap; }
+.p-done { background: var(--primary-soft); color: var(--primary); }
+.p-doing { background: var(--doing-soft); color: var(--doing); }
+.p-todo { background: var(--todo-soft); color: var(--muted); border-color: var(--border); }
+.p-info { background: var(--info-soft); color: var(--info); }
+.btn { border: 1px solid var(--border); background: var(--surface); padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.demo-note { font-size: 13px; color: var(--muted); border: 1px dashed var(--border); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; }
+.wire-note { display: none; font-size: 13px; border: 2px dashed #777; padding: 8px 12px; margin-bottom: 16px; }
+pre.ascii { font-family: var(--mono); font-size: 12.5px; line-height: 1.35; background: var(--surface-2); border-radius: 8px; padding: 12px; overflow-x: auto; margin: 0; }
+input[type=text], textarea { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: var(--surface); }
+textarea { min-height: 64px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.check { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; cursor: pointer; }
+.check input { margin-top: 4px; accent-color: var(--primary); }
+.check.done span { text-decoration: line-through; color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px);
+  background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.toast.show { opacity: 1; }
+
+/* ---------- Colonne ---------- */
+.colonne-wrap { overflow-x: auto; }
+table.colonne { border-collapse: separate; border-spacing: 6px; width: 100%; min-width: 760px; }
+table.colonne th { font-size: 12px; font-weight: 600; color: var(--muted); text-align: left; padding: 2px 6px; }
+table.colonne th .lvl { display: block; font-size: 11px; font-weight: 400; }
+table.colonne td { vertical-align: top; }
+td.vert { font-weight: 600; font-size: 14px; white-space: nowrap; padding: 8px 6px; border-left: 3px solid var(--primary); }
+td.vert.tech { border-left-color: var(--info); }
+td.vert small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; }
+td.cell { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px; height: 58px; }
+td.cell.empty { background: transparent; border-style: dashed; }
+td.cell.empty::after { content: "pas prévu"; font-size: 11px; color: var(--muted); opacity: .6; }
+.cell-chip {
+  display: flex; gap: 6px; align-items: center; width: 100%; text-align: left;
+  border: 0; border-radius: 6px; padding: 4px 6px; font-size: 12.5px; cursor: pointer; margin-bottom: 3px;
+}
+.cell-chip .sym { font-family: var(--mono); }
+.c-done { background: var(--primary-soft); color: var(--primary); }
+.c-doing { background: var(--doing-soft); color: var(--doing); font-weight: 600; outline: 1.5px solid var(--doing); }
+.c-todo { background: var(--todo-soft); color: var(--muted); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.bar { height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.bar > span { display: block; height: 100%; background: var(--primary); }
+.lvl-prog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.lvl-prog div { font-size: 12px; color: var(--muted); }
+
+/* ---------- Écrans ---------- */
+.screens { display: flex; flex-direction: column; gap: 10px; }
+.flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.scr { border: 1.5px solid var(--border); background: var(--surface); border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+.scr[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); }
+.arrow { color: var(--muted); font-family: var(--mono); }
+.fid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media (max-width: 700px) { .fid { grid-template-columns: 1fr 1fr; } }
+.fid .card { padding: 10px; }
+.fid-sketch { height: 70px; border-radius: 6px; margin-bottom: 6px; position: relative; overflow: hidden; background: var(--surface-2); }
+
+/* ---------- Briques ---------- */
+.bricks { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.brick { display: flex; gap: 10px; align-items: flex-start; }
+.brick input { margin-top: 5px; accent-color: var(--primary); width: 16px; height: 16px; }
+.brick .trig { font-size: 13px; color: var(--muted); }
+
+/* ---------- Créateur ---------- */
+.steps { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.steps span { font-size: 12.5px; padding: 4px 10px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+.steps span.on { background: var(--primary); color: var(--primary-text); }
+.steps span.past { background: var(--primary-soft); color: var(--primary); }
+
+details.adr { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); padding: 10px 14px; }
+details.adr summary { cursor: pointer; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+details.adr summary b { font-family: var(--mono); font-size: 13px; }
+details.adr dl { display: grid; grid-template-columns: 110px 1fr; gap: 4px 12px; margin: 10px 0 0; font-size: 14px; }
+details.adr dt { color: var(--muted); }
+details.adr dd { margin: 0; }
+.entry { border-left: 3px solid var(--border); padding: 4px 0 4px 12px; }
+.entry + .entry { margin-top: 10px; }
+.next { background: var(--primary-soft); border-radius: 8px; padding: 12px 14px; font-weight: 600; color: var(--primary); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">wiki.dev <small>maquette · méthode Colonne</small></div>
+  <span class="seg-label">Espace</span>
+  <div class="seg" id="space">
+    <button aria-pressed="true" data-v="perso">Perso</button>
+    <button aria-pressed="false" data-v="pro">Pro</button>
+  </div>
+  <span class="seg-label">Fidélité</span>
+  <div class="seg" id="fidelity">
+    <button aria-pressed="false" data-v="wire">Wireframe</button>
+    <button aria-pressed="true" data-v="mock">Maquette</button>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="nav">
+    <h3>Projet wiki-dev</h3>
+    <button data-view="dashboard">Colonne</button>
+    <button data-view="reprise">Reprise de session</button>
+    <button data-view="tranche">Tranche en cours</button>
+    <button data-view="decisions">Décisions (ADR)</button>
+    <button data-view="ecrans">Écrans & maquettes</button>
+    <button data-view="briques">Briques</button>
+    <h3>Nouveau</h3>
+    <button data-view="createur">Créateur de projet</button>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =====================================================================
+   Données d'exemple (illustratives). Voir methode/*.md pour la méthode.
+   ===================================================================== */
+const LEVELS = ["Squelette", "Utilisable", "Confortable", "Soigné"];
+
+const VERTS = [
+  { id: "socle", name: "Socle technique", tech: true, role: "Fondations techniques", cells: [
+      [["t-init", "Nuxt 4 + Nuxt UI", "done"], ["t-db", "SQLite + Drizzle", "done"], ["t-auth", "Auth login / logout", "done"]],
+      [["t-deploy", "Déploiement", "todo"]],
+      [["t-ci", "CI : lint auto", "todo"]],
+      null ] },
+  { id: "acces", name: "Accès", role: "Accéder à mon wiki partout", cells: [
+      [["t-login", "Login local", "done"]],
+      [["t-proxy", "Accès hors proxy (exploration)", "todo"]],
+      [["t-sess", "Session persistante", "todo"]],
+      null ] },
+  { id: "pages", name: "Éditer pages", role: "Écrire du contenu riche", cells: [
+      [["t-page0", "Créer et afficher une page", "doing"]],
+      [["t-tiptap", "Éditeur TipTap", "todo"]],
+      [["t-blocs", "Blocs personnalisés", "todo"]],
+      [["t-polish", "Raccourcis & finitions", "todo"]] ] },
+  { id: "orga", name: "Organiser", role: "Ranger et naviguer", cells: [
+      [["t-liste", "Liste plate", "todo"]],
+      [["t-arbo", "Arborescence", "todo"]],
+      [["t-tags", "Tags / favoris", "todo"]],
+      null ] },
+  { id: "espaces", name: "Espaces Perso / Pro", role: "Séparer perso et pro", cells: [
+      [["t-sw0", "Switch en dur", "todo"]],
+      [["t-sw1", "Switch dans l'UI", "todo"]],
+      null, null ] },
+  { id: "projets", name: "Projets", role: "Suivre mes projets", cells: [
+      [["t-proj0", "Page projet + statut", "todo"]],
+      [["t-col", "Colonne", "todo"]],
+      [["t-journ", "Journaux", "todo"]],
+      [["t-brq", "Briques & créateur", "todo"]] ] },
+  { id: "ress", name: "Ressources", role: "Garder mes liens utiles", cells: [
+      [["t-liens", "Liens", "todo"]],
+      [["t-cat", "Catégories", "todo"]],
+      null, null ] },
+  { id: "search", name: "Recherche", role: "Retrouver vite", cells: [
+      null,
+      [["t-ft", "Plein texte", "todo"]],
+      [["t-cmdk", "Recherche rapide ⌘K", "todo"]],
+      null ] },
+];
+
+const DETAILS = {
+  "t-page0": {
+    why: "Poser le squelette de la vertèbre : pouvoir écrire quelque chose et le retrouver. Tout le reste s'appuie dessus.",
+    type: "fonctionnelle",
+    touche: { c4: ["UI Nuxt", "API /pages", "DB pages"], ecrans: ["Arbre des pages", "Page"] },
+    criteria: ["Je crée une page avec un titre et du texte brut", "Je la retrouve après rechargement", "Elle apparaît dans une liste"],
+    checklist: ["Route POST /api/pages (insert Drizzle)", "Route GET /api/pages/:id", "Page Nuxt /pages/[id] : afficher titre + contenu", "Formulaire minimal de création", "Lien depuis l'accueil vers la liste"],
+    states: { "Normal": true, "Vide": false, "Chargement": false, "Erreur": false, "Beaucoup de contenu": false, "Mobile": false },
+    sketch:
+`┌─ wiki.dev ─────────────────────── [Perso|Pro] ─┐
+│ Pages          │  Titre de la page             │
+│ ─────────────  │  ───────────────────────────  │
+│ • Accueil      │  Lorem ipsum texte brut…      │
+│ • Nuxt notes   │                               │
+│ [+ Nouvelle]   │              [ Enregistrer ]  │
+└────────────────┴───────────────────────────────┘`,
+    links: ["ADR-004 (proposée) : contenu en JSON TipTap ?", "Session du 16/09"]
+  }
+};
+
+const DOD = ["Marche dans l'app réelle", "Lint OK", "Pas de code mort / console.log", "Doc à jour si comportement changé", "ADR si décision prise", "Journal de session rempli"];
+
+const ADRS = [
+  { n: "ADR-001", t: "Nuxt 4 + Nuxt UI comme socle", s: "acceptée", ctx: "Besoin d'un framework full-stack Vue, SSR possible, UI rapide à monter.", opts: "Nuxt + Nuxt UI · Vue + Vite + API séparée · Next.js", dec: "Nuxt 4 + Nuxt UI", why: "Vue maîtrisé, front + API dans un seul projet, composants prêts.", cons: "Dépendance à l'écosystème Nuxt ; vérifier si Nuxt UI fournit un éditeur TipTap.", links: "Socle technique · C4 : App Nuxt" },
+  { n: "ADR-002", t: "SQLite + Drizzle (NuxtHub)", s: "acceptée", ctx: "Stockage simple, local d'abord, déployable ensuite.", opts: "SQLite/Drizzle · PostgreSQL · fichiers Markdown", dec: "SQLite + Drizzle", why: "Zéro serveur en dev, migrations typées.", cons: "Recherche plein texte à prévoir (FTS5 ?).", links: "Socle technique · C4 : DB" },
+  { n: "ADR-003", t: "Authentification avec nuxt-auth-utils", s: "acceptée", ctx: "App perso mais potentiellement exposée sur le réseau.", opts: "nuxt-auth-utils · pas d'auth · auth externe", dec: "nuxt-auth-utils, compte unique", why: "Simple, sessions scellées, suffisant pour un seul utilisateur.", cons: "Pas de multi-utilisateur (non visé).", links: "Accès · C4 : API" },
+  { n: "ADR-004", t: "Format de contenu des pages", s: "proposée", ctx: "La colonne content doit stocker le contenu TipTap.", opts: "JSON TipTap · Markdown · HTML", dec: "À décider (tendance JSON TipTap + contentText pour la recherche)", why: "—", cons: "Export Markdown à prévoir si JSON.", links: "Éditer pages · C4 : DB" },
+  { n: "ADR-005", t: "Hébergement & accès derrière un proxy", s: "proposée", ctx: "Notion est bloqué par le proxy entreprise : c'est la raison d'être du projet.", opts: "Local uniquement · auto-hébergé · hors-ligne/PWA + sync", dec: "À décider après la tranche d'exploration « Accès hors proxy »", why: "—", cons: "Structurant pour tout le projet.", links: "Accès · Socle technique" },
+];
+
+const BRICKS = [
+  ["Fiche projet", "Toujours (noyau)", true, true],
+  ["Colonne", "Toujours (noyau)", true, true],
+  ["DoD", "Toujours (noyau)", true, true],
+  ["Journal de session", "Toujours (noyau)", true, true],
+  ["Journal de décisions", "Toujours (noyau)", true, true],
+  ["Croquis d'écran", "Une tranche crée ou change un écran", true, false],
+  ["Carte des écrans", "Plus de 3-4 écrans, ou navigation floue", true, false],
+  ["Wireframes", "Écran complexe, ou hésitation sur la disposition", false, false],
+  ["Breadboard", "Penser le flux sans le visuel", false, false],
+  ["C4 niveaux 1-2", "Plus d'un « morceau » technique", true, false],
+  ["C4 niveau 3", "Un conteneur devient flou", false, false],
+  ["Modèle de données", "Plus de 2-3 tables, relations complexes", true, false],
+  ["Questions & risques", "Une inconnue peut tout remettre en cause", true, false],
+  ["Glossaire", "Termes métier ou mots ambigus", false, false],
+  ["Parking d'idées", "Des idées me détournent de la tranche", true, false],
+  ["Apprentissages (TIL)", "J'apprends des choses à garder", true, false],
+  ["Dette technique", "« Je ferai propre plus tard » répété", false, false],
+  ["Rétro", "Un niveau est fini, ou ça stagne", false, false],
+  ["Now / Next / Later", "Colonne trop grosse pour un coup d'œil", false, false],
+  ["Appetite (budget temps)", "Je ne finis jamais, ou je sur-polis", false, false],
+];
+
+const SCREENS = {
+  "Connexion": { v: ["Accès"], f: "final" },
+  "Accueil": { v: ["Organiser", "Espaces"], f: "croquis" },
+  "Arbre des pages": { v: ["Organiser"], f: "croquis" },
+  "Page": { v: ["Éditer pages"], f: "wireframe" },
+  "Projets": { v: ["Projets"], f: "breadboard" },
+  "Projet : Colonne": { v: ["Projets"], f: "maquette (ce fichier)" },
+  "Tranche": { v: ["Projets"], f: "maquette (ce fichier)" },
+  "Journal de session": { v: ["Projets"], f: "maquette (ce fichier)" },
+  "Ressources": { v: ["Ressources"], f: "—" },
+};
+
+/* ---------- État (persisté localement pour le confort de la démo) ---------- */
+const KEY = "methode-colonne-demo-v1";
+let S = {
+  view: "dashboard", tranche: "t-page0", status: {}, checks: {}, extra: {}, bricks: {},
+  sessions: [
+    { d: "16/09", dur: "1 h 10", tr: "Créer et afficher une page", fait: "Routes POST et GET /api/pages OK, testées avec curl.", bloc: "Je ne sais pas encore si je stocke le contenu en JSON ou en texte.", next: "Créer la page Nuxt /pages/[id] qui affiche titre + contenu." },
+    { d: "12/09", dur: "45 min", tr: "Auth login / logout", fait: "Logout + toast. Tranche terminée.", bloc: "", next: "Démarrer la tranche « Créer et afficher une page » : écrire sa checklist." },
+  ],
+  parking: ["Importer mes pages Notion (export Markdown)", "Raccourci clavier pour nouvelle page"],
+  step: 0, fidelity: "mock", space: "perso"
+};
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* ---------- Utilitaires ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 3200); }
+function go(view) { S.view = view; save(); render(); window.scrollTo(0, 0); }
+
+function allTranches() {
+  const out = [];
+  VERTS.forEach(v => v.cells.forEach((c, lvl) => c && c.forEach(([id, name, st]) =>
+    out.push({ id, name, st: S.status[id] || st, vert: v, lvl }))));
+  return out;
+}
+function findTranche(id) { return allTranches().find(t => t.id === id); }
+function current() { return allTranches().find(t => t.st === "doing"); }
+const SYM = { done: "■", doing: "◧", todo: "□" };
+const STLABEL = { done: "faite", doing: "en cours", todo: "prévue" };
+
+function detailsFor(t) {
+  return DETAILS[t.id] || {
+    why: "(Exemple) À préciser quand la tranche passe « prête ».",
+    type: t.vert.tech ? "technique" : (t.name.includes("exploration") ? "exploration" : "fonctionnelle"),
+    touche: { c4: [], ecrans: [] },
+    criteria: ["À définir : comment saurai-je que c'est fini ?"],
+    checklist: [], states: { "Normal": false, "Vide": false, "Erreur": false }, sketch: null, links: []
+  };
+}
+
+/* =====================================================================
+   Vues
+   ===================================================================== */
+const VIEWS = {};
+
+VIEWS.dashboard = () => {
+  const all = allTranches();
+  const cur = current();
+  const last = S.sessions[0];
+  const prog = LEVELS.map((_, l) => {
+    const ts = all.filter(t => t.lvl === l);
+    const d = ts.filter(t => t.st === "done").length;
+    return { d, n: ts.length, pct: ts.length ? Math.round(d / ts.length * 100) : 0 };
+  });
+  const rows = VERTS.map(v => `
+    <tr>
+      <td class="vert ${v.tech ? "tech" : ""}">${esc(v.name)}<small>${esc(v.role)}</small></td>
+      ${v.cells.map(c => !c ? `<td class="cell empty"></td>` : `<td class="cell">${c.map(([id, name, st]) => {
+        const s = S.status[id] || st;
+        return `<button class="cell-chip c-${s}" data-open="${id}" title="${STLABEL[s]}"><span class="sym">${SYM[s]}</span>${esc(name)}</button>`;
+      }).join("")}</td>`).join("")}
+    </tr>`).join("");
+
+  return `
+    <h1>wiki-dev</h1>
+    <p class="sub">Tableau de bord projet : la Colonne se remplit de gauche à droite. Cliquer sur une tranche pour l'ouvrir.</p>
+    <div class="demo-note">Données d'exemple, purement illustratives. La vraie Colonne de wiki-dev est à construire soi-même (voir <code>02-colonne.md</code>).</div>
+    <div class="cards">
+      <div class="card"><div class="label">Tranche en cours</div>
+        ${cur ? `<div class="big">${esc(cur.name)}</div><div class="row" style="margin-top:6px"><span class="pill p-doing">${esc(cur.vert.name)} · Niv. ${cur.lvl}</span><button class="btn" data-open="${cur.id}">Ouvrir</button></div>`
+              : `<div class="big">Aucune</div><p class="sub" style="margin:4px 0 0">Choisir la prochaine tranche dans la colonne la plus à gauche.</p>`}
+      </div>
+      <div class="card"><div class="label">Prochaine action</div>
+        <div class="big" style="font-size:15px">${esc(last ? last.next : "—")}</div>
+        <div class="row" style="margin-top:8px"><button class="btn" data-go="reprise">Reprendre la session</button></div>
+      </div>
+      <div class="card"><div class="label">Avancement par niveau</div>
+        <div class="lvl-prog">${prog.map((p, i) => `<div>${i} · ${LEVELS[i]}<div class="bar"><span style="width:${p.pct}%"></span></div>${p.d}/${p.n}</div>`).join("")}</div>
+      </div>
+    </div>
+    <div class="card colonne-wrap">
+      <table class="colonne">
+        <thead><tr><th>Vertèbre</th>${LEVELS.map((l, i) => `<th>Niv. ${i}<span class="lvl">${l}</span></th>`).join("")}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="legend"><span>■ faite</span><span>◧ en cours (une seule)</span><span>□ prévue</span><span>case pointillée : pas prévu (choix assumé)</span><span style="color:var(--info)">▍ vertèbre technique</span></div>
+    </div>`;
+};
+
+VIEWS.reprise = () => {
+  const last = S.sessions[0];
+  const cur = current();
+  return `
+    <h1>Reprise de session</h1>
+    <p class="sub">L'écran qui accueille quand on revient sur le projet. Objectif : reprendre en 2 minutes, pas en 20.</p>
+    <div class="grid2">
+      <div class="stack">
+        <div class="card stack">
+          <div class="label">La dernière fois · ${esc(last ? last.d : "—")}</div>
+          ${last ? `<div>Sur <b>${esc(last.tr)}</b> : ${esc(last.fait)}</div>
+          ${last.bloc ? `<div><span class="pill p-info">question</span> ${esc(last.bloc)}</div>` : ""}
+          <div><div class="label">Prochaine action</div><div class="next">➜ ${esc(last.next)}</div></div>` : "<div>Première session sur ce projet.</div>"}
+          <div class="row">${cur ? `<button class="btn primary" data-open="${cur.id}">C'est parti : ouvrir la tranche</button>` : ""}</div>
+        </div>
+        <div class="card">
+          <h2>Fin de session (2 min)</h2>
+          <div class="stack">
+            <label><div class="label">Fait</div><textarea id="f-fait" placeholder="Ce que j'ai fait"></textarea></label>
+            <label><div class="label">Blocage / question (optionnel)</div><input type="text" id="f-bloc" placeholder="Ce qui coince"></label>
+            <label><div class="label">Prochaine action (la toute première chose à faire)</div><input type="text" id="f-next" placeholder="Ex. : brancher la sauvegarde sur PUT /pages/:id"></label>
+            <div class="row"><button class="btn primary" id="f-save">Enregistrer la session</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h2>Parking d'idées</h2>
+          <p class="sub" style="margin:0 0 8px">Une idée en pleine session ? Une ligne, puis retour à la tranche.</p>
+          <div class="row" style="flex-wrap:nowrap"><input type="text" id="park-in" placeholder="Nouvelle idée…"><button class="btn" id="park-add">Garer</button></div>
+          <ul>${S.parking.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+        </div>
+        <div class="card">
+          <h2>Journal de session</h2>
+          ${S.sessions.map(s => `<div class="entry"><div class="label">${esc(s.d)} · ${esc(s.dur || "")} · ${esc(s.tr)}</div>
+            <div>${esc(s.fait)}</div>${s.bloc ? `<div style="color:var(--muted)">? ${esc(s.bloc)}</div>` : ""}<div><b>➜ ${esc(s.next)}</b></div></div>`).join("")}
+        </div>
+      </div>
+    </div>`;
+};
+
+VIEWS.tranche = () => {
+  const t = findTranche(S.tranche) || current() || allTranches()[0];
+  const d = detailsFor(t);
+  const ck = S.checks[t.id] || (S.checks[t.id] = {});
+  const extra = S.extra[t.id] || [];
+  const list = (arr, prefix) => arr.map((x, i) => {
+    const k = prefix + i, on = !!ck[k];
+    return `<label class="check ${on ? "done" : ""}"><input type="checkbox" data-ck="${k}" ${on ? "checked" : ""}><span>${esc(x)}</span></label>`;
+  }).join("");
+  const crit = d.criteria, dodOk = DOD.every((_, i) => ck["d" + i]), critOk = crit.every((_, i) => ck["a" + i]);
+  const allChecklist = d.checklist.concat(extra);
+  const doneCl = allChecklist.filter((_, i) => ck["c" + i]).length;
+
+  return `
+    <div class="row" style="margin-bottom:6px"><button class="btn" data-go="dashboard">← Colonne</button>
+      <span class="pill p-info">${esc(t.vert.name)} · Niv. ${t.lvl} ${LEVELS[t.lvl]}</span>
+      <span class="pill p-${t.st}">${STLABEL[t.st]}</span><span class="pill p-todo">${esc(d.type)}</span></div>
+    <h1>${esc(t.name)}</h1>
+    <p class="sub">${esc(d.why)}</p>
+    <div class="grid2">
+      <div class="stack">
+        <div class="card"><h2>Terminée quand… <span class="pill p-todo">critères d'acceptation</span></h2>${list(crit, "a")}</div>
+        <div class="card"><h2>Checklist de réalisation <span class="pill p-todo">${doneCl}/${allChecklist.length}</span></h2>
+          <p class="sub" style="margin:0 0 6px;font-size:13px">Écrite par moi, 3 à 8 items, l'item le plus incertain en premier.</p>
+          ${list(allChecklist, "c") || `<p class="sub">Vide : à écrire avant de passer la tranche en « prête ».</p>`}
+          <div class="row" style="flex-wrap:nowrap;margin-top:8px"><input type="text" id="cl-in" placeholder="Ajouter une étape (un verbe)…"><button class="btn" id="cl-add">Ajouter</button></div>
+        </div>
+        <div class="card"><h2>DoD <span class="pill p-todo">héritée du projet</span></h2>${list(DOD, "d")}
+          <div class="row" style="margin-top:10px">
+            <button class="btn primary" id="finish" ${critOk && dodOk && t.st !== "done" ? "" : "disabled"}>Terminer la tranche</button>
+            <span style="font-size:13px;color:var(--muted)">${t.st === "done" ? "Tranche faite." : "Actif quand critères + DoD sont cochés."}</span>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card"><h2>Touche</h2>
+          <div class="label">C4</div><div class="row">${d.touche.c4.map(x => `<span class="pill p-info">${esc(x)}</span>`).join("") || "<span class='sub' style='margin:0'>—</span>"}</div>
+          <div class="label" style="margin-top:8px">Écrans</div><div class="row">${d.touche.ecrans.map(x => `<span class="pill p-info">${esc(x)}</span>`).join("") || "<span class='sub' style='margin:0'>—</span>"}</div>
+        </div>
+        <div class="card"><h2>Maquette <span class="pill p-todo">croquis · niv. 0</span></h2>
+          ${d.sketch ? `<pre class="ascii">${esc(d.sketch)}</pre>` : `<p class="sub" style="margin:0">Pas de croquis (brique « Croquis d'écran » si la tranche touche un écran).</p>`}
+          <div class="label" style="margin-top:10px">États de l'écran pris en compte</div>
+          <div class="row">${Object.entries(d.states).map(([k, v]) => `<span class="pill ${v ? "p-done" : "p-todo"}">${v ? "✓" : "○"} ${esc(k)}</span>`).join("")}</div>
+          <p style="font-size:13px;color:var(--muted);margin:8px 0 0">Au niveau 0, seul l'état <i>Normal</i> est requis. <i>Vide</i> et <i>Erreur</i> arrivent au niveau 1.</p>
+        </div>
+        <div class="card"><h2>Liens</h2>${d.links.length ? `<ul style="margin:0;padding-left:18px">${d.links.map(l => `<li>${esc(l)}</li>`).join("")}</ul>` : "<span class='sub'>—</span>"}</div>
+      </div>
+    </div>`;
+};
+
+VIEWS.decisions = () => `
+  <h1>Journal de décisions</h1>
+  <p class="sub">ADR légers : un par décision. On ne supprime jamais, on remplace. Dès qu'on hésite plus de 10 minutes, on en écrit un.</p>
+  <div class="demo-note">Exemples construits à partir de l'état actuel du repo (Nuxt 4, Nuxt UI, Drizzle/SQLite, nuxt-auth-utils). À réécrire soi-même.</div>
+  <div class="stack">${ADRS.map((a, i) => `
+    <details class="adr" ${i === 4 ? "open" : ""}>
+      <summary><b>${a.n}</b> ${esc(a.t)} <span class="pill ${a.s === "acceptée" ? "p-done" : "p-doing"}">${a.s}</span></summary>
+      <dl><dt>Contexte</dt><dd>${esc(a.ctx)}</dd><dt>Options</dt><dd>${esc(a.opts)}</dd><dt>Décision</dt><dd>${esc(a.dec)}</dd>
+      <dt>Parce que</dt><dd>${esc(a.why)}</dd><dt>Conséquences</dt><dd>${esc(a.cons)}</dd><dt>Liens</dt><dd>${esc(a.links)}</dd></dl>
+    </details>`).join("")}</div>`;
+
+VIEWS.ecrans = () => {
+  const sel = S.screen || "Page";
+  const b = n => `<button class="scr" data-scr="${esc(n)}" aria-pressed="${n === sel}">${esc(n)}</button>`;
+  const a = `<span class="arrow">→</span>`;
+  const info = SCREENS[sel];
+  return `
+    <h1>Écrans & maquettes</h1>
+    <p class="sub">La carte des écrans est le « C4 de l'interface ». Chaque écran sert au moins une vertèbre.</p>
+    <div class="card" style="margin-bottom:14px">
+      <h2>Carte des écrans</h2>
+      <div class="screens">
+        <div class="flow">${b("Connexion")}${a}${b("Accueil")}${a}${b("Arbre des pages")}${a}${b("Page")}</div>
+        <div class="flow"><span style="width:0"></span>${b("Accueil")}${a}${b("Projets")}${a}${b("Projet : Colonne")}${a}${b("Tranche")}</div>
+        <div class="flow">${b("Projet : Colonne")}${a}${b("Journal de session")}</div>
+        <div class="flow">${b("Accueil")}${a}${b("Ressources")}</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin:10px 0 0">Le switch Perso / Pro est dans le header, sur tous les écrans.</p>
+      <div class="row" style="margin-top:10px"><b>${esc(sel)}</b> sert : ${info.v.map(v => `<span class="pill p-info">${esc(v)}</span>`).join("")} · fidélité actuelle : <span class="pill p-todo">${esc(info.f)}</span></div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <h2>L'échelle de fidélité, alignée sur les niveaux</h2>
+      <p class="sub" style="margin:0 0 10px">Ne pas monter en fidélité plus vite que le niveau de la vertèbre. Astuce : basculer « Fidélité → Wireframe » en haut pour voir cette maquette en basse fidélité.</p>
+      <div class="fid">
+        <div class="card"><div class="fid-sketch"><pre class="ascii" style="background:none;padding:6px;font-size:10px">Page
+─────
+titre ─► enregistrer
+texte</pre></div><b>0 · Croquis / breadboard</b><div style="font-size:13px;color:var(--muted)">Papier, ASCII · 5-10 min</div></div>
+        <div class="card"><div class="fid-sketch" style="border:2px dashed var(--border);background:transparent">
+          <div style="position:absolute;inset:8px auto 8px 8px;width:28%;border:1.5px dashed var(--muted)"></div>
+          <div style="position:absolute;left:38%;right:8px;top:8px;height:10px;background:var(--muted);opacity:.5"></div>
+          <div style="position:absolute;left:38%;right:20%;top:26px;height:6px;background:var(--muted);opacity:.3"></div>
+          <div style="position:absolute;left:38%;right:30%;top:38px;height:6px;background:var(--muted);opacity:.3"></div></div>
+          <b>1 · Wireframe</b><div style="font-size:13px;color:var(--muted)">Excalidraw · 15-30 min</div></div>
+        <div class="card"><div class="fid-sketch" style="background:var(--surface);border:1px solid var(--border)">
+          <div style="position:absolute;inset:0 auto 0 0;width:30%;background:var(--surface-2)"></div>
+          <div style="position:absolute;left:36%;top:8px;font-size:11px;font-weight:600">Titre de page</div>
+          <div style="position:absolute;right:8px;bottom:8px;font-size:10px;padding:2px 6px;border-radius:4px;background:var(--primary);color:var(--primary-text)">Enregistrer</div></div>
+          <b>2 · Maquette</b><div style="font-size:13px;color:var(--muted)">Composants Nuxt UI réels</div></div>
+        <div class="card"><div class="fid-sketch" style="background:linear-gradient(135deg,var(--primary-soft),var(--surface));border:1px solid var(--border)">
+          <div style="position:absolute;left:10px;top:10px;font-size:11px;font-weight:700">✦ Interface finale</div>
+          <div style="position:absolute;left:10px;right:10px;bottom:10px;height:18px;border-radius:6px;background:var(--surface);box-shadow:var(--shadow)"></div></div>
+          <b>3 · Final</b><div style="font-size:13px;color:var(--muted)">Finitions, accessibilité</div></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>Breadboard : Projet</h2><pre class="ascii">Projet : Colonne          Tranche
+─────────────────         ─────────────────
+grille des tranches ───►  critères
+« + vertèbre »            checklist (cocher)
+« reprendre » ──┐         « terminer » ──► DoD ──► Colonne
+                ▼
+        Reprise de session
+        ─────────────────
+        prochaine action
+        « c'est parti » ──► Tranche</pre></div>
+      <div class="card"><h2>États d'un écran (avant de coder)</h2>
+        ${["Vide : premier usage, aucune donnée", "Chargement", "Erreur : réseau, serveur, validation", "Normal", "Beaucoup de contenu : liste longue, titres longs", "Mobile / petite largeur", "Droits : connecté, Perso / Pro"].map(x => `<label class="check"><input type="checkbox"><span>${esc(x)}</span></label>`).join("")}
+        <p style="font-size:13px;color:var(--muted);margin:6px 0 0">Les états cochés deviennent des critères d'acceptation ou des items de checklist.</p>
+      </div>
+    </div>`;
+};
+
+VIEWS.briques = () => `
+  <h1>Briques</h1>
+  <p class="sub">Le noyau est toujours actif. Les autres briques s'activent quand leur <b>déclencheur</b> apparaît, et se désactivent sans culpabiliser.</p>
+  <div class="bricks">${BRICKS.map(([n, trig, def, core], i) => {
+    const on = core || (S.bricks[i] ?? def);
+    return `<label class="card brick"><input type="checkbox" data-brick="${i}" ${on ? "checked" : ""} ${core ? "disabled" : ""}>
+      <div><div style="font-weight:600">${esc(n)} ${core ? `<span class="pill p-done">noyau</span>` : ""}</div><div class="trig">Quand : ${esc(trig)}</div></div></label>`;
+  }).join("")}</div>
+  <div class="card" style="margin-top:14px"><div class="label">Suggestion (plus tard)</div>
+    <div>💡 3 ADR concernent la base de données : activer <b>Modèle de données</b> ?</div></div>`;
+
+const STEPS = ["Cadrage", "Espace", "Briques", "Vertèbres", "DoD", "Résultat"];
+VIEWS.createur = () => {
+  const st = S.step;
+  const body = [
+    `<div class="stack">
+      <label><div class="label">Nom du projet</div><input type="text" placeholder="ex. : wiki-dev"></label>
+      <label><div class="label">Le problème</div><textarea placeholder="Qu'est-ce qui ne va pas aujourd'hui ?"></textarea></label>
+      <label><div class="label">Pour qui, dans quel contexte ?</div><input type="text" placeholder="ex. : moi, au travail, derrière un proxy"></label>
+      <div class="grid2"><label><div class="label">Ce que je fais</div><textarea></textarea></label><label><div class="label">Ce que je ne fais PAS</div><textarea></textarea></label></div>
+      <label><div class="label">Temps consacré (appetite)</div><input type="text" placeholder="ex. : niveau 0 complet en 6 sessions"></label>
+    </div>`,
+    `<div class="row"><label class="card check"><input type="radio" name="sp" checked><span><b>Perso</b><br><span style="color:var(--muted);font-size:13px">Projet pour le plaisir</span></span></label>
+      <label class="card check"><input type="radio" name="sp"><span><b>Pro</b><br><span style="color:var(--muted);font-size:13px">Projet professionnel</span></span></label></div>`,
+    `<p class="sub">Le noyau est pré-coché. Chaque brique affiche son déclencheur. On pourra en activer d'autres plus tard.</p>
+     <div class="bricks">${BRICKS.slice(0, 12).map(([n, trig, def, core]) => `<label class="card brick"><input type="checkbox" ${core || def ? "checked" : ""} ${core ? "disabled" : ""}><div><div style="font-weight:600">${esc(n)}</div><div class="trig">${esc(trig)}</div></div></label>`).join("")}</div>`,
+    `<p class="sub">5 à 9 vertèbres fonctionnelles, ordonnées selon le parcours. <b>Socle technique</b> est ajoutée automatiquement en haut. Pour chacune, la tranche de niveau 0 (squelette).</p>
+     <div class="stack">${["Socle technique", "", "", ""].map((v, i) => `<div class="grid2"><input type="text" value="${esc(v)}" placeholder="Vertèbre ${i}" ${i === 0 ? "disabled" : ""}><input type="text" placeholder="Tranche niv. 0 : squelette"></div>`).join("")}</div>
+     <p style="font-size:13px;color:var(--muted)">Le créateur <b>pose des questions</b>, il ne génère pas de todolist.</p>`,
+    `<p class="sub">Partir de la DoD par défaut et l'adapter (4 à 7 critères).</p>${DOD.map(x => `<label class="check"><input type="checkbox" checked><span>${esc(x)}</span></label>`).join("")}`,
+    `<div class="card" style="background:var(--primary-soft);border-color:var(--primary)"><div class="big">Projet créé ✓</div>
+      <p style="margin:6px 0 0">Pages générées : Fiche projet · Colonne · DoD · Journal de session · Journal de décisions + briques cochées.</p>
+      <p style="margin:6px 0 0"><b>Étape suivante :</b> rendre « prête » la première tranche (critères + checklist écrite par moi).</p>
+      <div class="row" style="margin-top:10px"><button class="btn primary" data-go="dashboard">Voir la Colonne</button></div></div>`
+  ][st];
+  return `
+    <h1>Créateur de projet guidé</h1>
+    <p class="sub">Un assistant en quelques étapes, qui génère les pages du noyau et des briques choisies à partir des templates.</p>
+    <div class="steps">${STEPS.map((s, i) => `<span class="${i === st ? "on" : i < st ? "past" : ""}">${i + 1}. ${s}</span>`).join("")}</div>
+    <div class="card">${body}</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="st-prev" ${st === 0 ? "disabled" : ""}>← Précédent</button>
+      ${st < STEPS.length - 1 ? `<button class="btn primary" id="st-next">Suivant →</button>` : `<button class="btn" id="st-reset">Recommencer</button>`}
+    </div>`;
+};
+
+/* =====================================================================
+   Rendu & événements
+   ===================================================================== */
+function render() {
+  $("#main").innerHTML = `<div class="wire-note">Mode <b>wireframe</b> : même écran, fidélité basse. On se concentre sur la disposition et le contenu, pas sur le style.</div>` + VIEWS[S.view]();
+  document.querySelectorAll("#nav button").forEach(b => {
+    const active = b.dataset.view === S.view;
+    b.setAttribute("aria-current", active ? "page" : "false");
+  });
+  document.documentElement.classList.toggle("wire", S.fidelity === "wire");
+  document.querySelectorAll("#fidelity button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === S.fidelity));
+  document.querySelectorAll("#space button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === S.space));
+}
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("button, [data-open], [data-go]");
+  if (!el) return;
+  if (el.dataset.view) return go(el.dataset.view);
+  if (el.dataset.go) return go(el.dataset.go);
+  if (el.dataset.open) { S.tranche = el.dataset.open; return go("tranche"); }
+  if (el.dataset.scr) { S.screen = el.dataset.scr; save(); return render(); }
+  if (el.closest("#fidelity")) { S.fidelity = el.dataset.v; save(); return render(); }
+  if (el.closest("#space")) { S.space = el.dataset.v; save(); render(); return toast(`Espace ${el.dataset.v === "pro" ? "Pro" : "Perso"} (démo : mêmes données)`); }
+
+  switch (el.id) {
+    case "f-save": {
+      const fait = $("#f-fait").value.trim(), next = $("#f-next").value.trim();
+      if (!fait || !next) return toast("« Fait » et « Prochaine action » sont les deux champs essentiels.");
+      const cur = current();
+      const d = new Date();
+      S.sessions.unshift({ d: `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`, dur: "", tr: cur ? cur.name : "—", fait, bloc: $("#f-bloc").value.trim(), next });
+      save(); render(); return toast("Session enregistrée. À la prochaine !");
+    }
+    case "park-add": {
+      const v = $("#park-in").value.trim(); if (!v) return;
+      S.parking.push(v); save(); render(); return toast("Idée garée. Retour à la tranche en cours.");
+    }
+    case "cl-add": {
+      const v = $("#cl-in").value.trim(); if (!v) return;
+      (S.extra[S.tranche] = S.extra[S.tranche] || []).push(v); save(); return render();
+    }
+    case "finish": {
+      S.status[S.tranche] = "done"; save(); render();
+      return toast("Tranche faite ✓ Rituel : trier le parking, mettre à jour la Colonne, rendre « prête » la suivante.");
+    }
+    case "st-next": S.step++; save(); return render();
+    case "st-prev": S.step--; save(); return render();
+    case "st-reset": S.step = 0; save(); return render();
+  }
+});
+
+document.addEventListener("change", e => {
+  const el = e.target;
+  if (el.dataset.ck) { (S.checks[S.tranche] = S.checks[S.tranche] || {})[el.dataset.ck] = el.checked; save(); render(); }
+  if (el.dataset.brick) { S.bricks[el.dataset.brick] = el.checked; save(); }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  if (e.target.id === "park-in") $("#park-add").click();
+  if (e.target.id === "cl-in") $("#cl-add").click();
+});
+
+render();
+</script>
+</body>
+</html>
