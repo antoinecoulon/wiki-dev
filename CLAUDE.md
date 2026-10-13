@@ -4,11 +4,8 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro),
 
 ## Stack et structure
 
-- Code dans `src/` : Nuxt 4, Nuxt UI v4, Tailwind 4, Drizzle ORM + SQLite (libsql, NuxtHub), nuxt-auth-utils. pnpm.
-- Éditeur de pages prévu : **TipTap**. Table `pages` (arborescence via `parentId`, `content`, `contentText`).
 - Modules visés : Suivi de projet, Documentation, Ressources (voire d'autres) ; espaces **Perso / Pro** switchables.
 - `methode/` (racine) : la **méthode Colonne** (analyse, conception, suivi), en test sur ce projet. Voir `methode/README.md`.
-- `docs/` est ignoré par git (volontairement). Les documents de suivi du projet vont dans `projet/`.
 
 ## Comment travailler avec moi
 
