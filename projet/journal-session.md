@@ -11,11 +11,4 @@
 - **Blocage / question :** /
 - **➜ Prochaine action :** DoD
 
-Retour sur la méthode:
-
-Avis: simple et efficace, fluide. Moins fluide:
-- le template n'a que « fait / ne fait pas ». Une colonne « plus tard » aurait peut-être évité de tout mettre dans « je fais ».
-- temps consacré est difficile à remplir, la seule chose certaine est que c'est un projet perso qui ne récupère du temps qu'après mon travail et ma famille.
-- j'ai du mal à faire la différence entre ce que je met dans "L'objectif" et dans "Le problème"
-
 ---
