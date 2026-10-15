@@ -48,9 +48,10 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 - Documentation dev (section)
 - Création et gestion de pages, classées, hiérarchisées
 - Mise en page et styles de textes, blocs ajoutables (code, citation, tableaux...)
-- Migration d'une partie de l'existant (perso sans tous les anciens projets, ressources périmées, vieille doc / pro: ce qui est toujours utile)
+- Migration d'une partie de l'existant depuis Notion et dev-docs (perso sans tous les anciens projets, ressources périmées, vieille doc / pro: ce qui est toujours utile)
 - Réorganisation drag&drop
 - Intégration de kanban et checklists
+- Personnalisation de l'affichage, de l'organisation, de la page d'accueil (niveaux 1 à 3)
 
 **Ce que je ne fais PAS** (au moins pour l'instant) :
 - Ressources et liens (section)
@@ -59,7 +60,6 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 - Plusieurs comptes/utilisateurs
 - Partage en ligne, connexions apps externes et agents
 - Intégration d'autres outils (graphiques, diagrammes, tableaux d'issues...)
-- Personnalisation de l'affichage, de l'organisation, de la page d'accueil.
 
 ## Contraintes
 

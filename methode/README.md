@@ -101,6 +101,7 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 | Date | Observation | Décision |
 |---|---|---|
 | 2026-10-13 | Fiche projet: le template n'a que « fait / ne fait pas » | une colonne « plus tard » aurait peut-être évité de tout mettre dans « je fais » |
+| 2026-10-15 | Fiche colonne: pratique, workflow apprécié, mais du mal à comprendre | prévoir guide au départ, rempli aujourd'hui en Q/R avec Claude |
 
 ---
 
