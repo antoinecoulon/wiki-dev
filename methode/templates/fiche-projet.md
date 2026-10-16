@@ -40,9 +40,6 @@
 
 - …
 
-## Briques activées
+## À la demande
 
-- [x] Noyau (fiche, Colonne, DoD, journaux)
-- [ ] Croquis d'écran · [ ] Carte des écrans · [ ] Wireframes
-- [ ] C4 1-2 · [ ] C4 3 · [ ] Modèle de données
-- [ ] Risques · [ ] Glossaire · [ ] Parking · [ ] TIL · [ ] Dette · [ ] Rétro
+- [ ] Wireframes · [ ] C4 1-2 · [ ] Modèle de données

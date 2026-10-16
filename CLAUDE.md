@@ -14,16 +14,15 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro),
 - J'aime les checklists et voir l'avancement, mais **rattachés à une carte** (la Colonne), jamais des listes géantes.
 - Réponses en **français**.
 
-## Méthode Colonne (résumé)
+## Méthode Colonne (résumé, version allégée du 2026-10-16)
 
-- **Colonne** = vertèbres fonctionnelles (≈ EPICs) × niveaux communs : 0 squelette/ébauche, 1 utilisable, 2 confortable, 3 soigné. Le niveau 0 est le *walking skeleton*. La vertèbre **Socle technique** porte le travail purement technique.
-- **Tranche** = issue verticale : critères d'acceptation + checklist courte écrite par moi + DoD héritée. **Une seule en cours**, 1 à 3 sessions, découpage SPIDR, explorations limitées dans le temps.
-- Le fonctionnel (Colonne), le technique (C4) et l'interface (carte des écrans) sont séparés, et reliés par les tranches (« touche »).
-- **Noyau** : fiche projet, Colonne, DoD, journal de session (fait / blocage / prochaine action), journal de décisions (ADR légers). **Briques optionnelles** activées par un déclencheur (maquettage, C4, modèle de données, risques, parking, TIL…).
-- **Maquettage** : fidélité alignée sur les niveaux (croquis/breadboard → wireframe → maquette → final), liste des états d'un écran avant de coder.
-- Rituels déclenchés par des événements (début/fin de session, tranche finie, niveau complet), jamais par un calendrier.
+- **Attitude :** cadrer l'essentiel en amont (≈ 1-2 h : fiche, Colonne, choix techniques structurants), puis décider le reste au fil du projet. Cadrage ≤ 2 sessions. Ne jamais proposer de documentation « au cas où ».
+- **Noyau :** fiche projet, Colonne, DoD, journal de session (fait / blocage / prochaine action), `decisions.md` (un seul fichier, 3-5 lignes par décision).
+- **Colonne** = vertèbres fonctionnelles (≈ EPICs) × niveaux : 0 squelette, 1 utilisable, 2 confortable, 3 soigné. La vertèbre **Socle technique** porte le travail purement technique.
+- **Tranche** : écrite dans la section « Tranche en cours » de la Colonne (critères + checklist de 3-7 verbes écrite par moi + DoD). **Une seule en cours**, 1 à 3 sessions.
+- **À la demande, sans template :** wireframes Excalidraw (+ 2-3 lignes d'états) quand une tranche touche un écran, C4 niveaux 1-2, modèle de données.
 
-## État (2026-09-25)
+## État (2026-10-16)
 
-- Méthode formalisée dans `methode/`, **pas encore appliquée**. Prochaine étape : suivre le « Démarrage rapide » de `methode/README.md` (fiche projet, DoD, Colonne construite par moi, croquis, ADR rétroactifs), puis la faire challenger.
-- Décision la plus structurante encore ouverte : **hébergement / accès** (derrière un proxy).
+- Cadrage fait : `projet/` (fiche, Colonne, DoD, journal). Méthode allégée (voir journal du test dans `methode/README.md`).
+- Prochaine étape : `projet/decisions.md` (hébergement / accès derrière le proxy, stack, éditeur et format du contenu, stockage des images), C4 rapide, checklist de *Socle technique* N0, puis coder.

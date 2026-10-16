@@ -2,8 +2,10 @@
 
 Cadre léger d'**analyse, conception et suivi** pour un développeur solo qui code sur son temps libre, pour le plaisir, sans que l'organisation devienne une corvée.
 
-> Statut : **en test**, sur le développement de wiki-dev lui-même (depuis le 2026-09-25).
-> À terme, ces fiches deviendront des pages du module *Documentation* de wiki-dev, et la méthode sera outillée dans le module *Suivi de projet*.
+> Statut : **en test**, sur le développement de wiki-dev lui-même (depuis le 2026-09-25). Allégée le 2026-10-16 (voir le journal du test).
+> À terme, cette méthode deviendra une page du module *Documentation* de wiki-dev, et sera outillée dans le module *Suivi de projet* (pistes : [`projet/integration-methode.md`](../projet/integration-methode.md)).
+
+**Attitude :** on cadre l'essentiel en amont (une « réunion » d'1 à 2 h : fiche, Colonne, choix techniques structurants), puis **le reste se décide au fil du projet**, au moment où on en a besoin. Cadrer ne doit pas prendre plus de 2 sessions.
 
 ---
 
@@ -13,84 +15,90 @@ Cadre léger d'**analyse, conception et suivi** pour un développeur solo qui co
   Fiche projet ─── le cap (1 page)
        │
        ▼
-  ┌─ COLONNE ───────────────────────────────────────────────┐
-  │               Niv.0        Niv.1       Niv.2      Niv.3  │
-  │               squelette    utilisable  confortable soigné│
-  │  Socle tech.  ■            ◧           □                 │   ◄── la carte : où j'en suis
-  │  Vertèbre A   ■            □           □          □      │
-  │  Vertèbre B   ◧            □                             │
-  │  Vertèbre C   □            □           □                 │
-  └──────────────────────────────────────────────────────────┘
+  ┌─ COLONNE ─────────────────────────────────────────────┐
+  │               Niv.0       Niv.1       Niv.2      Niv.3 │
+  │               squelette   utilisable  confortable soigné│
+  │  Socle tech.  ■           ◧           □                │  ◄── la carte : où j'en suis
+  │  Vertèbre A   ■           □           □          □     │
+  │  Vertèbre B   □           □                            │
+  └────────────────────────────────────────────────────────┘
        │ chaque case = une ou plusieurs TRANCHES
        ▼
   Tranche ─── critères d'acceptation + checklist courte + DoD   ◄── ce que je fais
        │
-       ├── Journal de session  (fait · blocage · prochaine action)
-       ├── Journal de décisions (ADR légers)
-       ├── Parking d'idées · Apprentissages (TIL → Documentation)
-       └── Maquette (croquis → wireframe → maquette)
-
-  Vues complémentaires :  C4 (comment c'est construit)  ·  Carte des écrans (comment on s'en sert)
+       ├── Journal de session (fait · blocage · prochaine action)
+       └── Décisions (quelques lignes chacune)
 ```
 
-**Trois vues, trois questions :**
+## Les principes
 
-| Vue | Question | Nature |
+1. **Des checklists accrochées à une carte.** Courtes, rattachées à une tranche, elle-même rattachée à la Colonne. L'avancement se lit sur la carte, pas en « 47 tâches sur 120 ».
+2. **Produire d'abord, l'IA relit ensuite.** Je fais ma carte, ma checklist ou ma décision, même imparfaite, puis je demande une critique : « Ne réécris pas. Pointe les oublis et incohérences, sous forme de questions. »
+3. **Le squelette d'abord, puis des tranches verticales.** Le niveau 0 traverse toutes les couches (UI → API → DB). Chaque tranche livre quelque chose d'utilisable, pas une couche technique (sauf *Socle technique*).
+4. **Une seule tranche en cours.** Une idée qui arrive en route : une ligne dans le journal, et on reprend.
+5. **Rendre visibles les renoncements.** Case vide dans la Colonne, « ce que je ne fais pas » dans la fiche.
+6. **Toujours savoir quoi faire en reprenant.** On s'arrête de préférence quand on sait quoi faire ensuite.
+7. **Juste à temps.** Pas de document « au cas où ». Si un outil pèse, on l'allège ou on l'arrête, et on le note dans le journal du test.
+
+## Le noyau
+
+| Document | Contenu | Template |
 |---|---|---|
-| **Colonne** | Que permet l'app, et où en suis-je ? | Fonctionnelle + avancement |
-| **C4** | Comment c'est construit, où est le code ? | Technique |
-| **Carte des écrans** | Comment l'utilisateur s'en sert ? | Interface |
+| **Fiche projet** | 1 page : problème, pour qui, objectif, périmètre (fait / ne fait pas), contraintes, temps consacré | [`fiche-projet.md`](templates/fiche-projet.md) |
+| **Colonne** | Vertèbres × niveaux, avec les tranches, et la tranche en cours | [`colonne.md`](templates/colonne.md) |
+| **DoD** | 4 à 7 critères de qualité communs à toutes les tranches | [`dod.md`](templates/dod.md) |
+| **Journal de session** | 3 lignes en fin de session | [`journal-session.md`](templates/journal-session.md) |
+| **Décisions** | Un seul fichier, 3 à 5 lignes par décision | [`decisions.md`](templates/decisions.md) |
 
-Les tranches font le lien : chacune dit quels **éléments C4** et quels **écrans** elle touche.
+## La Colonne
 
----
+- **Vertèbre** = une grande capacité vue par l'utilisateur (≈ EPIC). On les trouve en listant des verbes (« je crée une page », « je retrouve une page »), regroupés en 5 à 9 vertèbres. La vertèbre **Socle technique**, en haut, porte le travail purement technique (init, CI, déploiement).
+- **Niveaux**, communs à tous les projets :
 
-## Les fiches
+| Niveau | La vertèbre est à ce niveau quand… |
+|---|---|
+| **0 · Squelette** | Elle existe et traverse toutes les couches. Chemin nominal, moche, ça suffit. |
+| **1 · Utilisable** | Je m'en sers pour de vrai. Erreurs principales gérées, pas de perte de données. |
+| **2 · Confortable** | C'est agréable : cas limites, ergonomie, rapidité. |
+| **3 · Soigné** | Finitions : accessibilité, perfs, polish. |
 
-| # | Fiche | Contenu |
-|---|---|---|
-| 1 | [Principes](01-principes.md) | Les idées directrices, l'IA en relecteur |
-| 2 | [La Colonne](02-colonne.md) | Vertèbres, niveaux, socle technique, lien avec C4 et écrans |
-| 3 | [Les Tranches](03-tranches.md) | Anatomie, statuts, règles, découpage (SPIDR), exploration |
-| 4 | [Les Journaux](04-journaux.md) | Session, décisions (ADR), parking d'idées, apprentissages |
-| 5 | [Les Rituels](05-rituels.md) | Des rituels minuscules déclenchés par des événements |
-| 6 | [Les Briques](06-briques.md) | Le noyau et le catalogue des briques optionnelles |
-| 7 | [Le Maquettage](07-maquettage.md) | Du croquis au wireframe, carte des écrans, états d'un écran |
-| 8 | [Intégration dans wiki-dev](08-integration-wiki-dev.md) | Modèle de données, créateur guidé, écrans |
+- **Règles :** compléter le niveau 0 avant d'aller plus loin (règle souple) ; une case vide est un choix ; une case peut contenir plusieurs tranches ; la Colonne bouge au fil du projet.
+- **Symboles :** ■ faite · ◧ en cours · □ prévue · *(vide)* pas prévu.
 
-**Templates** prêts à copier : [`templates/`](templates/)
+## Les tranches
 
-**Maquette interactive** : ouvrir [`maquette.html`](maquette.html) dans un navigateur (fonctionne hors-ligne).
+Pas de fichier dédié : la tranche en cours s'écrit dans la section **« Tranche en cours »** de la Colonne (ou dans une issue).
 
----
+- **Critères d'acceptation** (*quoi*) : ce que je peux faire à la fin.
+- **Checklist** (*comment*), **écrite par moi** : 3 à 7 verbes, l'item le plus incertain en premier. Elle peut changer en route.
+- **DoD** (*quelle qualité*) : héritée du projet.
+- **Taille : 1 à 3 sessions.** Trop gros ? Couper par chemin utilisateur, par support (desktop puis mobile), par sous-ensemble de données, ou sortir l'inconnu dans une **exploration** limitée dans le temps, dont le livrable est une décision.
+- Une fois faite : case à ■, on vide la section, on choisit la suivante.
 
-## Démarrage rapide : tester la méthode sur wiki-dev
+## Décisions
 
-Prévoir environ **2 sessions**. Ranger les documents du projet dans un dossier `projet/` à la racine du repo (attention : `docs/` est ignoré par git).
+Une décision = quelques lignes dans `decisions.md` : **contexte, choix, pourquoi** (+ conséquences si elles créent du travail → tranche dans la Colonne). On en écrit une quand on hésite plus de 10 minutes, ou qu'on se dira « pourquoi j'ai fait ça ? » dans 6 mois. On ne supprime pas une décision : on écrit celle qui la remplace.
 
-### Session 1 : cadrer et cartographier (~1 h 30)
+## Journal de session
 
-1. **Fiche projet** (30 min) : [`templates/fiche-projet.md`](templates/fiche-projet.md). Insister sur *ce que je ne fais pas* et sur la *question d'accès* (proxy entreprise).
-2. **DoD** (5 min) : [`templates/dod.md`](templates/dod.md).
-3. **Colonne** (30 min) : [`templates/colonne.md`](templates/colonne.md)
-   - lister 5 à 8 vertèbres **fonctionnelles** + la vertèbre *Socle technique* ;
-   - écrire la tranche **niveau 0** de chacune ;
-   - marquer comme faites les tranches déjà réalisées (init Nuxt, base SQLite/Drizzle, auth login/logout, layout…).
-4. **Croquis** (20 min) : carte des écrans + C4 niveaux 1 et 2, à main levée ([fiche 7](07-maquettage.md)).
-5. **Fin de session** : première entrée du [journal de session](templates/journal-session.md).
+- **Début (30 s) :** relire la dernière entrée, surtout la prochaine action.
+- **Fin (2 min) :** fait · blocage / question · **prochaine action** (concrète : « brancher la sauvegarde sur l'API », pas « continuer l'éditeur »).
+- Idée, apprentissage (TIL), dette : une ligne dans l'entrée du jour, si besoin.
 
-### Session 2 : décider et démarrer (~1 h)
+## À la demande
 
-6. **ADR rétroactifs** (20 min), un par décision déjà prise ou à prendre :
-   - Nuxt 4 + Nuxt UI ;
-   - SQLite + Drizzle (+ NuxtHub) ;
-   - authentification avec nuxt-auth-utils ;
-   - éditeur TipTap (à vérifier : Nuxt UI v4 propose peut-être un composant éditeur basé sur TipTap) ;
-   - stockage du contenu des pages (JSON TipTap ? Markdown ?) ;
-   - **hébergement / accès** (local, auto-hébergé, hors-ligne ?) : c'est la décision la plus structurante.
-7. **Faire challenger** la Colonne et les ADR par l'IA, avec les prompts de la [fiche 1](01-principes.md#2-produire-dabord-lia-relit-ensuite).
-8. **Choisir la première tranche**, écrire soi-même sa checklist, et coder.
-9. **Fin de session** : journal.
+Uniquement quand le besoin se présente, sans template :
+
+- **Wireframe** (Excalidraw, `projet/maquettes/`) quand une tranche crée ou change un écran, avec 2 ou 3 lignes d'**états** : vide, erreur, sauvegarde en cours, mobile…
+- **C4 niveaux 1-2** (un fichier Excalidraw) une fois l'hébergement décidé ; à mettre à jour quand l'architecture change.
+- **Modèle de données** quand les relations se compliquent.
+- **Mini-rétro** (garder / changer / essayer) quand un niveau est fini ou que le projet stagne.
+
+## Démarrage d'un projet (2 sessions max)
+
+1. **Cadrage (~1 h) :** fiche projet, DoD, Colonne avec le niveau 0 de chaque vertèbre.
+2. **Choix structurants (~1 h) :** décisions sur la stack, l'hébergement et le stockage ; C4 rapide ; checklist de la première tranche (en général *Socle technique* N0).
+3. Coder.
 
 ---
 
@@ -102,6 +110,7 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 |---|---|---|
 | 2026-10-13 | Fiche projet: le template n'a que « fait / ne fait pas » | une colonne « plus tard » aurait peut-être évité de tout mettre dans « je fais » |
 | 2026-10-15 | Fiche colonne: pratique, workflow apprécié, mais du mal à comprendre | prévoir guide au départ, rempli aujourd'hui en Q/R avec Claude |
+| 2026-10-16 | Méthode trop lourde : une session entière par petit bout d'étape, estimations de durée fausses (cadrage prévu en 2 sessions, 4 sessions sans avoir fini). Le template écran seul représentait ~3 sessions. Même une équipe ne met pas autant d'effort en conception. | Méthode allégée : on garde fiche, Colonne, DoD, journal ; décisions dans un seul fichier ; tranche écrite dans la Colonne ; wireframes Excalidraw et C4 1-2 à la demande ; suppression des fiches 01-07, de la carte des écrans, du breadboard, des Crazy 8s et des templates écran / tranche / ADR / parking / rétro. Cadrage limité à 2 sessions. |
 
 ---
 
@@ -113,7 +122,5 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 | Walking skeleton | Alistair Cockburn, *Crystal Clear* |
 | Modèle C4 | Simon Brown : <https://c4model.com> |
 | ADR | Michael Nygard, « Documenting Architecture Decisions » : <https://adr.github.io> |
-| SPIDR (découpage de stories) | Mike Cohn, Mountain Goat Software |
-| Shape Up (appetite, breadboarding, fat marker sketch) | Basecamp : <https://basecamp.com/shapeup> (gratuit en ligne) |
-| Diátaxis (organisation de la documentation) | <https://diataxis.fr> |
-| Crazy 8s | Google Design Sprint |
+| Découpage de stories (SPIDR) | Mike Cohn, Mountain Goat Software |
+| Shape Up (appetite) | Basecamp : <https://basecamp.com/shapeup> |

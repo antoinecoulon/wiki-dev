@@ -230,7 +230,7 @@ details.adr dd { margin: 0; }
 
 <script>
 /* =====================================================================
-   Données d'exemple (illustratives). Voir methode/*.md pour la méthode.
+   Données d'exemple (illustratives). Voir methode/README.md pour la méthode.
    ===================================================================== */
 const LEVELS = ["Squelette", "Utilisable", "Confortable", "Soigné"];
 
@@ -407,7 +407,7 @@ VIEWS.dashboard = () => {
   return `
     <h1>wiki-dev</h1>
     <p class="sub">Tableau de bord projet : la Colonne se remplit de gauche à droite. Cliquer sur une tranche pour l'ouvrir.</p>
-    <div class="demo-note">Données d'exemple, purement illustratives. La vraie Colonne de wiki-dev est à construire soi-même (voir <code>02-colonne.md</code>).</div>
+    <div class="demo-note">Données d'exemple, purement illustratives. La vraie Colonne de wiki-dev est à construire soi-même (voir <code>projet/colonne.md</code>).</div>
     <div class="cards">
       <div class="card"><div class="label">Tranche en cours</div>
         ${cur ? `<div class="big">${esc(cur.name)}</div><div class="row" style="margin-top:6px"><span class="pill p-doing">${esc(cur.vert.name)} · Niv. ${cur.lvl}</span><button class="btn" data-open="${cur.id}">Ouvrir</button></div>`

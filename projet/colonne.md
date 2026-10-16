@@ -1,27 +1,35 @@
 # Colonne : wiki.dev
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
-> Mise à jour : 2026-10-15
+> Mise à jour : 2026-10-16
 
 ## Grille
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
-| **Socle technique** | □ Nuxt + lint + DB + déployé | □ Sauvegardes DB + CI | □ Tests + automatisation | □ Monitoring, perfs, stats |
+| **Socle technique** | □ Nuxt + lint + DB + déployé | □ Sauvegardes DB + CI | □ Tests + automatisation |  |
 | **Accès** | □ Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | □ Créer / écrire / supprimer (texte brut) | □ Mise en forme + checklists | □ Blocs de code et images | □ Drag & drop des blocs |
-| **Retrouver** | □ Liste dans la sidebar | □ Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes |
-| **Gestion de projet** | □ Page dans la section Projets | □ Noyau + statut (dogfooding) | □ Briques + kanban des tranches | □ Suggestions de briques |
-| **Documentation** | □ Section Documentation | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
-| **Espaces** | □ Un espace implicite | □ Switch Perso / Pro | □ Déplacer entre espaces | □ Espaces personnalisés |
-| **Mobile** | □ Une page lisible | □ Navigation mobile | □ Confort de lecture | □ PWA |
-| **Personnalisation** | □ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable | □ Statistiques |
+| **Pages** | □ Créer / écrire / supprimer (texte brut) | □ Sauvegarde auto + mise en forme + checklists | □ Blocs code, citation, tableau, image | □ Drag & drop des blocs |
+| **Retrouver** | □ Liste dans la sidebar | □ Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
+| **Gestion de projet** | □ Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
+| **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
+| **Espaces** |  | □ Switch Perso / Pro | □ Déplacer entre espaces |  |
+| **Mobile** | □ Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
+| **Personnalisation** | □ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
-> **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app.
+> **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Elle se fait **après Socle N1** (sauvegardes DB).
 
 ## Tranche en cours
 
-→ [<nom de la tranche>](tranches/…)
+**<vertèbre> · N<x> · <titre>**
+
+Terminée quand :
+- …
+
+Checklist (3 à 7 verbes, le plus incertain en premier) :
+- [ ] …
+
+DoD : voir [dod.md](dod.md)
 
 ## Détail des vertèbres
 
@@ -32,14 +40,14 @@
   - [N0] □ Projet Nuxt + lint, DB branchée, déployé (une page accessible en ligne)
   - [N1] □ Sauvegardes de la DB + CI (lint, typecheck)
   - [N2] □ Tests automatisés + automatisation (déploiement continu)
-  - [N3] □ Monitoring, performances, statistiques
+  - [N3] pas prévu (monitoring, perfs, stats : peu utile en mono-utilisateur)
 
 ### Accès
 - **Rôle :** accéder à mes données, de partout, en sécurité
 - **Écrans :** `/login`
 - **Tranches :**
   - [N0] □ Je me connecte (mot de passe unique) sur l'app déployée
-  - [N1] □ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone
+  - [N1] □ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (après Mobile N0)
   - [N2] □ Session longue sur chaque poste, déconnexion, expiration sans perte de saisie
   - [N3] □ Sécurité renforcée (limitation des tentatives, 2FA ou OAuth)
 
@@ -50,9 +58,9 @@
 - **Rôle :** créer une page et écrire son contenu
 - **Écrans :** `/pages/:id`
 - **Tranches :**
-  - [N0] □ Créer, écrire (texte brut) et supprimer une page ; le contenu est sauvegardé
-  - [N1] □ Mise en forme (styles, titres, séparateurs) + checklists
-  - [N2] □ Blocs de code et images
+  - [N0] □ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
+  - [N1] □ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists
+  - [N2] □ Blocs de code, citations, tableaux et images
   - [N3] □ Drag & drop des blocs dans une page
 
 - je crée une page
@@ -71,7 +79,7 @@
   - [N0] □ Toutes les pages listées dans la sidebar, cliquables
   - [N1] □ Recherche par titre
   - [N2] □ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar
-  - [N3] □ Favoris / pages récentes
+  - [N3] □ Favoris / pages récentes dans la sidebar
 
 - je retrouve une page
 - je déplace une page
@@ -81,11 +89,11 @@
 - **Rôle :** suivre mes projets selon la méthode Colonne
 - **Écrans :** `/projects`, `/projects/:id`
 - **Tranches :**
-  - [N0] □ Un projet = une page rangée dans la section Projets
+  - [N0] □ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
   - [N1] □ Un nouveau projet = une page pré-remplie avec les sections du noyau (fiche, Colonne, DoD, journaux) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev**
-  - [N2] □ Briques optionnelles ajoutables à la demande
+  - [N2] □ Briques à la demande (wireframes, C4, modèle de données…) ajoutables à un projet
   - [N2] □ Vue kanban des tranches d'un projet
-  - [N3] □ Suggestions de briques selon des signaux (fiche 6)
+  - [N3] pas prévu (suggestions de briques)
 
 - je vois les projets (en cours, terminés, idées)
 - je créé un nouveau projet (nouvelle page avec structure de base)
@@ -96,7 +104,7 @@
 - **Rôle :** voir la documentation
 - **Écrans :** `/documentation`, `/documentation/categories`
 - **Tranches :**
-  - [N0] □ Une page créée dans la section Documentation y reste rangée
+  - [N0] inclus dans Gestion de projet N0 (même mécanisme de section)
   - [N1] □ Catégories / tags (par techno, par sujet)
   - [N2] □ Promotion d'un TIL de projet en page de doc
   - [N3] □ Templates de page de doc (fiche techno, how-to, référence…)
@@ -107,10 +115,10 @@
 - **Rôle :** séparer mes contenus perso et pro
 - **Écrans :** switch dans la sidebar
 - **Tranches :**
-  - [N0] □ Un seul espace implicite (existe en base, pas dans l'UI)
+  - [N0] pas de tranche (l'espace en base est une décision de modèle de données → ADR)
   - [N1] □ Switch Perso / Pro qui filtre pages, projets et doc
   - [N2] □ Déplacer une page ou un projet d'un espace à l'autre
-  - [N3] □ Créer et renommer des espaces personnalisés
+  - [N3] pas prévu (espaces personnalisés : Perso/Pro suffit)
 
 - je navigue entre les parties pro et perso
 
@@ -121,7 +129,7 @@
   - [N0] □ Une page s'ouvre et se lit sans zoomer
   - [N1] □ Navigation mobile (sidebar rétractable)
   - [N2] □ Confort de lecture (typo, blocs de code et tableaux qui défilent)
-  - [N3] □ PWA (installable sur l'écran d'accueil)
+  - [N3] pas prévu (PWA)
 
 - je consulte une page sur mon téléphone
 
@@ -129,9 +137,9 @@
 - **Rôle :** permettre la personnalisation de mon workspace
 - **Écrans :** `/settings`
 - **Tranches :**
-  - [N0] □ Page d'accueil avec projets récents
+  - [N0] □ Page d'accueil avec projets récents (après Gestion de projet N0)
   - [N1] □ Personnalisation de la disposition de la page d'accueil
   - [N2] □ Personnalisation de la sidebar
-  - [N3] □ Statistiques
+  - [N3] pas prévu (statistiques)
 
 - je personnalise ma page d'accueil

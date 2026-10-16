@@ -48,10 +48,10 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 - Documentation dev (section)
 - Création et gestion de pages, classées, hiérarchisées
 - Mise en page et styles de textes, blocs ajoutables (code, citation, tableaux...)
-- Migration d'une partie de l'existant depuis Notion et dev-docs (perso sans tous les anciens projets, ressources périmées, vieille doc / pro: ce qui est toujours utile)
+- Migration manuelle d'une partie de l'existant depuis Notion et dev-docs, une fois les sauvegardes DB en place (perso sans tous les anciens projets, ressources périmées, vieille doc / pro: ce qui est toujours utile)
 - Réorganisation drag&drop
 - Intégration de kanban et checklists
-- Personnalisation de l'affichage, de l'organisation, de la page d'accueil (niveaux 1 à 3)
+- Personnalisation de l'affichage, de l'organisation, de la page d'accueil (niveaux 0 à 2)
 
 **Ce que je ne fais PAS** (au moins pour l'instant) :
 - Ressources et liens (section)
@@ -80,6 +80,8 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 5 sessions d'1h par semaine * 4 semaines * 3 mois (fin décembre 2026)
 => 60 sessions d'1h
 
+**Point de réévaluation :** niveau 0 complet (7 tranches) en **15 sessions**.
+
 ## Questions ouvertes
 
 - Une stack fullstack Nuxt me permet-elle de gérer l'entièreté du projet ?
@@ -87,9 +89,6 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 - Est-ce possible de trouver un hébergement 100% gratuit sans compromis ?
 - Pourquoi le proxy d'entreprise ralentit voire empêche les sauvegardes automatiques et chargement de pages sur Notion ? Et comment éviter ça ?
 
-## Briques activées
+## À la demande
 
-- [x] Noyau (fiche, Colonne, DoD, journaux)
-- [ ] Croquis d'écran · [ ] Carte des écrans · [ ] Wireframes
-- [ ] C4 1-2 · [ ] C4 3 · [ ] Modèle de données
-- [ ] Risques · [ ] Glossaire · [ ] Parking · [ ] TIL · [ ] Dette · [ ] Rétro
+- [x] Wireframes · [x] C4 1-2 · [ ] Modèle de données

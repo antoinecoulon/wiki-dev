@@ -14,7 +14,15 @@
 
 ## Tranche en cours
 
-→ [<nom de la tranche>](tranches/…)
+**<vertèbre> · N<x> · <titre>**
+
+Terminée quand :
+- …
+
+Checklist (3 à 7 verbes, le plus incertain en premier) :
+- [ ] …
+
+DoD : voir [dod.md](dod.md)
 
 ## Détail des vertèbres
 
