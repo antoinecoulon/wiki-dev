@@ -5,6 +5,18 @@
 
 ---
 
+## 4 · 2026-10-16 · <2h> · tranche : cadrage
+
+- **Fait :** Refactorisation (allègement) de la méthode ; premiers écrans (/, /login)
+- **Blocage / question :** Méthode trop lourde = refacto
+- **➜ Prochaine action :** 
+    choix structurants (~1 h) :
+      - projet/decisions.md, en commençant par l'hébergement / accès derrière le proxy, puis la stack (Nuxt/UI, DB, auth), l'éditeur et le format du contenu, et le stockage des images ;
+      - un C4 rapide (niveaux 1 et 2) dans Excalidraw ;
+      - la checklist de Socle technique N0, écrite dans « Tranche en cours ».
+
+---
+
 ## 3 · 2026-10-15 · <1h> · tranche : cadrage
 
 - **Fait :** Colonne terminée
