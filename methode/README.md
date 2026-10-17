@@ -111,6 +111,7 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 | 2026-10-13 | Fiche projet: le template n'a que « fait / ne fait pas » | une colonne « plus tard » aurait peut-être évité de tout mettre dans « je fais » |
 | 2026-10-15 | Fiche colonne: pratique, workflow apprécié, mais du mal à comprendre | prévoir guide au départ, rempli aujourd'hui en Q/R avec Claude |
 | 2026-10-16 | Méthode trop lourde : une session entière par petit bout d'étape, estimations de durée fausses (cadrage prévu en 2 sessions, 4 sessions sans avoir fini). Le template écran seul représentait ~3 sessions. Même une équipe ne met pas autant d'effort en conception. | Méthode allégée : on garde fiche, Colonne, DoD, journal ; décisions dans un seul fichier ; tranche écrite dans la Colonne ; wireframes Excalidraw et C4 1-2 à la demande ; suppression des fiches 01-07, de la carte des écrans, du breadboard, des Crazy 8s et des templates écran / tranche / ADR / parking / rétro. Cadrage limité à 2 sessions. |
+| 2026-10-17 | Méthode toujours trop lourde : pour un développement personnel, je trouve la méthode toujours trop lourde et contre-intuitive. | Automatisation de la méthode, via des scripts ou mieux: un script Claude. Pas intéressant pour la pédagogie d'un projet d'apprentissage. |
 
 ---
 
