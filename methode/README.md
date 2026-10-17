@@ -33,7 +33,9 @@ Cadre léger d'**analyse, conception et suivi** pour un développeur solo qui co
 ## Les principes
 
 1. **Des checklists accrochées à une carte.** Courtes, rattachées à une tranche, elle-même rattachée à la Colonne. L'avancement se lit sur la carte, pas en « 47 tâches sur 120 ».
-2. **Produire d'abord, l'IA relit ensuite.** Je fais ma carte, ma checklist ou ma décision, même imparfaite, puis je demande une critique : « Ne réécris pas. Pointe les oublis et incohérences, sous forme de questions. »
+2. **L'IA prépare, je tranche.** Deux modes, selon le projet :
+   - **Assisté** (projet perso, défaut) : l'IA prépare les options argumentées avec une recommandation, sous forme de questions à choix (Q/R), ainsi que les brouillons (décisions, tranches, schémas). Je choisis, j'ajuste et je valide.
+   - **Formation** (projet où je veux m'exercer, ou travail pro / freelance où la qualité de conception compte) : je produis d'abord, même imparfait, puis l'IA critique sans réécrire, en pointant oublis et incohérences sous forme de questions.
 3. **Le squelette d'abord, puis des tranches verticales.** Le niveau 0 traverse toutes les couches (UI → API → DB). Chaque tranche livre quelque chose d'utilisable, pas une couche technique (sauf *Socle technique*).
 4. **Une seule tranche en cours.** Une idée qui arrive en route : une ligne dans le journal, et on reprend.
 5. **Rendre visibles les renoncements.** Case vide dans la Colonne, « ce que je ne fais pas » dans la fiche.
@@ -70,7 +72,7 @@ Cadre léger d'**analyse, conception et suivi** pour un développeur solo qui co
 Pas de fichier dédié : la tranche en cours s'écrit dans la section **« Tranche en cours »** de la Colonne (ou dans une issue).
 
 - **Critères d'acceptation** (*quoi*) : ce que je peux faire à la fin.
-- **Checklist** (*comment*), **écrite par moi** : 3 à 7 verbes, l'item le plus incertain en premier. Elle peut changer en route.
+- **Checklist** (*comment*) : 3 à 7 actions (verbes), dans l'ordre de réalisation, en repérant l'étape la plus risquée. Elle peut changer en route.
 - **DoD** (*quelle qualité*) : héritée du projet.
 - **Taille : 1 à 3 sessions.** Trop gros ? Couper par chemin utilisateur, par support (desktop puis mobile), par sous-ensemble de données, ou sortir l'inconnu dans une **exploration** limitée dans le temps, dont le livrable est une décision.
 - Une fois faite : case à ■, on vide la section, on choisit la suivante.
@@ -98,6 +100,8 @@ Uniquement quand le besoin se présente, sans template :
 
 1. **Cadrage (~1 h) :** fiche projet, DoD, Colonne avec le niveau 0 de chaque vertèbre.
 2. **Choix structurants (~1 h) :** décisions sur la stack, l'hébergement et le stockage ; C4 rapide ; checklist de la première tranche (en général *Socle technique* N0).
+
+En mode assisté, chaque étape se fait en Q/R : l'IA recherche les faits, propose les options et rédige ; je tranche.
 3. Coder.
 
 ---
@@ -111,7 +115,7 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 | 2026-10-13 | Fiche projet: le template n'a que « fait / ne fait pas » | une colonne « plus tard » aurait peut-être évité de tout mettre dans « je fais » |
 | 2026-10-15 | Fiche colonne: pratique, workflow apprécié, mais du mal à comprendre | prévoir guide au départ, rempli aujourd'hui en Q/R avec Claude |
 | 2026-10-16 | Méthode trop lourde : une session entière par petit bout d'étape, estimations de durée fausses (cadrage prévu en 2 sessions, 4 sessions sans avoir fini). Le template écran seul représentait ~3 sessions. Même une équipe ne met pas autant d'effort en conception. | Méthode allégée : on garde fiche, Colonne, DoD, journal ; décisions dans un seul fichier ; tranche écrite dans la Colonne ; wireframes Excalidraw et C4 1-2 à la demande ; suppression des fiches 01-07, de la carte des écrans, du breadboard, des Crazy 8s et des templates écran / tranche / ADR / parking / rétro. Cadrage limité à 2 sessions. |
-| 2026-10-17 | Méthode toujours trop lourde : pour un développement personnel, je trouve la méthode toujours trop lourde et contre-intuitive. | Automatisation de la méthode, via des scripts ou mieux: un script Claude. Pas intéressant pour la pédagogie d'un projet d'apprentissage. |
+| 2026-10-17 | Méthode toujours trop lourde : pour un développement personnel, je trouve la méthode toujours trop lourde et contre-intuitive. | Automatisation de la méthode, via des scripts ou mieux: un script Claude. Pas intéressant pour la pédagogie d'un projet d'apprentissage. → Principe 2 réécrit : mode **assisté** (l'IA prépare, je tranche) par défaut en perso, mode **formation** pour s'exercer ou en pro. |
 
 ---
 
