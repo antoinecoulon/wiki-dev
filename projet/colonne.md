@@ -39,15 +39,15 @@
 
 Terminée quand :
 - [ ] Depuis le poste pro (derrière le proxy), la page s'affiche et une écriture en base passe → D-001 validée
-- [ ] L'app Nuxt tourne sur Cloudflare Workers (`*.workers.dev`)
-- [ ] Une route API écrit une ligne dans D1 et la page l'affiche
+- [x] L'app Nuxt tourne sur Cloudflare Workers (`wiki-dev.a-antoinecoulon.workers.dev`)
+- [x] Une route API écrit une ligne dans D1 et la page l'affiche
 - [x] `lint` et `typecheck` passent en local
 
 Checklist (dans l'ordre ; le risque, le proxy, est validé à la fin) :
 - [x] Initialiser Nuxt 4 + Nuxt UI + NuxtHub, lancer en local
 - [x] Configurer ESLint (`@nuxt/eslint`) et le script `typecheck`
 - [x] Schéma Drizzle minimal (table `pages`, D-004) et route API d'écriture / lecture, testés en local
-- [ ] Créer la base D1 et déployer (`pnpm run deploy`), vérifier en ligne
+- [x] Créer la base D1 et déployer (`pnpm run deploy`), vérifier en ligne
 - [ ] Tester depuis le poste pro : affichage + écriture ; noter le résultat dans D-001
 
 > Hors tranche : CI (Socle N1), déploiement continu (Socle N2).

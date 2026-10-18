@@ -9,7 +9,8 @@
 
 - **Fait :** Nuxt 4 + Nuxt UI + NuxtHub initialisé (`src/`) ; recadrage (D-005) : développement délégué à Claude, v1 définie dans la Colonne, méthode figée. ESLint + typecheck ; table `pages` + `GET/POST /api/pages` testés en local ; build Cloudflare (preset `cloudflare_module`, driver D1) OK.
 - **Blocage / question :** TypeScript 7 (natif) casse NuxtHub / vue-tsc → épinglé en 5.9.
-- **➜ Prochaine action :** `wrangler login` + `wrangler d1 create wiki-dev` (moi), id dans `src/wrangler.jsonc`, `pnpm run deploy`, puis test depuis le poste pro.
+- **Déployé** sur `wiki-dev.a-antoinecoulon.workers.dev` : écriture D1 OK depuis le poste perso. Le token `CLOUDFLARE_API_TOKEN` du `.bashrc` remplace `wrangler login`.
+- **➜ Prochaine action :** test depuis le poste pro (affichage + « Nouvelle page ») et noter le résultat dans D-001 ; si OK, tranche Accès N0.
 
 ---
 
