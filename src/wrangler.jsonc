@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "wiki-dev",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "wiki-dev",
+      // id renvoyé par `pnpm wrangler d1 create wiki-dev`
+      "database_id": "A_REMPLACER"
+    }
+  ]
+}
