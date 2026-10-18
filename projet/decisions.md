@@ -4,6 +4,15 @@
 
 ---
 
+## D-005 · 2026-10-18 · Recadrage : développement délégué à Claude, v1 réduite
+
+- **Contexte :** l'apprentissage de Unity / C# (pour le travail) devient prioritaire ; wiki.dev doit servir à l'accompagner, donc être fini vite. Je ne code plus le projet.
+- **Choix :** Claude code, je valide (tests réels, choix). v1 = Socle N0-N1, Accès N0, Pages N0-N1 (avec blocs de code et images), Retrouver N0-N1, sections Projets / Doc, Mobile N0. `space` reste en base sans switch ; ressources = une page de doc. Méthode figée, tenue au minimum par Claude. Écartés : niveau 0 complet sans images (captures indispensables pour Unity), switch Perso / Pro dès la v1, section Ressources.
+- **Pourquoi :** le plus court chemin vers un outil utilisé ; les objectifs d'apprentissage Nuxt / méthode n'ont plus lieu d'être.
+- **Conséquences :** fiche et Colonne recadrées ; images remontées de Pages N2 à N1 ; réévaluation fin octobre 2026 (sinon solution existante).
+
+---
+
 ## D-004 · 2026-10-16 · Modèle : `space` et `section` comme colonnes de la page
 
 - **Contexte :** Espaces N0 retiré (non observable) mais le perso/pro doit exister avant la migration Notion ; Gestion de projet N0 range une page dans une section.

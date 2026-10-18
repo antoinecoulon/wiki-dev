@@ -6,7 +6,8 @@
 |---|---|
 | **Espace** | perso |
 | **Créé le** | 2026-10-13 |
-| **Statut** | **cadrage** / en cours / en pause / terminé / abandonné |
+| **Statut** | cadrage / **en cours** / en pause / terminé / abandonné |
+| **Recadré le** | 2026-10-18 : développement délégué à Claude, v1 réduite pour accompagner l'apprentissage de Unity (D-005) |
 
 ## Le problème
 
@@ -35,15 +36,17 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 <À quoi je reconnaîtrai que le projet a réussi ? 1 à 3 phrases.>
 
 - J'utilise cette application en remplacement de Notion pour le dev perso/pro, avec un accès plus stable sur tous les postes.
-- J'éprouve ma méthode (ajustements en cours de route mais pas de retour en arrière dans le projet) et l'utilise/la tient à jour sur mes futurs projets.
-- J'ai progressé en gestion de projet, stack entreprise, architecture dev.
+- J'y prends mes notes d'apprentissage de Unity / C# (texte, code, captures), au travail comme chez moi.
+- ~~J'éprouve ma méthode~~ et ~~j'ai progressé en gestion de projet, stack entreprise, architecture dev~~ : abandonnés au recadrage (D-005), la méthode est figée.
 
 **J'utilise wiki.dev en remplacement de Notion et pendant 6 mois au moins à partir de la première version utilisable.**
 
 ## Périmètre
 
-**Ce que je fais :**
-- Séparation perso/pro (workspaces)
+**Version 1** (périmètre fini, détail dans la Colonne) : connexion, pages avec mise en forme / checklists / blocs de code / images, sauvegarde auto, liste et recherche par titre, sections Projets / Doc, lecture sur mobile, sauvegardes DB.
+
+**Ce que je fais (après la v1, si le besoin se confirme) :**
+- Séparation perso/pro (workspaces) : `space` en base dès la v1, switch plus tard
 - Gestion de projets (section principale) suivant méthode
 - Documentation dev (section)
 - Création et gestion de pages, classées, hiérarchisées
@@ -54,7 +57,7 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 - Personnalisation de l'affichage, de l'organisation, de la page d'accueil (niveaux 0 à 2)
 
 **Ce que je ne fais PAS** (au moins pour l'instant) :
-- Ressources et liens (section)
+- Ressources et liens (section) : une page de doc suffit
 - Création/modification smartphone
 - Sortir du domaine du développement (todos persos, maison et famille...)
 - Plusieurs comptes/utilisateurs
@@ -70,23 +73,21 @@ Seulement moi, sur mon poste perso, mon poste professionnel (proxy), ainsi que s
 
 ## Objectifs d'apprentissage
 
-- Progresser en architecture logicielle et en gestion de projet (méthode).
-- Progresser sur la stack d'entreprise (Nuxt, C#/ABP, GitLab, SQL Server, TypeScript, scripts JS) autant que possible (éviter l'overengineering, si un meilleur choix de tech existe ça reste mieux).
+Aucun depuis le recadrage : Claude code, je valide. L'apprentissage passe sur Unity / C#.
 
 ## Temps consacré (*appetite*)
 
 > Combien de temps je suis prêt à y mettre avant de réévaluer ? Ex. : « niveau 0 complet en 6 sessions »
 
-5 sessions d'1h par semaine * 4 semaines * 3 mois (fin décembre 2026)
-=> 60 sessions d'1h
+~~60 sessions d'1h~~ → au plus vite : la v1 en quelques sessions de validation (tests, choix).
 
-**Point de réévaluation :** niveau 0 complet (7 tranches) en **15 sessions**.
+**Point de réévaluation :** si la v1 n'est pas utilisable fin octobre 2026, envisager une solution existante (Docmost, Outline…).
 
 ## Questions ouvertes
 
-- Une stack fullstack Nuxt me permet-elle de gérer l'entièreté du projet ?
-- Le versionning via GitLab est-il mal parti avec ce repo GitHub ?
-- Est-ce possible de trouver un hébergement 100% gratuit sans compromis ?
+- ~~Une stack fullstack Nuxt me permet-elle de gérer l'entièreté du projet ?~~ oui (D-001, D-002)
+- ~~Le versionning via GitLab est-il mal parti avec ce repo GitHub ?~~ sans objet depuis le recadrage
+- ~~Est-ce possible de trouver un hébergement 100% gratuit sans compromis ?~~ Cloudflare (D-001), reste le test proxy
 - Pourquoi le proxy d'entreprise ralentit voire empêche les sauvegardes automatiques et chargement de pages sur Notion ? Et comment éviter ça ?
 
 ## À la demande

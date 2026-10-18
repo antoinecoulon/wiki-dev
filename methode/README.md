@@ -2,7 +2,7 @@
 
 Cadre léger d'**analyse, conception et suivi** pour un développeur solo qui code sur son temps libre, pour le plaisir, sans que l'organisation devienne une corvée.
 
-> Statut : **en test**, sur le développement de wiki-dev lui-même (depuis le 2026-09-25). Allégée le 2026-10-16 (voir le journal du test).
+> Statut : **figée** le 2026-10-18 (testée sur wiki-dev depuis le 2026-09-25, allégée le 2026-10-16, voir le journal du test). wiki-dev ne la suit plus qu'au minimum, tenue par Claude.
 > À terme, cette méthode deviendra une page du module *Documentation* de wiki-dev, et sera outillée dans le module *Suivi de projet* (pistes : [`projet/integration-methode.md`](../projet/integration-methode.md)).
 
 **Attitude :** on cadre l'essentiel en amont (une « réunion » d'1 à 2 h : fiche, Colonne, choix techniques structurants), puis **le reste se décide au fil du projet**, au moment où on en a besoin. Cadrer ne doit pas prendre plus de 2 sessions.
@@ -116,6 +116,7 @@ Noter ici ce qui marche, ce qui pèse et ce qui manque. C'est ce qui décidera d
 | 2026-10-15 | Fiche colonne: pratique, workflow apprécié, mais du mal à comprendre | prévoir guide au départ, rempli aujourd'hui en Q/R avec Claude |
 | 2026-10-16 | Méthode trop lourde : une session entière par petit bout d'étape, estimations de durée fausses (cadrage prévu en 2 sessions, 4 sessions sans avoir fini). Le template écran seul représentait ~3 sessions. Même une équipe ne met pas autant d'effort en conception. | Méthode allégée : on garde fiche, Colonne, DoD, journal ; décisions dans un seul fichier ; tranche écrite dans la Colonne ; wireframes Excalidraw et C4 1-2 à la demande ; suppression des fiches 01-07, de la carte des écrans, du breadboard, des Crazy 8s et des templates écran / tranche / ADR / parking / rétro. Cadrage limité à 2 sessions. |
 | 2026-10-17 | Méthode toujours trop lourde : pour un développement personnel, je trouve la méthode toujours trop lourde et contre-intuitive. | Automatisation de la méthode, via des scripts ou mieux: un script Claude. Pas intéressant pour la pédagogie d'un projet d'apprentissage. → Principe 2 réécrit : mode **assisté** (l'IA prépare, je tranche) par défaut en perso, mode **formation** pour s'exercer ou en pro. |
+| 2026-10-18 | Développement de wiki-dev délégué à Claude (priorité à l'apprentissage de Unity) : le test perd sa valeur pédagogique. | Méthode **figée** en l'état. Sur wiki-dev, Claude tient la Colonne et le journal au minimum. À reprendre éventuellement sur un futur projet perso. |
 
 ---
 
