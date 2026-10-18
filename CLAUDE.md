@@ -14,6 +14,7 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - Présente les choix sous forme de questions à options (Q/R) avec une recommandation. Je garde la main sur les choix ; tu signales les oublis et incohérences.
 - Méthode au minimum, tenue par toi : en fin de session, coche la Colonne et ajoute une entrée au journal (fait / blocage / prochaine action) ; une décision dans `decisions.md` seulement si elle est structurante. Pas de documentation « au cas où ».
 - Une seule tranche en cours ; suivre l'ordre de la section « Version 1 » de la Colonne. DoD : `projet/dod.md`.
+- **Guide technique** (`documentation/nuxt-nuxthub-cloudflare.md`) : en fin de tranche, s'il y a un concept réutilisable (auth, R2, éditeur…), y ajouter une section courte et générique (config, exemple, pièges rencontrés). Rien sur ce qui est propre à wiki-dev.
 - Réponses en **français**.
 
 ## État (2026-10-18)
