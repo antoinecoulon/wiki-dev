@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { data: pages, refresh } = await useFetch('/api/pages')
+const { data: pages } = await useFetch('/api/pages')
 const { clear } = useUserSession()
 
 async function logout() {
@@ -8,8 +8,8 @@ async function logout() {
 }
 
 async function createPage() {
-  await $fetch('/api/pages', { method: 'POST' })
-  await refresh()
+  const page = await $fetch('/api/pages', { method: 'POST' })
+  await navigateTo(`/pages/${page!.id}`)
 }
 </script>
 
@@ -37,7 +37,9 @@ async function createPage() {
         v-for="page in pages"
         :key="page.id"
       >
-        {{ page.title }} · {{ page.createdAt }}
+        <ULink :to="`/pages/${page.id}`">
+          {{ page.title }}
+        </ULink>
       </li>
     </ul>
   </UContainer>
