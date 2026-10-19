@@ -2,14 +2,14 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-18
+> Mise à jour : 2026-10-19
 
 ## Grille
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
 | **Socle technique** | ◧ **v1** Nuxt + lint + DB + déployé | □ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
-| **Accès** | □ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
+| **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | □ **v1** Créer / écrire / supprimer (texte brut) | □ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs |
 | **Retrouver** | □ **v1** Liste dans la sidebar | □ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | □ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
@@ -23,8 +23,8 @@
 ## Version 1 (ordre des tranches)
 
 1. ◧ Socle N0 · Nuxt + lint + DB + déployé, **test proxy** → *bloqué : workers.dev en liste noire, voir journal*
-2. ◧ Accès N0 · je me connecte (login testé aussi derrière le proxy)
-3. □ Pages N0 · créer / écrire / supprimer
+2. ■ Accès N0 · je me connecte → *test derrière le proxy reporté avec D-006*
+3. ◧ Pages N0 · créer / écrire / supprimer
 4. □ Retrouver N0 · liste dans la sidebar
 5. □ Gestion de projet N0 · sections Projets / Doc
 6. □ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
@@ -35,25 +35,11 @@
 
 ## Tranche en cours
 
-> Exception à « une seule tranche » : Socle N0 n'attend plus que le test proxy (KO sur `workers.dev` le 2026-10-19, repli à décider en D-006). Accès N0 ne dépend pas de l'hébergeur, on avance dessus.
+> Exception à « une seule tranche » : Socle N0 n'attend plus que le test proxy (KO sur `workers.dev` le 2026-10-19, repli à décider en D-006). La suite de la v1 ne dépend pas de l'hébergeur, on avance.
 
-**Accès · N0 · Je me connecte**
+**Pages · N0 · Créer / écrire / supprimer** · critères et checklist à écrire en début de tranche.
 
-Terminée quand :
-- [ ] Sans session, toute page redirige vers `/login` et l'API répond 401
-- [ ] Avec le bon mot de passe, j'accède à l'app ; un mauvais mot de passe affiche une erreur
-- [ ] Je peux me déconnecter
-- [ ] Ça marche sur l'app déployée (et derrière le proxy, une fois D-006 réglée)
-
-Checklist :
-- [ ] Installer `nuxt-auth-utils` ; secret de session et hash du mot de passe en variables d'env (`.env` en local, `wrangler secret` en prod)
-- [ ] Route `POST /api/login` (vérifie le hash, ouvre la session) et `logout`
-- [ ] Page `/login` (Nuxt UI) ; middleware client global + middleware serveur sur `/api/**`
-- [ ] Déployer, vérifier en ligne ; ajouter la section auth au guide technique
-
-> Ancien code réutilisable : `git show a3ac897^:src/server/api/auth/login.post.ts` (aussi `app/pages/login.vue`, `app/middleware/auth.global.ts`, `server/middleware/auth.ts`).
-
-**En attente : Socle technique · N0** · reste le test depuis le poste pro (affichage + écriture) → valider D-001 ou écrire D-006.
+**En attente : Socle technique · N0** · reste le test depuis le poste pro (affichage + écriture) → valider D-001 ou écrire D-006. Le login derrière le proxy (Accès N0) sera testé en même temps.
 
 DoD : voir [dod.md](dod.md)
 
@@ -72,7 +58,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** accéder à mes données, de partout, en sécurité
 - **Écrans :** `/login`
 - **Tranches :**
-  - [N0] □ Je me connecte (mot de passe unique) sur l'app déployée
+  - [N0] ■ Je me connecte (mot de passe unique) sur l'app déployée
   - [N1] □ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (après Mobile N0)
   - [N2] □ Session longue sur chaque poste, déconnexion, expiration sans perte de saisie
   - [N3] □ Sécurité renforcée (limitation des tentatives, 2FA ou OAuth)

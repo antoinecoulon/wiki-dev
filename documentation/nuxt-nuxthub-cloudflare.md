@@ -228,6 +228,91 @@ Résultat : l'app est en ligne sur `https://mon-app.<compte>.workers.dev`. Véri
 
 > ⚠️ `pnpm deploy` (sans `run`) est une commande intégrée de pnpm qui n'a rien à voir avec le script.
 
+## 5. Authentification par mot de passe unique (nuxt-auth-utils)
+
+Pour une app mono-utilisateur : session dans un cookie chiffré, mot de passe hashé (scrypt) en variable d'env, pas de table utilisateur.
+
+### Configuration
+
+```bash
+pnpm add nuxt-auth-utils
+pnpm add -D @adonisjs/hash # pour générer le hash hors de Nuxt
+```
+
+```ts
+// nuxt.config.ts
+modules: [/* … */, 'nuxt-auth-utils'],
+runtimeConfig: {
+  adminPasswordHash: '' // surchargé par NUXT_ADMIN_PASSWORD_HASH
+}
+```
+
+Générer le hash avec la même lib que nuxt-auth-utils (`hashPassword` n'existe que côté serveur Nuxt) :
+
+```js
+// scripts/hash-password.mjs → "hash-password": "node scripts/hash-password.mjs"
+import { Hash } from '@adonisjs/hash'
+import { Scrypt } from '@adonisjs/hash/drivers/scrypt'
+
+process.stdout.write(`${await new Hash(new Scrypt({})).make(process.argv[2])}\n`)
+```
+
+```bash
+# .env (ignoré par git)
+NUXT_SESSION_PASSWORD=<openssl rand -hex 32>   # clé de chiffrement du cookie, ≥ 32 caractères
+NUXT_ADMIN_PASSWORD_HASH='$scrypt$n=16384,…'   # quotes simples : le hash contient des $
+```
+
+### Côté serveur
+
+```ts
+// server/api/login.post.ts
+export default defineEventHandler(async (event) => {
+  const { password } = await readBody(event)
+  if (!await verifyPassword(useRuntimeConfig(event).adminPasswordHash, password)) {
+    throw createError({ status: 401, statusText: 'Mot de passe incorrect' })
+  }
+  await setUserSession(event, { user: { login: 'admin' } })
+})
+```
+
+```ts
+// server/middleware/auth.ts : 401 sur l'API sans session
+const PUBLIC_API = ['/api/login', '/api/_auth/'] // /api/_auth/** : endpoints internes du module
+
+export default defineEventHandler(async (event) => {
+  const { pathname } = getRequestURL(event)
+  if (!pathname.startsWith('/api/') || PUBLIC_API.some(path => pathname.startsWith(path))) return
+  const session = await getUserSession(event)
+  if (!session.user) throw createError({ status: 401, statusText: 'Non authentifié' })
+})
+```
+
+### Côté client
+
+```ts
+// app/middleware/auth.global.ts
+export default defineNuxtRouteMiddleware((to) => {
+  const { loggedIn } = useUserSession()
+  if (!loggedIn.value && to.path !== '/login') return navigateTo('/login')
+  if (loggedIn.value && to.path === '/login') return navigateTo('/')
+})
+```
+
+- Après le login : `await useUserSession().fetch()` puis `navigateTo('/')`.
+- Déconnexion : `await useUserSession().clear()` (appelle `DELETE /api/_auth/session`), pas besoin de route.
+
+### En prod (Workers)
+
+Les deux variables passent en secrets, en envoyant la valeur **par l'entrée standard** :
+
+```bash
+openssl rand -hex 32 | pnpm wrangler secret put NUXT_SESSION_PASSWORD
+pnpm -s hash-password '<mot de passe>' | tr -d '\n' | pnpm wrangler secret put NUXT_ADMIN_PASSWORD_HASH
+```
+
+Les secrets survivent aux déploiements. Le hash scrypt par défaut (`n=16384`) tient dans la limite CPU du plan gratuit.
+
 ## Arborescence
 
 ```
@@ -258,6 +343,9 @@ mon-app/
 | Juste après le 1er déploiement : page affichée mais fichiers `/_nuxt/*.js` en 404, boutons inertes | fichiers statiques pas encore propagés, ou page restée ouverte pendant le déploiement | attendre quelques secondes, recharger avec **Ctrl+Shift+R** |
 | `pnpm deploy` ne lance pas le build | commande intégrée de pnpm | `pnpm run deploy` |
 | `nuxt dev` : « Another Nuxt dev server is already running » | ancien serveur resté en arrière-plan | `kill <PID>` indiqué dans le message |
+| En prod, `/api/_auth/session` en 500, log `Empty password` ; tout mot de passe refusé | `wrangler secret put` lancé sans terminal interactif (ex. `!` dans Claude Code) : secret enregistré **vide**, sans erreur | renvoyer la valeur par stdin : `echo … \| wrangler secret put NOM` |
+| Hash tronqué / login toujours refusé en local | `$` du hash interprétés dans `.env` | mettre la valeur entre quotes simples |
+| Erreur 500 en prod sans détail | — | `pnpm wrangler tail <worker> --format pretty` pendant qu'on recharge |
 
 ## Références
 

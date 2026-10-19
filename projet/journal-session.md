@@ -5,6 +5,14 @@
 
 ---
 
+## 7 · 2026-10-19 · <1h> · tranche : Accès N0
+
+- **Fait :** auth par mot de passe unique (nuxt-auth-utils) : `/login`, `POST /api/login`, déconnexion, middlewares client et serveur (401 sur `/api/**`). Hash via `pnpm hash-password`. Déployé et validé en ligne. Section auth ajoutée au guide technique.
+- **Blocage / question :** secrets wrangler envoyés via `!` enregistrés vides (500 `Empty password`) → renvoyés par stdin. Login derrière le proxy non testable avant D-006.
+- **➜ Prochaine action :** tranche Pages N0 (créer / écrire / supprimer) ; toujours en attente du retour IT pour D-006.
+
+---
+
 ## 6 · 2026-10-18 · <1h> · tranche : Socle technique N0
 
 - **Fait :** Nuxt 4 + Nuxt UI + NuxtHub initialisé (`src/`) ; recadrage (D-005) : développement délégué à Claude, v1 définie dans la Colonne, méthode figée. ESLint + typecheck ; table `pages` + `GET/POST /api/pages` testés en local ; build Cloudflare (preset `cloudflare_module`, driver D1) OK.
