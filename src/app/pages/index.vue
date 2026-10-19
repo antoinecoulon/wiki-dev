@@ -1,5 +1,11 @@
 <script setup lang="ts">
 const { data: pages, refresh } = await useFetch('/api/pages')
+const { clear } = useUserSession()
+
+async function logout() {
+  await clear()
+  await navigateTo('/login')
+}
 
 async function createPage() {
   await $fetch('/api/pages', { method: 'POST' })
@@ -9,9 +15,18 @@ async function createPage() {
 
 <template>
   <UContainer class="py-8 space-y-4">
-    <h1 class="text-2xl font-bold">
-      wiki.dev
-    </h1>
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold">
+        wiki.dev
+      </h1>
+      <UButton
+        icon="i-lucide-log-out"
+        label="Se déconnecter"
+        color="neutral"
+        variant="ghost"
+        @click="logout"
+      />
+    </div>
     <UButton
       icon="i-lucide-plus"
       label="Nouvelle page"

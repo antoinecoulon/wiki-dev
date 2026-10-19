@@ -13,6 +13,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck",
     "db:generate": "nuxt db generate",
+    "hash-password": "node scripts/hash-password.mjs",
     "deploy": "nuxt build && wrangler d1 migrations apply wiki-dev --remote --config .output/server/wrangler.json && wrangler deploy --config .output/server/wrangler.json"
   },
   "dependencies": {
@@ -23,11 +24,13 @@
     "drizzle-orm": "^0.45.4",
     "eslint": "^10.13.0",
     "nuxt": "^4.6.2",
+    "nuxt-auth-utils": "^0.5.32",
     "tailwindcss": "^4.3.3",
     "vue": "^3.5.43",
     "vue-router": "^5.4.0"
   },
   "devDependencies": {
+    "@adonisjs/hash": "^10.1.1",
     "@iconify-json/lucide": "^1.2.146",
     "drizzle-kit": "^0.31.11",
     "typescript": "^5.9.3",
