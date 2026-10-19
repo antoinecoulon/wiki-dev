@@ -10,7 +10,8 @@
 - **Fait :** Nuxt 4 + Nuxt UI + NuxtHub initialisé (`src/`) ; recadrage (D-005) : développement délégué à Claude, v1 définie dans la Colonne, méthode figée. ESLint + typecheck ; table `pages` + `GET/POST /api/pages` testés en local ; build Cloudflare (preset `cloudflare_module`, driver D1) OK.
 - **Blocage / question :** TypeScript 7 (natif) casse NuxtHub / vue-tsc → épinglé en 5.9.
 - **Déployé** sur `wiki-dev.a-antoinecoulon.workers.dev` : écriture D1 OK depuis le poste perso. Le token `CLOUDFLARE_API_TOKEN` du `.bashrc` remplace `wrangler login`.
-- **➜ Prochaine action :** test depuis le poste pro (affichage + « Nouvelle page ») et noter le résultat dans D-001 ; si OK, tranche Accès N0.
+- **Test poste pro (2026-10-19) : KO.** `wiki-dev.a-antoinecoulon.workers.dev` bloqué par le proxy (« Page web bloquée », catégorie `Liste_noire_URL`) ; le dashboard Cloudflare passe.
+- **➜ Prochaine action :** choisir le repli de D-001 (domaine perso, autre hébergeur, demande à l'IT), puis refaire le test.
 
 ---
 
