@@ -5,14 +5,24 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const { data: pages } = await useFetch('/api/pages', { key: 'pages' })
 const { clear } = useUserSession()
 
-const items = computed<NavigationMenuItem[]>(() => (pages.value ?? []).map(page => ({
-  label: page.title,
-  icon: 'i-lucide-file-text',
-  to: `/pages/${page.id}`
+const sections = [
+  { value: 'project' as const, label: 'Projets', icon: 'i-lucide-folder-kanban' },
+  { value: 'doc' as const, label: 'Documentation', icon: 'i-lucide-book-open' }
+]
+
+const groups = computed(() => sections.map(section => ({
+  ...section,
+  items: (pages.value ?? [])
+    .filter(page => page.section === section.value)
+    .map((page): NavigationMenuItem => ({
+      label: page.title,
+      icon: section.icon,
+      to: `/pages/${page.id}`
+    }))
 })))
 
-async function createPage() {
-  const page = await $fetch('/api/pages', { method: 'POST' })
+async function createPage(section: typeof sections[number]['value']) {
+  const page = await $fetch('/api/pages', { method: 'POST', body: { section } })
   await refreshNuxtData('pages')
   await navigateTo(`/pages/${page!.id}`)
 }
@@ -39,20 +49,32 @@ async function logout() {
       </template>
 
       <template #default="{ collapsed }">
-        <UButton
-          icon="i-lucide-plus"
-          :label="collapsed ? undefined : 'Nouvelle page'"
-          :square="collapsed"
-          color="neutral"
-          variant="soft"
-          block
-          @click="createPage"
-        />
-        <UNavigationMenu
-          :items="items"
-          :collapsed="collapsed"
-          orientation="vertical"
-        />
+        <div
+          v-for="group in groups"
+          :key="group.value"
+        >
+          <div
+            v-if="!collapsed"
+            class="flex items-center justify-between px-2.5 py-1"
+          >
+            <span class="text-xs font-semibold text-muted uppercase">
+              {{ group.label }}
+            </span>
+            <UButton
+              icon="i-lucide-plus"
+              color="neutral"
+              variant="ghost"
+              size="xs"
+              :aria-label="`Nouvelle page dans ${group.label}`"
+              @click="createPage(group.value)"
+            />
+          </div>
+          <UNavigationMenu
+            :items="group.items"
+            :collapsed="collapsed"
+            orientation="vertical"
+          />
+        </div>
       </template>
 
       <template #footer="{ collapsed }">

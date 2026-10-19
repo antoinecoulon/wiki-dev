@@ -15,6 +15,11 @@ if (error.value) {
 
 const title = ref(page.value!.title)
 const content = ref<JSONContent | null>(page.value!.content)
+const section = ref(page.value!.section)
+const sections = [
+  { label: 'Projets', value: 'project' as const },
+  { label: 'Documentation', value: 'doc' as const }
+]
 const saving = ref(false)
 const confirmDelete = ref(false)
 
@@ -23,7 +28,7 @@ async function save() {
   try {
     await $fetch(`/api/pages/${pageId}`, {
       method: 'PATCH',
-      body: { title: title.value, content: content.value ?? undefined }
+      body: { title: title.value, content: content.value ?? undefined, section: section.value }
     })
     await refreshNuxtData('pages')
     toast.add({ title: 'Page enregistrée', color: 'success' })
@@ -51,6 +56,12 @@ async function remove() {
     <template #header>
       <UDashboardNavbar>
         <template #right>
+          <USelect
+            v-model="section"
+            :items="sections"
+            aria-label="Section"
+            class="w-40"
+          />
           <UButton
             icon="i-lucide-trash-2"
             label="Supprimer"
