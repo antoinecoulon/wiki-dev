@@ -147,6 +147,14 @@ export default defineEventHandler(async () => {
 
 `hub:db` est un module virtuel généré par NuxtHub : il est typé à partir du schéma après `nuxt prepare` ou `nuxt dev`.
 
+Valider une colonne `enum` sans recopier ses valeurs : `schema.pages.section.enumValues` (tableau typé) et `typeof schema.pages.$inferInsert.section` pour le type.
+
+```ts
+if (section !== undefined && !schema.pages.section.enumValues.includes(section as never)) {
+  throw createError({ status: 400, statusText: 'Section invalide' })
+}
+```
+
 ### Commandes utiles
 
 | Commande | Rôle |

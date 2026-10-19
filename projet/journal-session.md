@@ -5,6 +5,14 @@
 
 ---
 
+## 10 · 2026-10-19 · <1h> · tranche : Gestion de projet N0
+
+- **Fait :** sidebar en deux groupes (Projets / Documentation) avec « + » par groupe ; sélecteur de section sur la page ; `section` validée par `POST`/`PATCH` à partir de l'enum du schéma. Déployé et validé en ligne.
+- **Blocage / question :** aucun. Les pages existantes sont en Documentation par défaut.
+- **➜ Prochaine action :** tranche Pages N1 éditeur (sauvegarde auto, mise en forme, checklists, blocs de code) ; toujours en attente du retour IT pour D-006.
+
+---
+
 ## 9 · 2026-10-19 · <1h> · tranche : Retrouver N0
 
 - **Fait :** layout `default` en `UDashboardGroup` : sidebar (nouvelle page, liste des pages triée par dernière modification, déconnexion), repliable et en tiroir sur mobile ; accueil en état vide ; `/login` sans layout. Liste partagée par clé `useFetch` + `refreshNuxtData`. Déployé et validé en ligne.

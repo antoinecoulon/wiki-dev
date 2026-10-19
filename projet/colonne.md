@@ -12,7 +12,7 @@
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | □ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | □ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
-| **Gestion de projet** | □ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
+| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | □ Switch Perso / Pro | □ Déplacer entre espaces |  |
 | **Mobile** | □ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
@@ -26,8 +26,8 @@
 2. ■ Accès N0 · je me connecte → *test derrière le proxy reporté avec D-006*
 3. ■ Pages N0 · créer / écrire / supprimer
 4. ■ Retrouver N0 · liste dans la sidebar
-5. ◧ Gestion de projet N0 · sections Projets / Doc
-6. □ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
+5. ■ Gestion de projet N0 · sections Projets / Doc
+6. ◧ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
 7. □ Pages N1 · images (R2, captures collées)
 8. □ Retrouver N1 · recherche par titre
 9. □ Mobile N0 · une page lisible
@@ -37,7 +37,7 @@
 
 > Exception à « une seule tranche » : Socle N0 n'attend plus que le test proxy (KO sur `workers.dev` le 2026-10-19, repli à décider en D-006). La suite de la v1 ne dépend pas de l'hébergeur, on avance.
 
-**Gestion de projet · N0 · Sections Projets / Doc** · critères et checklist à écrire en début de tranche.
+**Pages · N1 · Éditeur : sauvegarde auto, mise en forme, checklists, blocs de code** · critères et checklist à écrire en début de tranche.
 
 **En attente : Socle technique · N0** · reste le test depuis le poste pro (affichage + écriture) → valider D-001 ou écrire D-006. Le login derrière le proxy (Accès N0) sera testé en même temps.
 
@@ -102,7 +102,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** suivre mes projets selon la méthode Colonne
 - **Écrans :** `/projects`, `/projects/:id`
 - **Tranches :**
-  - [N0] □ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
+  - [N0] ■ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
   - [N1] □ Un nouveau projet = une page pré-remplie avec les sections du noyau (fiche, Colonne, DoD, journaux) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev**
   - [N2] □ Briques à la demande (wireframes, C4, modèle de données…) ajoutables à un projet
   - [N2] □ Vue kanban des tranches d'un projet
