@@ -22,8 +22,8 @@
 
 ## Version 1 (ordre des tranches)
 
-1. ◧ Socle N0 · Nuxt + lint + DB + déployé, **test proxy**
-2. □ Accès N0 · je me connecte (login testé aussi derrière le proxy)
+1. ◧ Socle N0 · Nuxt + lint + DB + déployé, **test proxy** → *bloqué : workers.dev en liste noire, voir journal*
+2. ◧ Accès N0 · je me connecte (login testé aussi derrière le proxy)
 3. □ Pages N0 · créer / écrire / supprimer
 4. □ Retrouver N0 · liste dans la sidebar
 5. □ Gestion de projet N0 · sections Projets / Doc
@@ -35,22 +35,25 @@
 
 ## Tranche en cours
 
-**Socle technique · N0 · Nuxt + lint + DB + déployé**
+> Exception à « une seule tranche » : Socle N0 n'attend plus que le test proxy (KO sur `workers.dev` le 2026-10-19, repli à décider en D-006). Accès N0 ne dépend pas de l'hébergeur, on avance dessus.
+
+**Accès · N0 · Je me connecte**
 
 Terminée quand :
-- [ ] Depuis le poste pro (derrière le proxy), la page s'affiche et une écriture en base passe → D-001 validée
-- [x] L'app Nuxt tourne sur Cloudflare Workers (`wiki-dev.a-antoinecoulon.workers.dev`)
-- [x] Une route API écrit une ligne dans D1 et la page l'affiche
-- [x] `lint` et `typecheck` passent en local
+- [ ] Sans session, toute page redirige vers `/login` et l'API répond 401
+- [ ] Avec le bon mot de passe, j'accède à l'app ; un mauvais mot de passe affiche une erreur
+- [ ] Je peux me déconnecter
+- [ ] Ça marche sur l'app déployée (et derrière le proxy, une fois D-006 réglée)
 
-Checklist (dans l'ordre ; le risque, le proxy, est validé à la fin) :
-- [x] Initialiser Nuxt 4 + Nuxt UI + NuxtHub, lancer en local
-- [x] Configurer ESLint (`@nuxt/eslint`) et le script `typecheck`
-- [x] Schéma Drizzle minimal (table `pages`, D-004) et route API d'écriture / lecture, testés en local
-- [x] Créer la base D1 et déployer (`pnpm run deploy`), vérifier en ligne
-- [ ] Tester depuis le poste pro : affichage + écriture ; noter le résultat dans D-001
+Checklist :
+- [ ] Installer `nuxt-auth-utils` ; secret de session et hash du mot de passe en variables d'env (`.env` en local, `wrangler secret` en prod)
+- [ ] Route `POST /api/login` (vérifie le hash, ouvre la session) et `logout`
+- [ ] Page `/login` (Nuxt UI) ; middleware client global + middleware serveur sur `/api/**`
+- [ ] Déployer, vérifier en ligne ; ajouter la section auth au guide technique
 
-> Hors tranche : CI (Socle N1), déploiement continu (Socle N2).
+> Ancien code réutilisable : `git show a3ac897^:src/server/api/auth/login.post.ts` (aussi `app/pages/login.vue`, `app/middleware/auth.global.ts`, `server/middleware/auth.ts`).
+
+**En attente : Socle technique · N0** · reste le test depuis le poste pro (affichage + écriture) → valider D-001 ou écrire D-006.
 
 DoD : voir [dod.md](dod.md)
 

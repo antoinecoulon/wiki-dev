@@ -17,7 +17,8 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - **Guide technique** (`documentation/nuxt-nuxthub-cloudflare.md`) : en fin de tranche, s'il y a un concept réutilisable (auth, R2, éditeur…), y ajouter une section courte et générique (config, exemple, pièges rencontrés). Rien sur ce qui est propre à wiki-dev.
 - Réponses en **français**.
 
-## État (2026-10-18)
+## État (2026-10-19)
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
-- Tranche en cours : *Socle technique N0* (voir Colonne). D-001 reste à valider par le test depuis le poste pro.
+- App déployée sur `wiki-dev.a-antoinecoulon.workers.dev`, **bloquée par le proxy pro** (`Liste_noire_URL`) : D-001 non validée. L'utilisateur interroge l'IT et teste `*.vercel.app` / `*.pages.dev` ; la suite sera D-006.
+- Tranche en cours : *Accès N0* (voir Colonne) ; Socle N0 n'attend que le test proxy. L'app est publique tant qu'Accès N0 n'est pas déployé.

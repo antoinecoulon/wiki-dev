@@ -11,7 +11,10 @@
 - **Blocage / question :** TypeScript 7 (natif) casse NuxtHub / vue-tsc → épinglé en 5.9.
 - **Déployé** sur `wiki-dev.a-antoinecoulon.workers.dev` : écriture D1 OK depuis le poste perso. Le token `CLOUDFLARE_API_TOKEN` du `.bashrc` remplace `wrangler login`.
 - **Test poste pro (2026-10-19) : KO.** `wiki-dev.a-antoinecoulon.workers.dev` bloqué par le proxy (« Page web bloquée », catégorie `Liste_noire_URL`) ; le dashboard Cloudflare passe.
-- **➜ Prochaine action :** choisir le repli de D-001 (domaine perso, autre hébergeur, demande à l'IT), puis refaire le test.
+- **➜ Prochaine action :**
+  - **Au travail (moi) :** demander à l'IT l'autorisation de `wiki-dev.a-antoinecoulon.workers.dev` (et si une app perso pour des notes pro est acceptée) ; tester depuis le poste pro une app `*.vercel.app` et une `*.pages.dev`.
+  - Selon le résultat : D-006 (garder workers.dev / domaine perso ~10 €/an / Vercel + Turso ou Neon).
+  - **En parallèle (Claude) :** tranche Accès N0, indépendante de l'hébergeur.
 
 ---
 
