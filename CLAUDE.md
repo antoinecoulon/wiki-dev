@@ -21,4 +21,4 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
 - App déployée sur `wiki-dev.a-antoinecoulon.workers.dev`, **bloquée par le proxy pro** (`Liste_noire_URL`) : D-001 non validée. L'utilisateur interroge l'IT et teste `*.vercel.app` / `*.pages.dev` ; la suite sera D-006.
-- Tranche en cours : *Retrouver N0*. Accès N0 et Pages N0 faites, l'app est protégée par mot de passe (reste le test derrière le proxy, avec D-006).
+- Tranche en cours : *Gestion de projet N0*. Accès N0, Pages N0 et Retrouver N0 faites, l'app est protégée par mot de passe (reste le test derrière le proxy, avec D-006).

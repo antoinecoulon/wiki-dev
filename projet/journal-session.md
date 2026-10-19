@@ -5,6 +5,14 @@
 
 ---
 
+## 9 · 2026-10-19 · <1h> · tranche : Retrouver N0
+
+- **Fait :** layout `default` en `UDashboardGroup` : sidebar (nouvelle page, liste des pages triée par dernière modification, déconnexion), repliable et en tiroir sur mobile ; accueil en état vide ; `/login` sans layout. Liste partagée par clé `useFetch` + `refreshNuxtData`. Déployé et validé en ligne.
+- **Blocage / question :** aucun.
+- **➜ Prochaine action :** tranche Gestion de projet N0 (sections Projets / Doc) ; toujours en attente du retour IT pour D-006.
+
+---
+
 ## 8 · 2026-10-19 · <1h> · tranche : Pages N0
 
 - **Fait :** API `GET/PATCH/DELETE /api/pages/:pageId` ; page `/pages/:pageId` (titre + `UEditor` sans toolbar, JSON TipTap, enregistrement manuel, suppression avec confirmation) ; accueil : création → ouverture de la page. Déployé et validé en ligne.

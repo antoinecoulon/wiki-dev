@@ -353,6 +353,61 @@ const content = ref(page.value!.content)
 - Sans `UEditorToolbar`, les raccourcis TipTap (Ctrl+B, `#`…) restent actifs.
 - `@tiptap/vue-3` (cité dans la doc Nuxt UI) n'est pas importable sans l'installer : pnpm n'expose pas les dépendances transitives.
 
+## 7. Layout avec sidebar (UDashboard*)
+
+Les composants `UDashboard*` de Nuxt UI donnent une sidebar redimensionnable, repliable et en tiroir sur mobile, sans CSS à écrire.
+
+```vue
+<!-- app/app.vue -->
+<UApp>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</UApp>
+```
+
+```vue
+<!-- app/layouts/default.vue -->
+<script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+// Clé fixe : n'importe quelle page peut rafraîchir la liste avec refreshNuxtData('pages')
+const { data: pages } = await useFetch('/api/pages', { key: 'pages' })
+const items = computed<NavigationMenuItem[]>(() => (pages.value ?? []).map(page => ({
+  label: page.title, icon: 'i-lucide-file-text', to: `/pages/${page.id}`
+})))
+</script>
+
+<template>
+  <UDashboardGroup>
+    <UDashboardSidebar resizable collapsible>
+      <template #header="{ collapsed }">…</template>
+      <template #default="{ collapsed }">
+        <UNavigationMenu :items="items" :collapsed="collapsed" orientation="vertical" />
+      </template>
+      <template #footer="{ collapsed }">…</template>
+    </UDashboardSidebar>
+    <slot />
+  </UDashboardGroup>
+</template>
+```
+
+```vue
+<!-- chaque page : un panneau, avec la navbar (qui porte le bouton mobile de la sidebar) -->
+<UDashboardPanel>
+  <template #header>
+    <UDashboardNavbar title="Accueil">
+      <template #right><!-- actions --></template>
+    </UDashboardNavbar>
+  </template>
+  <template #body>…</template>
+</UDashboardPanel>
+```
+
+- Page sans layout (ex. `/login`) : `definePageMeta({ layout: false })`.
+- Après une création, un renommage ou une suppression : `await refreshNuxtData('pages')`.
+- Le lien actif est surligné automatiquement par `UNavigationMenu` (`aria-current="page"`).
+
 ## Arborescence
 
 ```
