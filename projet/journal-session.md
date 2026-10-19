@@ -5,6 +5,14 @@
 
 ---
 
+## 8 · 2026-10-19 · <1h> · tranche : Pages N0
+
+- **Fait :** API `GET/PATCH/DELETE /api/pages/:pageId` ; page `/pages/:pageId` (titre + `UEditor` sans toolbar, JSON TipTap, enregistrement manuel, suppression avec confirmation) ; accueil : création → ouverture de la page. Déployé et validé en ligne.
+- **Blocage / question :** aucun. À noter : rien ne prévient d'une sortie sans enregistrer (sauvegarde auto au N1) ; 404 = page d'erreur Nuxt par défaut.
+- **➜ Prochaine action :** tranche Retrouver N0 (liste des pages dans la sidebar) ; toujours en attente du retour IT pour D-006.
+
+---
+
 ## 7 · 2026-10-19 · <1h> · tranche : Accès N0
 
 - **Fait :** auth par mot de passe unique (nuxt-auth-utils) : `/login`, `POST /api/login`, déconnexion, middlewares client et serveur (401 sur `/api/**`). Hash via `pnpm hash-password`. Déployé et validé en ligne. Section auth ajoutée au guide technique.

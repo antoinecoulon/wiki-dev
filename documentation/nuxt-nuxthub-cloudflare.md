@@ -313,6 +313,46 @@ pnpm -s hash-password '<mot de passe>' | tr -d '\n' | pnpm wrangler secret put N
 
 Les secrets survivent aux déploiements. Le hash scrypt par défaut (`n=16384`) tient dans la limite CPU du plan gratuit.
 
+## 6. Éditeur riche (UEditor) et contenu en JSON
+
+`UEditor` (Nuxt UI v4) est un éditeur TipTap prêt à l'emploi. Stocker le JSON TipTap (format natif, sans perte) dans une colonne `text`.
+
+```ts
+// server/api/pages/[pageId].get.ts : param nommé explicitement, pas [id]
+import type { JSONContent } from '@tiptap/core' // pnpm add @tiptap/core (même version que Nuxt UI)
+import { eq } from 'drizzle-orm'
+import { db, schema } from 'hub:db'
+
+export default defineEventHandler(async (event) => {
+  const pageId = getRouterParam(event, 'pageId')!
+  const page = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId) })
+  if (!page) throw createError({ status: 404, statusText: 'Page introuvable' })
+  return { ...page, content: (page.content ? JSON.parse(page.content) : null) as JSONContent | null }
+})
+```
+
+Côté écriture : `JSON.stringify(content)` dans le `PATCH`. Pour `PATCH`/`DELETE`, `.returning()` vide = 404, sans requête préalable.
+
+```vue
+<!-- app/pages/pages/[pageId].vue -->
+<script setup lang="ts">
+// Sans clé, Nuxt réutilise le composant d'une page à l'autre : les refs gardent l'ancien contenu
+definePageMeta({ key: route => route.fullPath })
+
+const route = useRoute('pages-pageId') // route typée
+const { data: page, error } = await useFetch(`/api/pages/${route.params.pageId}`)
+if (error.value) throw createError({ status: error.value.statusCode, fatal: true }) // page 404
+const content = ref(page.value!.content)
+</script>
+
+<template>
+  <UEditor v-model="content" content-type="json" placeholder="Écris ici…" />
+</template>
+```
+
+- Sans `UEditorToolbar`, les raccourcis TipTap (Ctrl+B, `#`…) restent actifs.
+- `@tiptap/vue-3` (cité dans la doc Nuxt UI) n'est pas importable sans l'installer : pnpm n'expose pas les dépendances transitives.
+
 ## Arborescence
 
 ```
