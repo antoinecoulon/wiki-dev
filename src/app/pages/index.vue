@@ -1,46 +1,28 @@
 <script setup lang="ts">
-const { data: pages } = await useFetch('/api/pages')
-const { clear } = useUserSession()
-
-async function logout() {
-  await clear()
-  await navigateTo('/login')
-}
-
 async function createPage() {
   const page = await $fetch('/api/pages', { method: 'POST' })
+  await refreshNuxtData('pages')
   await navigateTo(`/pages/${page!.id}`)
 }
 </script>
 
 <template>
-  <UContainer class="py-8 space-y-4">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold">
-        wiki.dev
-      </h1>
-      <UButton
-        icon="i-lucide-log-out"
-        label="Se déconnecter"
-        color="neutral"
-        variant="ghost"
-        @click="logout"
-      />
-    </div>
-    <UButton
-      icon="i-lucide-plus"
-      label="Nouvelle page"
-      @click="createPage"
-    />
-    <ul>
-      <li
-        v-for="page in pages"
-        :key="page.id"
-      >
-        <ULink :to="`/pages/${page.id}`">
-          {{ page.title }}
-        </ULink>
-      </li>
-    </ul>
-  </UContainer>
+  <UDashboardPanel>
+    <template #header>
+      <UDashboardNavbar title="Accueil" />
+    </template>
+
+    <template #body>
+      <div class="h-full flex flex-col items-center justify-center gap-4 text-center">
+        <p class="text-muted">
+          Choisis une page dans la barre latérale, ou crées-en une.
+        </p>
+        <UButton
+          icon="i-lucide-plus"
+          label="Nouvelle page"
+          @click="createPage"
+        />
+      </div>
+    </template>
+  </UDashboardPanel>
 </template>

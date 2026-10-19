@@ -25,6 +25,7 @@ async function save() {
       method: 'PATCH',
       body: { title: title.value, content: content.value ?? undefined }
     })
+    await refreshNuxtData('pages')
     toast.add({ title: 'Page enregistrée', color: 'success' })
   } catch {
     toast.add({ title: 'Échec de l\'enregistrement', description: 'Tes modifications sont toujours à l\'écran, réessaie.', color: 'error' })
@@ -36,6 +37,7 @@ async function save() {
 async function remove() {
   try {
     await $fetch(`/api/pages/${pageId}`, { method: 'DELETE' })
+    await refreshNuxtData('pages')
     await navigateTo('/')
   } catch {
     confirmDelete.value = false
@@ -45,68 +47,67 @@ async function remove() {
 </script>
 
 <template>
-  <UContainer class="py-8 space-y-4">
-    <div class="flex items-center justify-between gap-2">
-      <UButton
-        to="/"
-        icon="i-lucide-arrow-left"
-        label="Accueil"
-        color="neutral"
-        variant="ghost"
-      />
-      <div class="flex gap-2">
-        <UButton
-          icon="i-lucide-trash-2"
-          label="Supprimer"
-          color="error"
-          variant="ghost"
-          @click="confirmDelete = true"
-        />
-        <UButton
-          icon="i-lucide-save"
-          label="Enregistrer"
-          :loading="saving"
-          :disabled="!title.trim()"
-          @click="save"
-        />
-      </div>
-    </div>
+  <UDashboardPanel>
+    <template #header>
+      <UDashboardNavbar>
+        <template #right>
+          <UButton
+            icon="i-lucide-trash-2"
+            label="Supprimer"
+            color="error"
+            variant="ghost"
+            @click="confirmDelete = true"
+          />
+          <UButton
+            icon="i-lucide-save"
+            label="Enregistrer"
+            :loading="saving"
+            :disabled="!title.trim()"
+            @click="save"
+          />
+        </template>
+      </UDashboardNavbar>
+    </template>
 
-    <UInput
-      v-model="title"
-      placeholder="Titre"
-      aria-label="Titre"
-      variant="none"
-      size="xl"
-      class="w-full"
-      :ui="{ base: 'text-3xl font-bold px-0' }"
-    />
-
-    <UEditor
-      v-model="content"
-      content-type="json"
-      placeholder="Écris ici…"
-      class="min-h-64"
-    />
-
-    <UModal
-      v-model:open="confirmDelete"
-      title="Supprimer la page ?"
-      description="La suppression est définitive."
-    >
-      <template #footer>
-        <UButton
-          label="Annuler"
-          color="neutral"
-          variant="ghost"
-          @click="confirmDelete = false"
+    <template #body>
+      <UContainer class="space-y-4">
+        <UInput
+          v-model="title"
+          placeholder="Titre"
+          aria-label="Titre"
+          variant="none"
+          size="xl"
+          class="w-full"
+          :ui="{ base: 'text-3xl font-bold px-0' }"
         />
-        <UButton
-          label="Supprimer"
-          color="error"
-          @click="remove"
+
+        <UEditor
+          v-model="content"
+          content-type="json"
+          placeholder="Écris ici…"
+          class="min-h-64"
         />
-      </template>
-    </UModal>
-  </UContainer>
+      </UContainer>
+
+      <UModal
+        v-model:open="confirmDelete"
+        title="Supprimer la page ?"
+        description="La suppression est définitive."
+      >
+        <template #footer>
+          <UButton
+            label="Annuler"
+            color="neutral"
+            variant="ghost"
+            @click="confirmDelete = false"
+          />
+          <UButton
+            label="Supprimer"
+            color="error"
+            @click="remove"
+          />
+        </template>
+      </UModal>
+    </template>
+  </UDashboardPanel>
 </template>

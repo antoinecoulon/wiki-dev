@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FormError } from '@nuxt/ui'
 
+definePageMeta({ layout: false })
+
 const { fetch: refreshSession } = useUserSession()
 
 const state = reactive({ password: '' })
