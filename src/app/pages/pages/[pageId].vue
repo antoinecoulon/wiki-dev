@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import type { JSONContent } from '@tiptap/core'
-import type { EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import type { Editor, JSONContent } from '@tiptap/core'
+import type { EditorCustomHandlers, EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
 import { TaskItem, TaskList } from '@tiptap/extension-list'
-import { VueNodeViewRenderer } from '@tiptap/vue-3'
-import { createLowlight } from 'lowlight'
-import bash from 'highlight.js/lib/languages/bash'
-import csharp from 'highlight.js/lib/languages/csharp'
-import css from 'highlight.js/lib/languages/css'
-import javascript from 'highlight.js/lib/languages/javascript'
-import json from 'highlight.js/lib/languages/json'
-import typescript from 'highlight.js/lib/languages/typescript'
-import xml from 'highlight.js/lib/languages/xml'
-import CodeBlockView from '~/components/CodeBlockView.vue'
+import { CodeBlock } from '~/editor/code-block'
 
 // Recrée le composant à chaque page : sinon titre et contenu restent ceux de la page précédente
 definePageMeta({ key: route => route.fullPath })
@@ -35,15 +25,84 @@ const sections = [
 ]
 const confirmDelete = ref(false)
 
-// Langage choisi dans le bloc (CodeBlockView) ; sur « Auto », lowlight détecte parmi ces langages
-const lowlight = createLowlight({ bash, csharp, css, javascript, json, typescript, xml })
 const extensions = [
-  CodeBlockLowlight.extend({
-    addNodeView: () => VueNodeViewRenderer(CodeBlockView)
-  }).configure({ lowlight }),
+  CodeBlock,
   TaskList,
   TaskItem.configure({ nested: true })
 ]
+
+// Images : envoyées à /api/images (store Vercel Blob privé), insérées une fois enregistrées
+type EditorView = Editor['view']
+const MAX_IMAGE_SIZE = 4 * 1024 * 1024
+const uploading = ref(0)
+const fileInput = useTemplateRef('fileInput')
+let pickerView: EditorView | undefined
+
+// Contenu copié ou déplacé depuis l'éditeur (data-pm-slice) : le navigateur y joint l'image
+// comme fichier ; on laisse ProseMirror faire, sinon l'image serait réuploadée
+const editorProps = {
+  handlePaste(view: EditorView, event: ClipboardEvent) {
+    const files = Array.from(event.clipboardData?.files ?? [])
+    if (!files.length || event.clipboardData?.getData('text/html').includes('data-pm-slice')) return false
+    files.forEach(file => uploadImage(view, file, view.state.selection.from))
+    return true
+  },
+  handleDrop(view: EditorView, event: DragEvent, _slice: unknown, moved: boolean) {
+    const files = Array.from(event.dataTransfer?.files ?? [])
+    if (moved || !files.length || event.dataTransfer?.types.includes('application/x-prosemirror-slice')) return false
+    const pos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos ?? view.state.selection.from
+    files.forEach(file => uploadImage(view, file, pos))
+    return true
+  }
+}
+
+async function uploadImage(view: EditorView, file: File, pos: number) {
+  if (!file.type.startsWith('image/')) {
+    toast.add({ title: 'Fichier ignoré', description: `${file.name} n'est pas une image.`, color: 'error' })
+    return
+  }
+  if (file.size > MAX_IMAGE_SIZE) {
+    toast.add({ title: 'Image trop lourde', description: `${file.name} dépasse 4 Mo.`, color: 'error' })
+    return
+  }
+  uploading.value++
+  try {
+    const body = new FormData()
+    body.append('file', file)
+    const { src } = await $fetch('/api/images', { method: 'POST', body })
+    // Le document a pu changer pendant l'envoi
+    const { state } = view
+    const at = Math.min(pos, state.doc.content.size)
+    view.dispatch(state.tr.insert(at, state.schema.nodes.image!.create({ src, alt: file.name })))
+  } catch (error) {
+    const message = (error as { data?: { statusMessage?: string } }).data?.statusMessage
+    toast.add({ title: 'Échec de l\'envoi de l\'image', description: message, color: 'error' })
+  } finally {
+    uploading.value--
+  }
+}
+
+function onFilePicked(event: Event) {
+  const input = event.target as HTMLInputElement
+  const view = pickerView
+  if (view) {
+    for (const file of input.files ?? []) uploadImage(view, file, view.state.selection.from)
+  }
+  input.value = ''
+}
+
+// Bouton Image (barre et menu « / ») : choisir un fichier au lieu de saisir une URL
+const handlers: EditorCustomHandlers = {
+  image: {
+    canExecute: () => true,
+    execute: (editor) => {
+      pickerView = editor.view
+      fileInput.value?.click()
+      return editor.chain()
+    },
+    isActive: editor => editor.isActive('image')
+  }
+}
 
 const toolbarItems: EditorToolbarItem[][] = [
   [
@@ -76,7 +135,8 @@ const toolbarItems: EditorToolbarItem[][] = [
   [
     { kind: 'blockquote', icon: 'i-lucide-text-quote', tooltip: { text: 'Citation' } },
     { kind: 'codeBlock', icon: 'i-lucide-square-code', tooltip: { text: 'Bloc de code' } },
-    { kind: 'horizontalRule', icon: 'i-lucide-separator-horizontal', tooltip: { text: 'Séparateur' } }
+    { kind: 'horizontalRule', icon: 'i-lucide-separator-horizontal', tooltip: { text: 'Séparateur' } },
+    { kind: 'image', icon: 'i-lucide-image', tooltip: { text: 'Image' } }
   ]
 ]
 
@@ -98,7 +158,8 @@ const suggestionItems: EditorSuggestionMenuItem[][] = [
     { type: 'label', label: 'Blocs' },
     { kind: 'blockquote', label: 'Citation', icon: 'i-lucide-text-quote' },
     { kind: 'codeBlock', label: 'Bloc de code', icon: 'i-lucide-square-code' },
-    { kind: 'horizontalRule', label: 'Séparateur', icon: 'i-lucide-separator-horizontal' }
+    { kind: 'horizontalRule', label: 'Séparateur', icon: 'i-lucide-separator-horizontal' },
+    { kind: 'image', label: 'Image', icon: 'i-lucide-image' }
   ]
 ]
 
@@ -111,6 +172,9 @@ const statusDisplay = {
   saving: { label: 'Enregistrement…', icon: 'i-lucide-loader-circle' },
   error: { label: 'Échec, réessayer', icon: 'i-lucide-triangle-alert' }
 }
+const displayedStatus = computed(() => uploading.value
+  ? { label: 'Envoi de l\'image…', icon: 'i-lucide-loader-circle' }
+  : statusDisplay[status.value])
 let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
 let current: Promise<void> | undefined
@@ -182,13 +246,13 @@ async function remove() {
       <UDashboardNavbar>
         <template #right>
           <UButton
-            :icon="statusDisplay[status].icon"
-            :label="statusDisplay[status].label"
+            :icon="displayedStatus.icon"
+            :label="displayedStatus.label"
             :color="status === 'error' ? 'error' : 'neutral'"
             variant="ghost"
             size="sm"
             :disabled="status !== 'error'"
-            :ui="{ leadingIcon: status === 'saving' ? 'animate-spin' : '' }"
+            :ui="{ leadingIcon: status === 'saving' || uploading ? 'animate-spin' : '' }"
             @click="flush"
           />
           <USelect
@@ -227,6 +291,8 @@ async function remove() {
           placeholder="Écris ici, ou tape « / » pour insérer un bloc…"
           :starter-kit="{ codeBlock: false }"
           :extensions="extensions"
+          :handlers="handlers"
+          :editor-props="editorProps"
           class="min-h-64"
         >
           <UEditorToolbar
@@ -239,6 +305,14 @@ async function remove() {
             :items="suggestionItems"
           />
         </UEditor>
+        <input
+          ref="fileInput"
+          type="file"
+          accept="image/png,image/jpeg,image/gif,image/webp"
+          multiple
+          class="hidden"
+          @change="onFilePicked"
+        >
       </UContainer>
 
       <UModal
