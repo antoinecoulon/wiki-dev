@@ -25,3 +25,7 @@ logs
 
 # Cloudflare
 .wrangler
+
+# Vercel
+.vercel
+.env*

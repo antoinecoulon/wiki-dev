@@ -7,12 +7,10 @@ export default defineNuxtConfig({
     adminPasswordHash: ''
   },
   compatibilityDate: '2025-07-15',
+  // Preset détecté par Nitro (Vercel) ; DB Turso via TURSO_DATABASE_URL / TURSO_AUTH_TOKEN (D-006)
   nitro: {
-    preset: 'cloudflare_module',
-    cloudflare: {
-      deployConfig: true,
-      nodeCompat: true
-    }
+    // Même région que la base Turso (aws-eu-west-1) pour limiter la latence des requêtes
+    vercel: { regions: ['dub1'] }
   },
   hub: {
     db: 'sqlite'

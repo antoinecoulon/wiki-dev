@@ -14,7 +14,7 @@
     "typecheck": "nuxt typecheck",
     "db:generate": "nuxt db generate",
     "hash-password": "node scripts/hash-password.mjs",
-    "deploy": "nuxt build && wrangler d1 migrations apply wiki-dev --remote --config .output/server/wrangler.json && wrangler deploy --config .output/server/wrangler.json"
+    "deploy": "pnpm dlx vercel deploy --prod"
   },
   "dependencies": {
     "@libsql/client": "^0.18.0",
