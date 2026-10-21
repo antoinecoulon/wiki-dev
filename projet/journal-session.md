@@ -5,6 +5,14 @@
 
 ---
 
+## 16 · 2026-10-21 · <1h> · tranche : Socle N1
+
+- **Fait :** `pnpm run backup` (depuis `src/`) : dump SQL horodaté de la base Turso dans `backups/db` (30 derniers gardés, dump incomplet refusé) et copie des nouvelles images du store Blob dans `backups/images` ; `backups/` gitignoré. Restauration testée dans une base jetable (25 pages sur 25). CI non retenue. **v1 terminée.**
+- **Blocage / question :** `turso db create --from-dump` crée une base vide sans erreur → restaurer en rejouant le dump avec `turso db shell`. Sauvegardes sur la même machine que le repo : pas de copie hors du PC. Pas de script pour remettre les images dans le store.
+- **➜ Prochaine action :** migration manuelle depuis Notion, puis choisir la prochaine tranche.
+
+---
+
 ## 15 · 2026-10-21 · <1h> · tranche : Mobile N0
 
 - **Fait :** barre du haut en icônes seules sous 640 px (statut, suppression) ; blocs de code : le code démarre sous le sélecteur de langage sur écran étroit. Le reste (images, code qui passe à la ligne, sidebar en tiroir) était déjà géré par Nuxt UI. Déployé et validé sur téléphone.

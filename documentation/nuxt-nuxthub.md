@@ -605,6 +605,43 @@ const searchGroups = computed(() => [{
 - Ne pas passer des `NavigationMenuItem` tels quels : erreur de type (`chip`), reconstruire `{ label, icon, to }`.
 - Textes en anglais par défaut (pas de `locale` sur `UApp`) : `placeholder` et slot `#empty`.
 
+## 8. Sauvegardes (Turso + Vercel Blob)
+
+Un script Node lancé à la main : dump SQL horodaté de la base, et copie incrémentale des fichiers Blob, vers un dossier `backups/` du repo, ignoré par git.
+
+```jsonc
+// package.json : BLOB_READ_WRITE_TOKEN lu depuis .env.local (`vercel env pull`)
+"backup": "node --env-file-if-exists=.env.local scripts/backup.mjs"
+```
+
+```js
+// scripts/backup.mjs (extrait)
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+import { get, list } from '@vercel/blob'
+
+// Base : la CLI turso (connectée) produit un dump SQL complet
+const { stdout: dump } = await promisify(execFile)('turso', ['db', 'shell', 'mon-app', '.dump'], { maxBuffer: 512 * 1024 * 1024 })
+if (!dump.trimEnd().endsWith('COMMIT;')) throw new Error('Dump incomplet')
+
+// Blob privé : list() pour l'inventaire (paginé), get() pour le contenu
+let cursor
+do {
+  const page = await list({ prefix: 'images/', cursor })
+  for (const blob of page.blobs) {
+    const result = await get(blob.pathname, { access: 'private' })
+    // écrire Buffer.from(await new Response(result.stream).arrayBuffer())
+  }
+  cursor = page.cursor
+} while (cursor)
+```
+
+- Dossier : `join(import.meta.dirname, '../../backups')`, et `backups/` dans le `.gitignore` (contenu privé).
+- Dumps horodatés (`mon-app-2026-10-21T20-14.sql`) : l'ordre alphabétique est l'ordre chronologique, on supprime les plus anciens au-delà de N.
+- Fichiers Blob aux noms uniques (UUID) jamais réécrits : on ne télécharge que ceux absents du dossier.
+- **Restaurer** : `turso db create mon-app-restore`, puis `turso db shell mon-app-restore < dump.sql` ; pointer `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` (section 4 bis) vers la nouvelle base et redéployer.
+- Tester une restauration une fois, dans une base jetable (`turso db destroy … --yes` ensuite).
+
 ## Arborescence
 
 ```
@@ -644,6 +681,7 @@ mon-app/
 | `vercel logs --since 2h` : « outside the available retention » | plan Hobby : 30 min de logs | reproduire en local (`nuxt dev`) |
 | Classe Tailwind sans effet sur un élément de `UEditor` (ex. `pt-10` sur un `pre`) | le thème cible `[&_pre]:…` depuis le parent, plus spécifique | suffixe `!` : `max-sm:pt-10!` |
 | Barre d'actions qui déborde sur mobile | libellés des boutons | `:ui="{ label: 'max-sm:hidden' }"` + `aria-label` |
+| `turso db create --from-dump dump.sql` : base créée **vide**, sans erreur | — | créer la base vide puis `turso db shell <base> < dump.sql` |
 
 ## Références
 

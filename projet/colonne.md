@@ -8,7 +8,7 @@
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
-| **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ◧ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
+| **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB (CI non retenue) | □ Tests + automatisation |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
@@ -31,11 +31,11 @@
 7. ■ Pages N1 · images (Vercel Blob, captures collées)
 8. ■ Retrouver N1 · recherche par titre
 9. ■ Mobile N0 · une page lisible
-10. ◧ Socle N1 · sauvegardes DB (CI seulement si utile) → puis migration manuelle Notion
+10. ■ Socle N1 · sauvegardes DB (CI seulement si utile) → puis migration manuelle Notion
 
 ## Tranche en cours
 
-**Socle technique · N1 · Sauvegardes DB** (CI seulement si utile) · critères et checklist à écrire en début de tranche.
+Aucune : **v1 terminée** (2026-10-21). Prochaine étape : migration manuelle depuis Notion (hors Colonne), puis choix de la prochaine tranche.
 
 DoD : voir [dod.md](dod.md)
 
@@ -46,7 +46,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** aucun
 - **Tranches :**
   - [N0] ■ Projet Nuxt + lint, DB branchée, déployé (une page accessible en ligne)
-  - [N1] ◧ Sauvegardes de la DB + CI (lint, typecheck)
+  - [N1] ■ Sauvegardes de la DB et des images (`pnpm run backup`) ; CI non retenue (lint, typecheck à la main)
   - [N2] □ Tests automatisés + automatisation (déploiement continu)
   - [N3] pas prévu (monitoring, perfs, stats : peu utile en mono-utilisateur)
 
