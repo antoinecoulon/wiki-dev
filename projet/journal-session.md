@@ -5,6 +5,14 @@
 
 ---
 
+## 15 · 2026-10-21 · <1h> · tranche : Mobile N0
+
+- **Fait :** barre du haut en icônes seules sous 640 px (statut, suppression) ; blocs de code : le code démarre sous le sélecteur de langage sur écran étroit. Le reste (images, code qui passe à la ligne, sidebar en tiroir) était déjà géré par Nuxt UI. Déployé et validé sur téléphone.
+- **Blocage / question :** surcharger un style de `UEditor` (`[&_pre]:…`) demande `!` (sélecteur plus spécifique). L'éditeur reste modifiable sur mobile (lecture seule non imposée).
+- **➜ Prochaine action :** tranche Socle N1 (sauvegardes de la base Turso), puis migration manuelle depuis Notion.
+
+---
+
 ## 14 · 2026-10-21 · <1h> · tranche : Retrouver N1
 
 - **Fait :** recherche par titre en palette (`UDashboardSearch`) : bouton « Rechercher » en haut de la sidebar + Ctrl+K, recherche floue côté client sur la liste déjà chargée, résultats groupés Projets / Documentation. Sidebar repliée réparée : barre de défilement masquée (elle coupait le surlignage), tooltips sur les icônes, icône d'accueil à la place de « w. ». Déployé et validé en ligne.

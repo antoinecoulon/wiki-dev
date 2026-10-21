@@ -642,6 +642,8 @@ mon-app/
 | Valeur de `.env` tronquée une fois passée à `vercel env add` | `$` interprétés si on source `.env` avec des valeurs sans quotes | quotes simples dans `.env`, ou transmettre la valeur brute |
 | `.env.example` ignoré par git après `vercel link` ou `vercel blob create-store` | la CLI ajoute `.env*` au `.gitignore` | retirer la ligne (`.env` et `.env.*` suffisent) |
 | `vercel logs --since 2h` : « outside the available retention » | plan Hobby : 30 min de logs | reproduire en local (`nuxt dev`) |
+| Classe Tailwind sans effet sur un élément de `UEditor` (ex. `pt-10` sur un `pre`) | le thème cible `[&_pre]:…` depuis le parent, plus spécifique | suffixe `!` : `max-sm:pt-10!` |
+| Barre d'actions qui déborde sur mobile | libellés des boutons | `:ui="{ label: 'max-sm:hidden' }"` + `aria-label` |
 
 ## Références
 
