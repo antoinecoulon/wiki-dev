@@ -1,6 +1,6 @@
-# Créer une application Nuxt 4.6 / NuxtHub / Cloudflare
+# Créer une application Nuxt 4.6 / NuxtHub (Cloudflare ou Vercel)
 
-Une app Nuxt full-stack avec base SQL, hébergée gratuitement sur Cloudflare Workers. On développe en local sur un fichier SQLite et on déploie sur D1 sans changer de code.
+Une app Nuxt full-stack avec base SQL, hébergée gratuitement sur Cloudflare Workers (ou sur Vercel + Turso, section 4 bis). On développe en local sur un fichier SQLite et on déploie sur D1 (ou Turso) sans changer de code.
 
 > Testé le 2026-10-18 avec Nuxt 4.6.2, Nuxt UI 4.12, NuxtHub 0.10.8, Drizzle ORM 0.45 / drizzle-kit 0.31, Wrangler 4.151, TypeScript 5.9, pnpm 10, Node 24.
 > Construit au fil du projet wiki-dev : les sections s'ajoutent quand une étape est faite.
