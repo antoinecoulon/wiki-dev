@@ -236,6 +236,50 @@ Résultat : l'app est en ligne sur `https://mon-app.<compte>.workers.dev`. Véri
 
 > ⚠️ `pnpm deploy` (sans `run`) est une commande intégrée de pnpm qui n'a rien à voir avec le script.
 
+## 4 bis. Alternative : déployer sur Vercel + Turso
+
+Utile si `*.workers.dev` est bloqué (proxy d'entreprise, par exemple). Le code ne change pas : Turso, c'est du SQLite (libSQL), donc le schéma et les migrations Drizzle restent valables.
+
+### Configuration
+
+Retirer le bloc `nitro.preset` / `nitro.cloudflare` : Nitro détecte le preset `vercel` au build. NuxtHub passe sur le driver `libsql` dès que `TURSO_DATABASE_URL` **et** `TURSO_AUTH_TOKEN` sont définies, et applique les migrations pendant le build.
+
+```ts
+// nuxt.config.ts
+nitro: {
+  vercel: { regions: ['dub1'] } // même région que la base (par défaut : iad1, aux USA)
+},
+hub: { db: 'sqlite' } // inchangé (@libsql/client doit être installé)
+```
+
+Ajouter `.vercel` au `.gitignore`.
+
+### Mise en place (une fois)
+
+```bash
+# CLI Turso (~/.turso/turso) ; dans un terminal sans navigateur : --headless, puis coller le token
+curl -sSfL https://get.tur.so/install.sh | bash
+turso auth login --headless   # ouvrir l'URL, copier le token
+turso config set token "<token>"
+turso db create mon-app --location aws-eu-west-1
+
+pnpm dlx vercel login
+pnpm dlx vercel link --yes --project mon-app
+
+# Variables en prod, envoyées par stdin (rien dans l'historique du shell)
+turso db show mon-app --url | pnpm dlx vercel env add TURSO_DATABASE_URL production
+turso db tokens create mon-app | pnpm dlx vercel env add TURSO_AUTH_TOKEN production
+# + NUXT_SESSION_PASSWORD, NUXT_ADMIN_PASSWORD_HASH (section 5) de la même façon
+```
+
+### Déployer
+
+```json
+"deploy": "pnpm dlx vercel deploy --prod"
+```
+
+Vérifier les tables : `turso db shell mon-app ".tables"` (on doit voir `_hub_migrations`).
+
 ## 5. Authentification par mot de passe unique (nuxt-auth-utils)
 
 Pour une app mono-utilisateur : session dans un cookie chiffré, mot de passe hashé (scrypt) en variable d'env, pas de table utilisateur.
@@ -449,6 +493,8 @@ mon-app/
 | En prod, `/api/_auth/session` en 500, log `Empty password` ; tout mot de passe refusé | `wrangler secret put` lancé sans terminal interactif (ex. `!` dans Claude Code) : secret enregistré **vide**, sans erreur | renvoyer la valeur par stdin : `echo … \| wrangler secret put NOM` |
 | Hash tronqué / login toujours refusé en local | `$` du hash interprétés dans `.env` | mettre la valeur entre quotes simples |
 | Erreur 500 en prod sans détail | — | `pnpm wrangler tail <worker> --format pretty` pendant qu'on recharge |
+| Vercel : URL `mon-app-<suffixe>.vercel.app` au lieu de `mon-app.vercel.app` | sous-domaine déjà pris par un autre compte | renommer le projet ou ajouter un domaine dans les réglages |
+| Valeur de `.env` tronquée une fois passée à `vercel env add` | `$` interprétés si on source `.env` avec des valeurs sans quotes | quotes simples dans `.env`, ou transmettre la valeur brute |
 
 ## Références
 
@@ -456,3 +502,5 @@ mon-app/
 - Nuxt UI : <https://ui.nuxt.com/docs/getting-started/installation/nuxt>
 - Nitro, preset Cloudflare : <https://nitro.build/deploy/providers/cloudflare>
 - Wrangler, D1 : <https://developers.cloudflare.com/d1/wrangler-commands/>
+- NuxtHub sur Vercel / Turso : <https://hub.nuxt.com/docs/database>
+- Nitro, preset Vercel : <https://nitro.build/deploy/providers/vercel>

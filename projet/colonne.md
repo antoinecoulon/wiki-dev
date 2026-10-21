@@ -2,13 +2,13 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-19
+> Mise à jour : 2026-10-21
 
 ## Grille
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
-| **Socle technique** | ◧ **v1** Nuxt + lint + DB + déployé | □ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
+| **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | □ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | □ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | □ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
@@ -22,24 +22,20 @@
 
 ## Version 1 (ordre des tranches)
 
-1. ◧ Socle N0 · Nuxt + lint + DB + déployé, **test proxy** → *bloqué : workers.dev en liste noire, voir journal*
-2. ■ Accès N0 · je me connecte → *test derrière le proxy reporté avec D-006*
+1. ■ Socle N0 · Nuxt + lint + DB + déployé, **test proxy** → *validé sur Vercel + Turso (D-006)*
+2. ■ Accès N0 · je me connecte → *validé derrière le proxy (D-006)*
 3. ■ Pages N0 · créer / écrire / supprimer
 4. ■ Retrouver N0 · liste dans la sidebar
 5. ■ Gestion de projet N0 · sections Projets / Doc
 6. ◧ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
-7. □ Pages N1 · images (R2, captures collées)
+7. □ Pages N1 · images (Vercel Blob, captures collées)
 8. □ Retrouver N1 · recherche par titre
 9. □ Mobile N0 · une page lisible
 10. □ Socle N1 · sauvegardes DB (CI seulement si utile) → puis migration manuelle Notion
 
 ## Tranche en cours
 
-> Exception à « une seule tranche » : Socle N0 n'attend plus que le test proxy (KO sur `workers.dev` le 2026-10-19, repli à décider en D-006). La suite de la v1 ne dépend pas de l'hébergeur, on avance.
-
 **Pages · N1 · Éditeur : sauvegarde auto, mise en forme, checklists, blocs de code** · critères et checklist à écrire en début de tranche.
-
-**En attente : Socle technique · N0** · reste le test depuis le poste pro (affichage + écriture) → valider D-001 ou écrire D-006. Le login derrière le proxy (Accès N0) sera testé en même temps.
 
 DoD : voir [dod.md](dod.md)
 
@@ -49,7 +45,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** fondations techniques (init, DB, CI, déploiement…)
 - **Écrans :** aucun
 - **Tranches :**
-  - [N0] □ Projet Nuxt + lint, DB branchée, déployé (une page accessible en ligne)
+  - [N0] ■ Projet Nuxt + lint, DB branchée, déployé (une page accessible en ligne)
   - [N1] □ Sauvegardes de la DB + CI (lint, typecheck)
   - [N2] □ Tests automatisés + automatisation (déploiement continu)
   - [N3] pas prévu (monitoring, perfs, stats : peu utile en mono-utilisateur)
@@ -72,7 +68,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
   - [N1] □ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
-  - [N1] □ Images (upload R2, captures collées dans l'éditeur)
+  - [N1] □ Images (upload Vercel Blob, captures collées dans l'éditeur)
   - [N2] □ Citations et tableaux
   - [N3] □ Drag & drop des blocs dans une page
 

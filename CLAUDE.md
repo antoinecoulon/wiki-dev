@@ -4,7 +4,7 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 
 ## Stack et structure
 
-- `src/` : l'app. Nuxt 4 + Nuxt UI v4 + NuxtHub sur Cloudflare (Workers, D1/Drizzle, R2), auth nuxt-auth-utils, éditeur UEditor en JSON TipTap. Gestionnaire : pnpm.
+- `src/` : l'app. Nuxt 4 + Nuxt UI v4 + NuxtHub sur Vercel + Turso (libSQL/Drizzle, images Vercel Blob, D-006), auth nuxt-auth-utils, éditeur UEditor en JSON TipTap. Gestionnaire : pnpm.
 - `projet/` : fiche, Colonne (avec la v1 et la tranche en cours), DoD, journal, `decisions.md`.
 - `methode/` : la **méthode Colonne**, figée le 2026-10-18. Voir `methode/README.md`.
 
@@ -17,8 +17,8 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - **Guide technique** (`documentation/nuxt-nuxthub-cloudflare.md`) : en fin de tranche, s'il y a un concept réutilisable (auth, R2, éditeur…), y ajouter une section courte et générique (config, exemple, pièges rencontrés). Rien sur ce qui est propre à wiki-dev.
 - Réponses en **français**.
 
-## État (2026-10-19)
+## État (2026-10-21)
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
-- App déployée sur `wiki-dev.a-antoinecoulon.workers.dev`, **bloquée par le proxy pro** (`Liste_noire_URL`) : D-001 non validée. L'utilisateur interroge l'IT et teste `*.vercel.app` / `*.pages.dev` ; la suite sera D-006.
-- Tranche en cours : *Pages N1 (éditeur)*. Accès N0, Pages N0, Retrouver N0 et Gestion de projet N0 faites, l'app est protégée par mot de passe (reste le test derrière le proxy, avec D-006).
+- App déployée sur `wiki-dev-blond.vercel.app` (`pnpm run deploy` depuis `src/`), validée derrière le proxy pro (D-006).
+- Tranche en cours : *Pages N1 (éditeur)*. Socle N0, Accès N0, Pages N0, Retrouver N0 et Gestion de projet N0 faites.

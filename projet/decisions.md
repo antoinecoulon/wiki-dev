@@ -4,6 +4,15 @@
 
 ---
 
+## D-006 · 2026-10-21 · Hébergement : Vercel + Turso (remplace D-001)
+
+- **Contexte :** `*.workers.dev` est en liste noire du proxy pro (`Liste_noire_URL`), alors que `*.vercel.app` passe. D-001 n'est donc pas validée.
+- **Choix :** app sur Vercel (Hobby, région `dub1`), DB sur Turso (libSQL, `aws-eu-west-1`), images sur Vercel Blob. NuxtHub bascule tout seul sur Turso si `TURSO_DATABASE_URL` et `TURSO_AUTH_TOKEN` sont définies. Écartés : Vercel + Neon (Postgres, il faudrait réécrire schéma et migrations), domaine perso sur Cloudflare (un domaine récent risque lui aussi d'être bloqué, on ne le saurait qu'après l'achat).
+- **Pourquoi :** testé depuis le poste pro le 2026-10-21 (connexion, création et modification d'une page, données retrouvées depuis la maison). On reste sur SQLite et Drizzle sans changer de code, seule la config change.
+- **Conséquences :** 2 fournisseurs au lieu d'un. Pages N1 images : Vercel Blob au lieu de R2. Socle N1 : sauvegarde = export Turso. Usage limité au non commercial (Hobby). Le Worker et la base D1 Cloudflare ne servent plus.
+
+---
+
 ## D-005 · 2026-10-18 · Recadrage : développement délégué à Claude, v1 réduite
 
 - **Contexte :** l'apprentissage de Unity / C# (pour le travail) devient prioritaire ; wiki.dev doit servir à l'accompagner, donc être fini vite. Je ne code plus le projet.

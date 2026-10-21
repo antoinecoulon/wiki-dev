@@ -5,6 +5,14 @@
 
 ---
 
+## 11 · 2026-10-21 · <1h> · tranche : Socle N0 (hébergement, D-006)
+
+- **Fait :** migration vers Vercel + Turso (preset Cloudflare retiré, région `dub1`, variables Turso et auth sur Vercel, migrations appliquées au build). Testé depuis le poste pro : connexion, création et modification d'une page, données retrouvées depuis la maison. D-006 écrite, Socle N0 faite.
+- **Blocage / question :** installation globale des CLI refusée en mode auto → faite par l'utilisateur (`!`). Les données D1 n'ont pas été migrées (base Turso partie de zéro).
+- **➜ Prochaine action :** reprendre la tranche Pages N1 éditeur (sauvegarde auto, mise en forme, checklists, blocs de code).
+
+---
+
 ## 10 · 2026-10-19 · <1h> · tranche : Gestion de projet N0
 
 - **Fait :** sidebar en deux groupes (Projets / Documentation) avec « + » par groupe ; sélecteur de section sur la page ; `section` validée par `POST`/`PATCH` à partir de l'enum du schéma. Déployé et validé en ligne.
