@@ -1,2 +1,81 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+/* Checklists (TaskList / TaskItem) : non stylées par UEditor */
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label {
+  margin-top: 0.3rem;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: var(--ui-text-muted);
+  text-decoration: line-through;
+}
+
+/* Coloration des blocs de code (classes highlight.js produites par lowlight) */
+.ProseMirror pre {
+  --hl-keyword: #8250df;
+  --hl-string: #0a3069;
+  --hl-number: #0550ae;
+  --hl-comment: #6e7781;
+  --hl-title: #953800;
+  --hl-type: #116329;
+}
+
+.dark .ProseMirror pre {
+  --hl-keyword: #d2a8ff;
+  --hl-string: #a5d6ff;
+  --hl-number: #79c0ff;
+  --hl-comment: #8b949e;
+  --hl-title: #ffa657;
+  --hl-type: #7ee787;
+}
+
+.ProseMirror pre .hljs-keyword,
+.ProseMirror pre .hljs-built_in,
+.ProseMirror pre .hljs-literal,
+.ProseMirror pre .hljs-meta {
+  color: var(--hl-keyword);
+}
+
+.ProseMirror pre .hljs-string,
+.ProseMirror pre .hljs-regexp,
+.ProseMirror pre .hljs-attr {
+  color: var(--hl-string);
+}
+
+.ProseMirror pre .hljs-number,
+.ProseMirror pre .hljs-variable {
+  color: var(--hl-number);
+}
+
+.ProseMirror pre .hljs-comment {
+  color: var(--hl-comment);
+  font-style: italic;
+}
+
+.ProseMirror pre .hljs-title,
+.ProseMirror pre .hljs-function,
+.ProseMirror pre .hljs-tag {
+  color: var(--hl-title);
+}
+
+.ProseMirror pre .hljs-type,
+.ProseMirror pre .hljs-class,
+.ProseMirror pre .hljs-name {
+  color: var(--hl-type);
+}
