@@ -565,6 +565,45 @@ const items = computed<NavigationMenuItem[]>(() => (pages.value ?? []).map(page 
 - Page sans layout (ex. `/login`) : `definePageMeta({ layout: false })`.
 - Après une création, un renommage ou une suppression : `await refreshNuxtData('pages')`.
 - Le lien actif est surligné automatiquement par `UNavigationMenu` (`aria-current="page"`).
+- Sidebar repliée : ajouter `tooltip` sur `UNavigationMenu` (sinon aucun nom au survol) ; la barre de défilement (Windows) mange la colonne d'icônes et coupe le surlignage → la masquer en mode replié avec `v-model:collapsed` et `:ui="{ body: collapsed ? '[scrollbar-width:none]' : undefined }"`.
+
+### Recherche Ctrl+K (UDashboardSearch)
+
+Une palette de commandes branchée sur le `UDashboardGroup` : raccourci `meta_k` (Ctrl+K sous Windows/Linux), recherche floue (Fuse) côté client, navigation au clavier.
+
+```vue
+<script setup lang="ts">
+import type { CommandPaletteItem } from '@nuxt/ui'
+
+const searchGroups = computed(() => [{
+  id: 'pages', // id requis
+  label: 'Pages',
+  items: (pages.value ?? []).map((page): CommandPaletteItem => ({
+    label: page.title, icon: 'i-lucide-file-text', to: `/pages/${page.id}`
+  }))
+}])
+</script>
+
+<template>
+  <UDashboardGroup>
+    <UDashboardSidebar v-model:collapsed="collapsed" collapsible>
+      <template #default>
+        <UDashboardSearchButton label="Rechercher" :collapsed="collapsed" :tooltip="collapsed" />
+        …
+      </template>
+    </UDashboardSidebar>
+    <!-- color-mode=false : retire le groupe « thème » ajouté par défaut -->
+    <UDashboardSearch :groups="searchGroups" :color-mode="false" placeholder="Rechercher une page…">
+      <template #empty>Aucune page trouvée</template>
+    </UDashboardSearch>
+    <slot />
+  </UDashboardGroup>
+</template>
+```
+
+- Choisir un item avec `to` navigue et ferme la palette.
+- Ne pas passer des `NavigationMenuItem` tels quels : erreur de type (`chip`), reconstruire `{ label, icon, to }`.
+- Textes en anglais par défaut (pas de `locale` sur `UApp`) : `placeholder` et slot `#empty`.
 
 ## Arborescence
 

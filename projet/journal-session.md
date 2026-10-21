@@ -5,6 +5,14 @@
 
 ---
 
+## 14 · 2026-10-21 · <1h> · tranche : Retrouver N1
+
+- **Fait :** recherche par titre en palette (`UDashboardSearch`) : bouton « Rechercher » en haut de la sidebar + Ctrl+K, recherche floue côté client sur la liste déjà chargée, résultats groupés Projets / Documentation. Sidebar repliée réparée : barre de défilement masquée (elle coupait le surlignage), tooltips sur les icônes, icône d'accueil à la place de « w. ». Déployé et validé en ligne.
+- **Blocage / question :** `NavigationMenuItem` non assignable à `CommandPaletteItem` (type de `chip`) → items reconstruits. `GET /api/pages` renvoie le contenu de toutes les pages : à alléger quand le volume grossira (migration Notion).
+- **➜ Prochaine action :** tranche Mobile N0 (une page lisible sur smartphone).
+
+---
+
 ## 13 · 2026-10-21 · ~1h30 · tranche : Pages N1 images
 
 - **Fait :** images collées, glissées ou choisies (bouton dans la barre et le menu « / »), 4 Mo max, PNG/JPEG/GIF/WebP ; store Vercel Blob **privé** (`dub1`) via `@vercel/blob` direct, servi par `/images/…` protégé par le login. Bloc de code : Tab / Shift+Tab, paires auto-fermantes, fermeture des balises en HTML/XML, Entrée qui garde l'indentation. Déployé et validé en ligne, y compris derrière le proxy.

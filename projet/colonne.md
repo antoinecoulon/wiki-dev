@@ -11,11 +11,11 @@
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | □ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
-| **Retrouver** | ■ **v1** Liste dans la sidebar | □ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
+| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | □ Switch Perso / Pro | □ Déplacer entre espaces |  |
-| **Mobile** | □ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
+| **Mobile** | ◧ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
 | **Personnalisation** | □ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Elle se fait **après Socle N1** (sauvegardes DB).
@@ -29,13 +29,13 @@
 5. ■ Gestion de projet N0 · sections Projets / Doc
 6. ■ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
 7. ■ Pages N1 · images (Vercel Blob, captures collées)
-8. ◧ Retrouver N1 · recherche par titre
-9. □ Mobile N0 · une page lisible
+8. ■ Retrouver N1 · recherche par titre
+9. ◧ Mobile N0 · une page lisible
 10. □ Socle N1 · sauvegardes DB (CI seulement si utile) → puis migration manuelle Notion
 
 ## Tranche en cours
 
-**Retrouver · N1 · Recherche par titre** · critères et checklist à écrire en début de tranche.
+**Mobile · N0 · Une page lisible** · critères et checklist à écrire en début de tranche.
 
 DoD : voir [dod.md](dod.md)
 
@@ -86,7 +86,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** sidebar
 - **Tranches :**
   - [N0] ■ Toutes les pages listées dans la sidebar, cliquables
-  - [N1] □ Recherche par titre
+  - [N1] ■ Recherche par titre (palette Ctrl+K)
   - [N2] □ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar
   - [N3] □ Favoris / pages récentes dans la sidebar
 
@@ -135,7 +135,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** consulter mes pages depuis mon smartphone (lecture seule)
 - **Écrans :** tous, en largeur mobile
 - **Tranches :**
-  - [N0] □ Une page s'ouvre et se lit sans zoomer
+  - [N0] ◧ Une page s'ouvre et se lit sans zoomer
   - [N1] □ Navigation mobile (sidebar rétractable)
   - [N2] □ Confort de lecture (typo, blocs de code et tableaux qui défilent)
   - [N3] pas prévu (PWA)
