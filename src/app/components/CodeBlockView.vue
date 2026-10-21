@@ -32,6 +32,10 @@ const language = computed({
       class="absolute top-1.5 right-1.5 w-32"
       contenteditable="false"
     />
-    <pre spellcheck="false"><NodeViewContent as="code" /></pre>
+    <!-- Écran étroit : le code commence sous le sélecteur de langage (! pour passer devant le padding de UEditor) -->
+    <pre
+      spellcheck="false"
+      class="max-sm:pt-10!"
+    ><NodeViewContent as="code" /></pre>
   </NodeViewWrapper>
 </template>

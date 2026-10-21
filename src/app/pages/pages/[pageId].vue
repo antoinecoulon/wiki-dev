@@ -245,14 +245,16 @@ async function remove() {
     <template #header>
       <UDashboardNavbar>
         <template #right>
+          <!-- Sur mobile, icônes seules pour tenir sur une ligne -->
           <UButton
             :icon="displayedStatus.icon"
             :label="displayedStatus.label"
+            :aria-label="displayedStatus.label"
             :color="status === 'error' ? 'error' : 'neutral'"
             variant="ghost"
             size="sm"
             :disabled="status !== 'error'"
-            :ui="{ leadingIcon: status === 'saving' || uploading ? 'animate-spin' : '' }"
+            :ui="{ leadingIcon: status === 'saving' || uploading ? 'animate-spin' : '', label: 'max-sm:hidden' }"
             @click="flush"
           />
           <USelect
@@ -264,8 +266,10 @@ async function remove() {
           <UButton
             icon="i-lucide-trash-2"
             label="Supprimer"
+            aria-label="Supprimer"
             color="error"
             variant="ghost"
+            :ui="{ label: 'max-sm:hidden' }"
             @click="confirmDelete = true"
           />
         </template>
