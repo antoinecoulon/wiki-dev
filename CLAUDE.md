@@ -21,4 +21,4 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
 - App déployée sur `wiki-dev-blond.vercel.app` (`pnpm run deploy` depuis `src/`), validée derrière le proxy pro (D-006).
-- Tranche en cours : *Pages N1 (éditeur)*. Socle N0, Accès N0, Pages N0, Retrouver N0 et Gestion de projet N0 faites.
+- Tranche en cours : *Pages N1 (images, Vercel Blob)*. Socle N0, Accès N0, Pages N0, Pages N1 éditeur, Retrouver N0 et Gestion de projet N0 faites.

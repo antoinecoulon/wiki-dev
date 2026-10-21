@@ -5,6 +5,14 @@
 
 ---
 
+## 12 · 2026-10-21 · ~1h · tranche : Pages N1 éditeur
+
+- **Fait :** sauvegarde auto (1 s après la dernière modification, indicateur d'état, attente avant changement de page, alerte à la fermeture) ; barre d'outils fixe et menu « / » ; checklists (TaskList) ; blocs de code colorés (lowlight) avec sélecteur de langage (node view `CodeBlockView`). Déployé et validé en ligne. Section ajoutée au guide technique.
+- **Blocage / question :** la détection auto du langage colore mal le code court → sélecteur ajouté après le premier test. Lien : `prompt` natif en anglais (Nuxt UI), laissé tel quel.
+- **➜ Prochaine action :** tranche Pages N1 images (Vercel Blob, captures collées).
+
+---
+
 ## 11 · 2026-10-21 · <1h> · tranche : Socle N0 (hébergement, D-006)
 
 - **Fait :** migration vers Vercel + Turso (preset Cloudflare retiré, région `dub1`, variables Turso et auth sur Vercel, migrations appliquées au build). Testé depuis le poste pro : connexion, création et modification d'une page, données retrouvées depuis la maison. D-006 écrite, Socle N0 faite.

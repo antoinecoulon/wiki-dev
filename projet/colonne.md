@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | □ **v1** Sauvegardes DB + CI | □ Tests + automatisation |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | □ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs |
+| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ◧ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | □ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
@@ -27,15 +27,15 @@
 3. ■ Pages N0 · créer / écrire / supprimer
 4. ■ Retrouver N0 · liste dans la sidebar
 5. ■ Gestion de projet N0 · sections Projets / Doc
-6. ◧ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
-7. □ Pages N1 · images (Vercel Blob, captures collées)
+6. ■ Pages N1 · éditeur : sauvegarde auto, mise en forme, checklists, blocs de code
+7. ◧ Pages N1 · images (Vercel Blob, captures collées)
 8. □ Retrouver N1 · recherche par titre
 9. □ Mobile N0 · une page lisible
 10. □ Socle N1 · sauvegardes DB (CI seulement si utile) → puis migration manuelle Notion
 
 ## Tranche en cours
 
-**Pages · N1 · Éditeur : sauvegarde auto, mise en forme, checklists, blocs de code** · critères et checklist à écrire en début de tranche.
+**Pages · N1 · Images : upload Vercel Blob, captures collées dans l'éditeur** · critères et checklist à écrire en début de tranche.
 
 DoD : voir [dod.md](dod.md)
 
@@ -67,7 +67,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** `/pages/:id`
 - **Tranches :**
   - [N0] ■ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
-  - [N1] □ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
+  - [N1] ■ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
   - [N1] □ Images (upload Vercel Blob, captures collées dans l'éditeur)
   - [N2] □ Citations et tableaux
   - [N3] □ Drag & drop des blocs dans une page

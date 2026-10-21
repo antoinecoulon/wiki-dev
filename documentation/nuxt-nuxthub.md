@@ -405,6 +405,80 @@ const content = ref(page.value!.content)
 - Sans `UEditorToolbar`, les raccourcis TipTap (Ctrl+B, `#`…) restent actifs.
 - `@tiptap/vue-3` (cité dans la doc Nuxt UI) n'est pas importable sans l'installer : pnpm n'expose pas les dépendances transitives.
 
+### Barre d'outils, menu « / », checklists, code coloré
+
+Le slot de `UEditor` expose l'instance `editor`. Les `kind` des items (`mark`, `heading`, `taskList`, `codeBlock`, `undo`…) sont gérés par les handlers intégrés ; un tableau de tableaux crée des groupes séparés.
+
+```bash
+pnpm add @tiptap/extension-list @tiptap/extension-code-block-lowlight lowlight highlight.js @tiptap/vue-3
+```
+
+```vue
+<script setup lang="ts">
+import type { EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { TaskItem, TaskList } from '@tiptap/extension-list'
+import { VueNodeViewRenderer } from '@tiptap/vue-3'
+import { createLowlight } from 'lowlight'
+import csharp from 'highlight.js/lib/languages/csharp'
+import CodeBlockView from '~/components/CodeBlockView.vue'
+
+const lowlight = createLowlight({ csharp }) // n'importer que les langages utiles
+const extensions = [
+  // Node view : ajoute un sélecteur de langage au bloc
+  CodeBlockLowlight.extend({ addNodeView: () => VueNodeViewRenderer(CodeBlockView) }).configure({ lowlight }),
+  TaskList,
+  TaskItem.configure({ nested: true })
+]
+const toolbarItems: EditorToolbarItem[][] = [
+  [{ kind: 'mark', mark: 'bold', icon: 'i-lucide-bold' }, { kind: 'taskList', icon: 'i-lucide-list-checks' }]
+]
+const suggestionItems: EditorSuggestionMenuItem[][] = [
+  [{ type: 'label', label: 'Blocs' }, { kind: 'codeBlock', label: 'Bloc de code', icon: 'i-lucide-square-code' }]
+]
+</script>
+
+<template>
+  <!-- codeBlock: false : remplacé par CodeBlockLowlight -->
+  <UEditor v-slot="{ editor }" v-model="content" content-type="json" :starter-kit="{ codeBlock: false }" :extensions="extensions">
+    <UEditorToolbar :editor="editor" :items="toolbarItems" class="sticky top-0 z-10 bg-default" />
+    <UEditorSuggestionMenu :editor="editor" :items="suggestionItems" />
+  </UEditor>
+</template>
+```
+
+```vue
+<!-- app/components/CodeBlockView.vue -->
+<script setup lang="ts">
+import { NodeViewContent, NodeViewWrapper, nodeViewProps } from '@tiptap/vue-3'
+
+const props = defineProps(nodeViewProps)
+const language = computed({
+  get: () => props.node.attrs.language || 'auto',
+  set: value => props.updateAttributes({ language: value === 'auto' ? null : value }) // null = détection
+})
+</script>
+
+<template>
+  <NodeViewWrapper class="relative">
+    <USelect v-model="language" :items="[{ label: 'Auto', value: 'auto' }, { label: 'C#', value: 'csharp' }]" size="xs" class="absolute top-1.5 right-1.5" contenteditable="false" />
+    <pre spellcheck="false"><NodeViewContent as="code" /></pre>
+  </NodeViewWrapper>
+</template>
+```
+
+- Ni les checklists (`ul[data-type="taskList"]`) ni les classes `hljs-*` ne sont stylées par `UEditor` : quelques règles CSS dans `main.css` (variables de couleur sous `.dark` pour le mode sombre).
+- La détection automatique (langue `null`) est peu fiable sur du code court : proposer le choix explicite.
+- ```` ```cs ```` + Entrée crée un bloc dans la langue donnée (alias highlight.js).
+
+### Sauvegarde automatique
+
+Debounce d'1 s sur `watch([title, content], …, { deep: true })`, une seule requête à la fois (`while (current) await current`), puis :
+
+- `onBeforeRouteLeave` : attendre la sauvegarde en attente avant de changer de page.
+- `beforeunload` : `event.preventDefault()` s'il reste une sauvegarde en attente (le navigateur demande confirmation).
+- Ne pas rafraîchir l'état local avec la réponse : l'utilisateur a pu continuer à taper pendant la requête.
+
 ## 7. Layout avec sidebar (UDashboard*)
 
 Les composants `UDashboard*` de Nuxt UI donnent une sidebar redimensionnable, repliable et en tiroir sur mobile, sans CSS à écrire.
