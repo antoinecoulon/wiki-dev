@@ -16,9 +16,10 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - Une seule tranche en cours ; suivre l'ordre de la section « Version 1 » de la Colonne. DoD : `projet/dod.md`.
 - **Guide technique** (`documentation/nuxt-nuxthub.md`) : en fin de tranche, s'il y a un concept réutilisable (auth, stockage, éditeur…), y ajouter une section courte et générique (config, exemple, pièges rencontrés). Rien sur ce qui est propre à wiki-dev.
 - Réponses en **français**.
+- **Skills à charger** selon la tâche : `nuxt` (routes serveur, pages, middleware), `nuxt-ui` (composants, `UEditor`), `vercel:vercel-storage` (Blob), `vercel:vercel-cli` (déploiement, env, logs), `pnpm` (dépendances).
 
 ## État (2026-10-21)
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
 - App déployée sur `wiki-dev-blond.vercel.app` (`pnpm run deploy` depuis `src/`), validée derrière le proxy pro (D-006).
-- Tranche en cours : *Pages N1 (images, Vercel Blob)*. Socle N0, Accès N0, Pages N0, Pages N1 éditeur, Retrouver N0 et Gestion de projet N0 faites.
+- Tranche en cours : *Retrouver N1 (recherche par titre)*. Socle N0, Accès N0, Pages N0-N1, Retrouver N0 et Gestion de projet N0 faites.

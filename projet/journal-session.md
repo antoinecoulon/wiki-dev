@@ -5,6 +5,14 @@
 
 ---
 
+## 13 · 2026-10-21 · ~1h30 · tranche : Pages N1 images
+
+- **Fait :** images collées, glissées ou choisies (bouton dans la barre et le menu « / »), 4 Mo max, PNG/JPEG/GIF/WebP ; store Vercel Blob **privé** (`dub1`) via `@vercel/blob` direct, servi par `/images/…` protégé par le login. Bloc de code : Tab / Shift+Tab, paires auto-fermantes, fermeture des balises en HTML/XML, Entrée qui garde l'indentation. Déployé et validé en ligne, y compris derrière le proxy.
+- **Blocage / question :** limite Vercel de 4,5 Mo par requête → 4 Mo max. Image recollée depuis la page réuploadée (FileHandler) → handlers maison. Raccourcis Enter/Backspace qui écrasaient ceux du bloc d'origine (plus de sortie après 3 Entrée) → relais vers le parent. Images retirées d'une page : restent dans le store (pas de nettoyage).
+- **➜ Prochaine action :** tranche Retrouver N1 (recherche par titre).
+
+---
+
 ## 12 · 2026-10-21 · ~1h · tranche : Pages N1 éditeur
 
 - **Fait :** sauvegarde auto (1 s après la dernière modification, indicateur d'état, attente avant changement de page, alerte à la fermeture) ; barre d'outils fixe et menu « / » ; checklists (TaskList) ; blocs de code colorés (lowlight) avec sélecteur de langage (node view `CodeBlockView`). Déployé et validé en ligne. Section ajoutée au guide technique.

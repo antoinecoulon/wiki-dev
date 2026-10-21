@@ -470,6 +470,8 @@ const language = computed({
 - Ni les checklists (`ul[data-type="taskList"]`) ni les classes `hljs-*` ne sont stylées par `UEditor` : quelques règles CSS dans `main.css` (variables de couleur sous `.dark` pour le mode sombre).
 - La détection automatique (langue `null`) est peu fiable sur du code court : proposer le choix explicite.
 - ```` ```cs ```` + Entrée crée un bloc dans la langue donnée (alias highlight.js).
+- Tab dans le code : `CodeBlockLowlight.configure({ enableTabIndentation: true, tabSize: 4 })` (désactivé par défaut).
+- Paires auto-fermantes, Entrée qui garde l'indentation : un plugin `handleTextInput` (`@tiptap/pm/state`) + `addKeyboardShortcuts` dans `.extend()`, actifs seulement si `$from.parent.type.name === 'codeBlock'`. ⚠️ Redéfinir `Enter` ou `Backspace` **remplace** ceux du bloc d'origine (sortie après 3 Entrée…) : garder `const parent = this.parent?.()` et appeler `parent.Enter?.(props)` quand on ne gère pas le cas. Insérer avec `tr.insertText` : `insertContent` analyse la chaîne comme du HTML.
 
 ### Sauvegarde automatique
 
@@ -478,6 +480,36 @@ Debounce d'1 s sur `watch([title, content], …, { deep: true })`, une seule req
 - `onBeforeRouteLeave` : attendre la sauvegarde en attente avant de changer de page.
 - `beforeunload` : `event.preventDefault()` s'il reste une sauvegarde en attente (le navigateur demande confirmation).
 - Ne pas rafraîchir l'état local avec la réponse : l'utilisateur a pu continuer à taper pendant la requête.
+
+### Images : coller, glisser, bouton (Vercel Blob privé)
+
+```bash
+pnpm add @vercel/blob
+pnpm dlx vercel blob create-store mon-app-images --access private --region dub1 --yes  # ajoute BLOB_READ_WRITE_TOKEN au projet
+```
+
+Le driver blob de NuxtHub ne gère que les stores publics (il relit les fichiers par leur URL) : pour un store privé, appeler `@vercel/blob` directement.
+
+```ts
+// server/api/images.post.ts : 4 Mo max, une requête vers une fonction Vercel est limitée à 4,5 Mo
+const file = (await readFormData(event)).get('file') // vérifier File, type (pas de SVG) et taille
+const pathname = `images/${crypto.randomUUID()}.png`
+await put(pathname, file, { access: 'private', contentType: file.type })
+return { src: `/${pathname}` }
+
+// server/routes/images/[name].get.ts : protégée par le middleware d'auth
+const result = await get(`images/${name}`, { access: 'private' }).catch(() => null)
+if (result?.statusCode !== 200) throw createError({ status: 404 })
+setResponseHeaders(event, { 'Content-Type': result.blob.contentType, 'Cache-Control': 'private, max-age=31536000, immutable' })
+return result.stream
+```
+
+Côté éditeur (`UEditor` inclut déjà l'extension Image) :
+
+- Coller / déposer : `editorProps.handlePaste` / `handleDrop`. Ignorer le contenu venu de l'éditeur (`text/html` contenant `data-pm-slice`, `moved`, type `application/x-prosemirror-slice`) : le navigateur y joint l'image comme fichier, elle serait réuploadée. `@tiptap/extension-file-handler` ne filtre pas ce cas au collage.
+- Insertion après l'envoi : `view.dispatch(state.tr.insert(pos, state.schema.nodes.image.create({ src })))`, avec `pos` borné à `doc.content.size` (le document a pu changer).
+- Bouton : surcharger le handler `image` (prop `handlers` de `UEditor`, sinon il demande une URL) pour ouvrir un `<input type="file">` caché ; il sert à la fois à la barre d'outils et au menu « / ».
+- Erreur de l'API : lire `error.data.statusMessage` (le `statusText` HTTP est vide en HTTP/2).
 
 ## 7. Layout avec sidebar (UDashboard*)
 
@@ -569,6 +601,8 @@ mon-app/
 | Erreur 500 en prod sans détail | — | `pnpm wrangler tail <worker> --format pretty` pendant qu'on recharge |
 | Vercel : URL `mon-app-<suffixe>.vercel.app` au lieu de `mon-app.vercel.app` | sous-domaine déjà pris par un autre compte | renommer le projet ou ajouter un domaine dans les réglages |
 | Valeur de `.env` tronquée une fois passée à `vercel env add` | `$` interprétés si on source `.env` avec des valeurs sans quotes | quotes simples dans `.env`, ou transmettre la valeur brute |
+| `.env.example` ignoré par git après `vercel link` ou `vercel blob create-store` | la CLI ajoute `.env*` au `.gitignore` | retirer la ligne (`.env` et `.env.*` suffisent) |
+| `vercel logs --since 2h` : « outside the available retention » | plan Hobby : 30 min de logs | reproduire en local (`nuxt dev`) |
 
 ## Références
 
