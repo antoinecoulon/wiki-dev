@@ -44,11 +44,11 @@ Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 validées l
 **Correctifs des retours de test** (2026-10-22, Ctrl+Shift+R avant de tester)
 
 - [ ] Tableau : « Ajouter des lignes » / « Ajouter des colonnes » ouvrent un sous-menu 1, 2 ou 3 ; les actions indisponibles sont nettement plus grisées
-- [ ] Sidebar repliée : le bouton d'espace est coloré (primaire) et affiche une infobulle au survol
-- [ ] Barre du haut : icône nuage (coché = enregistré, nuage = modifié, alerte = échec) ; assez parlante sur smartphone ?
-- [ ] Une page avec des sous-pages les liste sous le titre (liens cliquables)
-- [ ] Arborescence limitée à 5 niveaux : « Sous-page » grisé au niveau 5 ; le sélecteur « page parente » ne propose que les pages où la branche tient (les pages de test plus profondes restent éditables)
-- [ ] Nouvelle page (sidebar, accueil, sous-page) : le titre « Sans titre » est sélectionné, on tape directement le nom
+- [x] Sidebar repliée : le bouton d'espace est coloré (primaire) et affiche une infobulle au survol
+- [x] Barre du haut : icône nuage (coché = enregistré, nuage = modifié, alerte = échec) ; assez parlante sur smartphone ?
+- [x] Une page avec des sous-pages les liste sous le titre (liens cliquables)
+- [x] Arborescence limitée à 5 niveaux : « Sous-page » grisé au niveau 5 ; le sélecteur « page parente » ne propose que les pages où la branche tient (les pages de test plus profondes restent éditables)
+- [x] Nouvelle page (sidebar, accueil, sous-page) : le titre « Sans titre » est sélectionné, on tape directement le nom
 
 **Notés pour plus tard** (retours de test, non traités)
 

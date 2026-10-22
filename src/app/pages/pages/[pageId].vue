@@ -177,10 +177,11 @@ type TableCommand = 'addRowAfter' | 'addColumnAfter' | 'deleteRow' | 'deleteColu
 function tableHandler(command: TableCommand) {
   return {
     canExecute: (editor: Editor) => editor.can()[command](),
+    // Une transaction par ajout : enchaînées dans une seule, les colonnes suivantes échouent (structure du tableau périmée).
+    // L'historique les regroupe : un seul Ctrl+Z
     execute: (editor: Editor, item?: { count?: number }) => {
-      const chain = editor.chain().focus()
-      for (let i = 0; i < (item?.count ?? 1); i++) chain[command]()
-      return chain
+      for (let i = 1; i < (item?.count ?? 1); i++) editor.chain().focus()[command]().run()
+      return editor.chain().focus()[command]()
     },
     isActive: () => false
   }
