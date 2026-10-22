@@ -272,10 +272,34 @@ turso db tokens create mon-app | pnpm dlx vercel env add TURSO_AUTH_TOKEN produc
 # + NUXT_SESSION_PASSWORD, NUXT_ADMIN_PASSWORD_HASH (section 5) de la même façon
 ```
 
-### Déployer
+### Déployer (à chaque push)
 
-```json
-"deploy": "pnpm dlx vercel deploy --prod"
+Le dépôt GitHub est connecté au projet Vercel : chaque push sur `main` construit et met en prod, et le statut (✓ / ✗) s'affiche sur le commit. Si l'app est dans un sous-dossier (`src/`), régler le **Root Directory** du projet, sinon le build part de la racine et échoue en 3 s (`nuxt: command not found`) :
+
+```bash
+echo '{"rootDirectory":"src"}' > body.json
+pnpm dlx vercel api "/v9/projects/<projectId>?teamId=<orgId>" --method PATCH --input body.json   # ids : .vercel/project.json
+```
+
+Ensuite, `vercel deploy` lancé depuis `src/` ne marche plus (il cherche `src/src`) : on ne déploie plus qu'en poussant.
+
+Lint et typecheck en GitHub Actions (`.github/workflows/ci.yml`), le build restant fait par Vercel :
+
+```yaml
+on: { push: { branches: [main] }, pull_request: {} }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: src } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm, cache-dependency-path: src/pnpm-lock.yaml }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
 ```
 
 Vérifier les tables : `turso db shell mon-app ".tables"` (on doit voir `_hub_migrations`).
@@ -677,6 +701,7 @@ mon-app/
 | Erreur 500 en prod sans détail | — | `pnpm wrangler tail <worker> --format pretty` pendant qu'on recharge |
 | Vercel : URL `mon-app-<suffixe>.vercel.app` au lieu de `mon-app.vercel.app` | sous-domaine déjà pris par un autre compte | renommer le projet ou ajouter un domaine dans les réglages |
 | Valeur de `.env` tronquée une fois passée à `vercel env add` | `$` interprétés si on source `.env` avec des valeurs sans quotes | quotes simples dans `.env`, ou transmettre la valeur brute |
+| Vercel : déploiements Git en « Error » en 3 s, `nuxt: command not found` | Root Directory du projet à `.` alors que l'app est dans un sous-dossier | Root Directory = `src` (section 4 bis) |
 | `.env.example` ignoré par git après `vercel link` ou `vercel blob create-store` | la CLI ajoute `.env*` au `.gitignore` | retirer la ligne (`.env` et `.env.*` suffisent) |
 | `vercel logs --since 2h` : « outside the available retention » | plan Hobby : 30 min de logs | reproduire en local (`nuxt dev`) |
 | Classe Tailwind sans effet sur un élément de `UEditor` (ex. `pt-10` sur un `pre`) | le thème cible `[&_pre]:…` depuis le parent, plus spécifique | suffixe `!` : `max-sm:pt-10!` |

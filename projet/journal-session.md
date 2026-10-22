@@ -5,6 +5,14 @@
 
 ---
 
+## 17 · 2026-10-22 · <1h> · hors tranche : CI
+
+- **Fait :** diagnostic des déploiements en « Error » : c'étaient les déploiements auto Vercel à chaque push, construits depuis la racine du dépôt (Root Directory `.`) ; la prod (dernier `pnpm run deploy`) était à jour. Root Directory passé à `src` : chaque push sur `main` déploie en prod. Workflow GitHub Actions lint + typecheck. Script `deploy` retiré (ne marche plus avec ce réglage).
+- **Blocage / question :** /
+- **➜ Prochaine action :** migration manuelle depuis Notion, puis choisir la prochaine tranche.
+
+---
+
 ## 16 · 2026-10-21 · <1h> · tranche : Socle N1
 
 - **Fait :** `pnpm run backup` (depuis `src/`) : dump SQL horodaté de la base Turso dans `backups/db` (30 derniers gardés, dump incomplet refusé) et copie des nouvelles images du store Blob dans `backups/images` ; `backups/` gitignoré. Restauration testée dans une base jetable (25 pages sur 25). CI non retenue. **v1 terminée.**

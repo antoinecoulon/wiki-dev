@@ -21,6 +21,6 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 ## État (2026-10-21)
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
-- App déployée sur `wiki-dev-blond.vercel.app` (`pnpm run deploy` depuis `src/`), validée derrière le proxy pro (D-006).
+- App déployée sur `wiki-dev-blond.vercel.app` (déploiement auto à chaque push sur `main`, CI lint + typecheck en GitHub Actions), validée derrière le proxy pro (D-006).
 - **v1 terminée** (Socle N0-N1, Accès N0, Pages N0-N1, Retrouver N0-N1, Gestion de projet N0, Mobile N0). Sauvegardes : `pnpm run backup` depuis `src/` → `backups/` (gitignoré).
 - Prochaine étape : migration manuelle depuis Notion, puis choix de la prochaine tranche (aucune en cours).
