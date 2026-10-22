@@ -79,3 +79,37 @@
 .ProseMirror pre .hljs-name {
   color: var(--hl-type);
 }
+
+/* Tableaux (extension Table) : non stylés par UEditor ; défilement horizontal sur écran étroit */
+.ProseMirror .tableWrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.ProseMirror table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid var(--ui-border-accented);
+  padding: 0.375rem 0.75rem;
+  vertical-align: top;
+  min-width: 6rem;
+}
+
+.ProseMirror th {
+  background: var(--ui-bg-elevated);
+  font-weight: 600;
+  text-align: left;
+}
+
+.ProseMirror th > p,
+.ProseMirror td > p {
+  margin: 0;
+}
+
+.ProseMirror .selectedCell {
+  background: color-mix(in oklab, var(--ui-primary) 15%, transparent);
+}

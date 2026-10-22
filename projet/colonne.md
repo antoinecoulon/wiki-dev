@@ -2,15 +2,15 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-21
+> Mise à jour : 2026-10-22
 
 ## Grille
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
-| **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB (CI non retenue) | □ Tests + automatisation |  |
+| **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | □ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
+| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ◧ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
@@ -35,7 +35,12 @@
 
 ## Tranche en cours
 
-Aucune : **v1 terminée** (2026-10-21). Prochaine étape : migration manuelle depuis Notion (hors Colonne), puis choix de la prochaine tranche.
+◧ **Pages N2 · citations et tableaux** (ouverte le 2026-10-22). Les citations existaient déjà depuis Pages N1 ; reste les tableaux, pour que ceux de Notion se collent sans perte avant la migration.
+
+- [ ] Insérer un tableau (barre d'outils et menu « / »)
+- [ ] Ajouter / supprimer une ligne ou une colonne, supprimer le tableau
+- [ ] Un tableau copié depuis Notion se colle en tableau
+- [ ] Lisible sur mobile (défilement horizontal)
 
 DoD : voir [dod.md](dod.md)
 
@@ -46,8 +51,8 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** aucun
 - **Tranches :**
   - [N0] ■ Projet Nuxt + lint, DB branchée, déployé (une page accessible en ligne)
-  - [N1] ■ Sauvegardes de la DB et des images (`pnpm run backup`) ; CI non retenue (lint, typecheck à la main)
-  - [N2] □ Tests automatisés + automatisation (déploiement continu)
+  - [N1] ■ Sauvegardes de la DB et des images (`pnpm run backup`)
+  - [N2] □ Tests automatisés (déjà fait hors tranche le 2026-10-22 : CI lint + typecheck en GitHub Actions, déploiement à chaque push)
   - [N3] pas prévu (monitoring, perfs, stats : peu utile en mono-utilisateur)
 
 ### Accès
@@ -69,7 +74,7 @@ DoD : voir [dod.md](dod.md)
   - [N0] ■ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
   - [N1] ■ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
   - [N1] ■ Images (upload Vercel Blob, captures collées dans l'éditeur)
-  - [N2] □ Citations et tableaux
+  - [N2] ◧ Citations et tableaux
   - [N3] □ Drag & drop des blocs dans une page + bouton « + » à côté de chaque bloc pour en insérer un au-dessus / en dessous (comme Notion ; `UEditorDragHandle` de Nuxt UI couvre les deux)
 
 - je crée une page

@@ -2,6 +2,7 @@
 import type { Editor, JSONContent } from '@tiptap/core'
 import type { EditorCustomHandlers, EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
 import { TaskItem, TaskList } from '@tiptap/extension-list'
+import { TableKit } from '@tiptap/extension-table'
 import { CodeBlock } from '~/editor/code-block'
 
 // Recrée le composant à chaque page : sinon titre et contenu restent ceux de la page précédente
@@ -28,7 +29,8 @@ const confirmDelete = ref(false)
 const extensions = [
   CodeBlock,
   TaskList,
-  TaskItem.configure({ nested: true })
+  TaskItem.configure({ nested: true }),
+  TableKit.configure({ table: { resizable: false } })
 ]
 
 // Images : envoyées à /api/images (store Vercel Blob privé), insérées une fois enregistrées
@@ -91,8 +93,18 @@ function onFilePicked(event: Event) {
   input.value = ''
 }
 
+// Actions sur le tableau : grisées hors d'un tableau (can() échoue)
+type TableCommand = 'addRowAfter' | 'addColumnAfter' | 'deleteRow' | 'deleteColumn' | 'deleteTable'
+function tableHandler(command: TableCommand) {
+  return {
+    canExecute: (editor: Editor) => editor.can()[command](),
+    execute: (editor: Editor) => editor.chain().focus()[command](),
+    isActive: () => false
+  }
+}
+
 // Bouton Image (barre et menu « / ») : choisir un fichier au lieu de saisir une URL
-const handlers: EditorCustomHandlers = {
+const handlers = {
   image: {
     canExecute: () => true,
     execute: (editor) => {
@@ -100,11 +112,21 @@ const handlers: EditorCustomHandlers = {
       fileInput.value?.click()
       return editor.chain()
     },
-    isActive: editor => editor.isActive('image')
-  }
-}
+    isActive: (editor: Editor) => editor.isActive('image')
+  },
+  table: {
+    canExecute: (editor: Editor) => editor.can().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+    execute: (editor: Editor) => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+    isActive: (editor: Editor) => editor.isActive('table')
+  },
+  addRowAfter: tableHandler('addRowAfter'),
+  addColumnAfter: tableHandler('addColumnAfter'),
+  deleteRow: tableHandler('deleteRow'),
+  deleteColumn: tableHandler('deleteColumn'),
+  deleteTable: tableHandler('deleteTable')
+} satisfies EditorCustomHandlers
 
-const toolbarItems: EditorToolbarItem[][] = [
+const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [
   [
     { kind: 'undo', icon: 'i-lucide-undo', tooltip: { text: 'Annuler' } },
     { kind: 'redo', icon: 'i-lucide-redo', tooltip: { text: 'Rétablir' } }
@@ -137,10 +159,23 @@ const toolbarItems: EditorToolbarItem[][] = [
     { kind: 'codeBlock', icon: 'i-lucide-square-code', tooltip: { text: 'Bloc de code' } },
     { kind: 'horizontalRule', icon: 'i-lucide-separator-horizontal', tooltip: { text: 'Séparateur' } },
     { kind: 'image', icon: 'i-lucide-image', tooltip: { text: 'Image' } }
-  ]
+  ],
+  [{
+    icon: 'i-lucide-table',
+    tooltip: { text: 'Tableau' },
+    content: { align: 'start' },
+    items: [
+      { kind: 'table', icon: 'i-lucide-table', label: 'Insérer un tableau' },
+      { kind: 'addRowAfter', icon: 'i-lucide-between-horizontal-start', label: 'Ajouter une ligne' },
+      { kind: 'addColumnAfter', icon: 'i-lucide-between-vertical-start', label: 'Ajouter une colonne' },
+      { kind: 'deleteRow', icon: 'i-lucide-rows-3', label: 'Supprimer la ligne' },
+      { kind: 'deleteColumn', icon: 'i-lucide-columns-3', label: 'Supprimer la colonne' },
+      { kind: 'deleteTable', icon: 'i-lucide-trash-2', label: 'Supprimer le tableau' }
+    ]
+  }]
 ]
 
-const suggestionItems: EditorSuggestionMenuItem[][] = [
+const suggestionItems: EditorSuggestionMenuItem<typeof handlers>[][] = [
   [
     { type: 'label', label: 'Texte' },
     { kind: 'paragraph', label: 'Texte', icon: 'i-lucide-type' },
@@ -159,7 +194,8 @@ const suggestionItems: EditorSuggestionMenuItem[][] = [
     { kind: 'blockquote', label: 'Citation', icon: 'i-lucide-text-quote' },
     { kind: 'codeBlock', label: 'Bloc de code', icon: 'i-lucide-square-code' },
     { kind: 'horizontalRule', label: 'Séparateur', icon: 'i-lucide-separator-horizontal' },
-    { kind: 'image', label: 'Image', icon: 'i-lucide-image' }
+    { kind: 'image', label: 'Image', icon: 'i-lucide-image' },
+    { kind: 'table', label: 'Tableau', icon: 'i-lucide-table' }
   ]
 ]
 
