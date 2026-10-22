@@ -9,13 +9,14 @@
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
-| **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
+| **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) (à tester) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
-| **Mobile** | ■ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
+| **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
+| **Performance** (bonus) | □ Liste des pages allégée |  |  |  |
 | **Personnalisation** | ■ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches.
@@ -80,7 +81,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** `/login`
 - **Tranches :**
   - [N0] ■ Je me connecte (mot de passe unique) sur l'app déployée
-  - [N1] □ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (après Mobile N0)
+  - [N1] ■ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (validé par les tests du 2026-10-22)
   - [N2] □ Session longue sur chaque poste, déconnexion, expiration sans perte de saisie
   - [N3] □ Sécurité renforcée (limitation des tentatives, 2FA ou OAuth)
 
@@ -161,11 +162,18 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** tous, en largeur mobile
 - **Tranches :**
   - [N0] ■ Une page s'ouvre et se lit sans zoomer
-  - [N1] □ Navigation mobile (sidebar rétractable)
+  - [N1] ■ Navigation mobile (sidebar rétractable ; validé par les tests du 2026-10-22)
   - [N2] □ Confort de lecture (typo, blocs de code et tableaux qui défilent)
   - [N3] pas prévu (PWA)
 
 - je consulte une page sur mon téléphone
+
+### Performance (bonus)
+- **Rôle :** garder l'app rapide quand le volume grossit (migration Notion)
+- **Écrans :** aucun (transverse)
+- **Tranches :**
+  - [N0] □ `GET /api/pages` ne renvoie plus le contenu des pages (la sidebar, l'accueil et la recherche n'ont besoin que des métadonnées) : à faire avant une migration en volume
+  - Autres soucis à ajouter ici au fil de l'eau (niveaux à définir)
 
 ### Personnalisation
 - **Rôle :** permettre la personnalisation de mon workspace
