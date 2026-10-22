@@ -701,6 +701,14 @@ const rows = await db.all<{ id: string }>(sql`
 - `defaultOpen` ne joue qu'au premier rendu : naviguer ensuite vers une page profonde ne rouvre pas sa branche.
 - Sidebar repliée (`collapsed`) : les enfants ne s'affichent pas, sauf avec la prop `popover`.
 
+### Dates relatives (« il y a 2 heures »)
+
+`<NuxtTime>` (intégré à Nuxt) : rendu côté serveur puis recalé à l'hydratation, sans avertissement d'écart serveur / client, contrairement à un `Intl.RelativeTimeFormat` maison.
+
+```vue
+<NuxtTime :datetime="page.updatedAt" relative locale="fr" />
+```
+
 ### Préférence par appareil (useCookie)
 
 Pour un réglage d'affichage propre à chaque poste (ex. un filtre Perso / Pro), un cookie plutôt que `localStorage` : il est lu pendant le rendu serveur, donc la page arrive déjà filtrée, sans saut à l'hydratation.

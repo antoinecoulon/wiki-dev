@@ -5,6 +5,14 @@
 
 ---
 
+## 21 · 2026-10-22 · <1h> · tranche : Personnalisation N0
+
+- **Fait :** page d'accueil de l'espace affiché : « Projets récents » (cartes, pages racines de Projets classées par activité dans leur branche) et « Pages récentes » (8 dernières), dates relatives (`NuxtTime`), « Nouvelle page » dans la barre. Choisie pour ne pas retoucher sidebar ni barre de page, déjà non testées. Rendu serveur vérifié en local. Déployé par push.
+- **Blocage / question :** 4 tranches livrées sans test dans l'app : voir « À tester ».
+- **➜ Prochaine action :** tests « À tester » depuis le PC, puis migration Notion.
+
+---
+
 ## 20 · 2026-10-22 · <1h> · tranche : Retrouver N2
 
 - **Fait :** arborescence. Colonne `parent_id` (migration 0001, sauvegarde de la base faite avant). Sidebar en arbre (branche de la page ouverte dépliée) ; sous le titre d'une page : fil d'Ariane, sélecteur « page parente » avec recherche, bouton « Sous-page ». Une sous-page hérite de l'espace et de la section de son parent ; changer l'espace ou la section d'une page la remet à la racine et emmène ses sous-pages. Suppression : les sous-pages remontent d'un niveau. API testée en local (héritage, boucles, section, propagation, suppression), rendu serveur vérifié. Déployé par push.

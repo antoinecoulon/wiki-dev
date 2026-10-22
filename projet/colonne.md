@@ -16,7 +16,7 @@
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro (à tester) | ■ Déplacer entre espaces (à tester, couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
-| **Personnalisation** | □ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
+| **Personnalisation** | ■ Accueil avec projets récents (à tester) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Elle se fait **après Socle N1** (sauvegardes DB).
 
@@ -35,7 +35,7 @@
 
 ## Tranche en cours
 
-Aucune. Pages N2, Espaces N1-N2 et Retrouver N2 livrées le 2026-10-22, restent à valider : voir « À tester ».
+Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 livrées le 2026-10-22, restent à valider : voir « À tester ».
 
 ## À tester
 
@@ -67,6 +67,13 @@ Aucune. Pages N2, Espaces N1-N2 et Retrouver N2 livrées le 2026-10-22, restent 
 - [ ] Supprimer une page avec des sous-pages : la confirmation annonce qu'elles remontent, et elles remontent d'un niveau
 - [ ] Sidebar repliée : seules les pages racines apparaissent (comportement attendu)
 - [ ] Sur smartphone, la ligne fil d'Ariane / sélecteur / « Sous-page » passe à la ligne proprement
+
+**Personnalisation N0 · accueil** (déployé le 2026-10-22 ; rendu serveur vérifié en local)
+
+- [ ] L'accueil montre « Projets récents » (pages racines de Projets, 6 max, classées par dernière modification dans leur branche) et « Pages récentes » (8 dernières modifiées), de l'espace affiché
+- [ ] Changer d'espace dans la sidebar met l'accueil à jour ; espace vide : message + « Nouvelle page »
+- [ ] Dates relatives en français (« il y a 2 heures ») ; cartes et lignes cliquables
+- [ ] Sur smartphone, les cartes passent en une colonne et le bouton « Nouvelle page » tient dans la barre
 
 DoD : voir [dod.md](dod.md)
 
@@ -177,7 +184,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** permettre la personnalisation de mon workspace
 - **Écrans :** `/settings`
 - **Tranches :**
-  - [N0] □ Page d'accueil avec projets récents (après Gestion de projet N0)
+  - [N0] ■ Page d'accueil avec projets récents (à tester)
   - [N1] □ Personnalisation de la disposition de la page d'accueil
   - [N2] □ Personnalisation de la sidebar
   - [N3] pas prévu (statistiques)
