@@ -24,6 +24,64 @@ const section = ref(page.value!.section)
 const space = ref(page.value!.space)
 const currentSpace = useSpace()
 watch(space, value => currentSpace.value = value, { immediate: true })
+
+// Arborescence : liste déjà chargée par la sidebar (même clé)
+const { data: pages } = await useFetch('/api/pages', { key: 'pages' })
+const parentId = ref(page.value!.parentId)
+// Le parent doit être dans le même espace et la même section : changer l'un ou l'autre remet la page à la racine
+watch([space, section], () => parentId.value = null)
+
+const pagesById = computed(() => new Map((pages.value ?? []).map(p => [p.id, p])))
+const ancestors = computed(() => {
+  const chain = []
+  let id = parentId.value
+  while (id && chain.length < 50) {
+    const parent = pagesById.value.get(id)
+    if (!parent) break
+    chain.unshift(parent)
+    id = parent.parentId
+  }
+  return chain
+})
+const descendantIds = computed(() => {
+  const ids = new Set<string>()
+  const queue = [pageId]
+  while (queue.length) {
+    const id = queue.shift()
+    for (const p of pages.value ?? []) {
+      if (p.parentId === id && !ids.has(p.id)) {
+        ids.add(p.id)
+        queue.push(p.id)
+      }
+    }
+  }
+  return ids
+})
+const childCount = computed(() => (pages.value ?? []).filter(p => p.parentId === pageId).length)
+
+// Parents possibles : même espace et même section, ni la page ni ses sous-pages (boucle)
+const ROOT = 'root'
+const parentItems = computed(() => [
+  { label: 'Aucune (racine)', value: ROOT, icon: 'i-lucide-corner-left-up' },
+  ...(pages.value ?? [])
+    .filter(p => p.space === space.value && p.section === section.value && p.id !== pageId && !descendantIds.value.has(p.id))
+    .map(p => ({ label: p.title, value: p.id, icon: 'i-lucide-file-text' }))
+])
+const parentValue = computed({
+  get: () => parentId.value ?? ROOT,
+  set: value => parentId.value = value === ROOT ? null : value
+})
+const breadcrumb = computed(() => ancestors.value.map(p => ({ label: p.title, to: `/pages/${p.id}` })))
+
+async function createSubpage() {
+  try {
+    const child = await $fetch('/api/pages', { method: 'POST', body: { parentId: pageId } })
+    await refreshNuxtData('pages')
+    await navigateTo(`/pages/${child!.id}`)
+  } catch {
+    toast.add({ title: 'Échec de la création de la sous-page', color: 'error' })
+  }
+}
 const sections = [
   { label: 'Projets', value: 'project' as const },
   { label: 'Documentation', value: 'doc' as const }
@@ -219,7 +277,7 @@ let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
 let current: Promise<void> | undefined
 
-watch([title, content, section, space], () => {
+watch([title, content, section, space, parentId], () => {
   dirty = true
   status.value = 'pending'
   clearTimeout(timer)
@@ -236,7 +294,7 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value }
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value }
   }).then(async () => {
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
@@ -334,6 +392,34 @@ async function remove() {
           :ui="{ base: 'text-3xl font-bold px-0' }"
         />
 
+        <!-- Arborescence : chemin, page parente, sous-page -->
+        <div class="flex flex-wrap items-center gap-2">
+          <UBreadcrumb
+            v-if="breadcrumb.length"
+            :items="breadcrumb"
+            class="min-w-0"
+          />
+          <USelectMenu
+            v-model="parentValue"
+            :items="parentItems"
+            value-key="value"
+            :search-input="{ placeholder: 'Chercher une page…' }"
+            aria-label="Page parente"
+            icon="i-lucide-folder-tree"
+            size="sm"
+            variant="ghost"
+            class="w-56"
+          />
+          <UButton
+            icon="i-lucide-file-plus"
+            label="Sous-page"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            @click="createSubpage"
+          />
+        </div>
+
         <UEditor
           v-slot="{ editor }"
           v-model="content"
@@ -368,7 +454,9 @@ async function remove() {
       <UModal
         v-model:open="confirmDelete"
         title="Supprimer la page ?"
-        description="La suppression est définitive."
+        :description="childCount
+          ? `La suppression est définitive. ${childCount > 1 ? `Ses ${childCount} sous-pages remonteront` : 'Sa sous-page remontera'} d'un niveau.`
+          : 'La suppression est définitive.'"
       >
         <template #footer>
           <UButton

@@ -669,6 +669,38 @@ const searchGroups = computed(() => [{
 - Ne pas passer des `NavigationMenuItem` tels quels : erreur de type (`chip`), reconstruire `{ label, icon, to }`.
 - Textes en anglais par défaut (pas de `locale` sur `UApp`) : `placeholder` et slot `#empty`.
 
+### Arborescence dans la sidebar (sous-pages)
+
+Une colonne `parent_id` nullable (sans clé étrangère : c'est l'API qui décide quoi faire des enfants à la suppression), et l'arbre est construit côté client à partir de la liste à plat. `UNavigationMenu` vertical gère les `children` récursifs : avec un `to`, le libellé reste un lien et seul le chevron replie / déplie.
+
+```ts
+const toItem = (page: Page): NavigationMenuItem => {
+  const children = pages.filter(child => child.parentId === page.id).map(toItem)
+  return {
+    label: page.title,
+    to: `/pages/${page.id}`,
+    children: children.length ? children : undefined, // [] afficherait un chevron vide
+    defaultOpen: openIds.has(page.id) // parents de la page affichée
+  }
+}
+const items = pages.filter(page => !page.parentId || !ids.has(page.parentId)).map(toItem) // orphelins à la racine
+```
+
+Côté serveur, les descendants (pour refuser une boucle ou propager un changement à toute la branche) avec une CTE récursive :
+
+```ts
+const rows = await db.all<{ id: string }>(sql`
+  WITH RECURSIVE tree(id) AS (
+    SELECT id FROM pages WHERE parent_id = ${pageId}
+    UNION SELECT pages.id FROM pages JOIN tree ON pages.parent_id = tree.id
+  )
+  SELECT id FROM tree`)
+```
+
+- Déplacer : un `USelectMenu` « page parente » (recherche intégrée, `value-key="value"`) plutôt que du glisser-déposer, que `UNavigationMenu` ne gère pas. Une valeur sentinelle (`'root'`) pour « racine » : éviter `null` comme valeur d'item.
+- `defaultOpen` ne joue qu'au premier rendu : naviguer ensuite vers une page profonde ne rouvre pas sa branche.
+- Sidebar repliée (`collapsed`) : les enfants ne s'affichent pas, sauf avec la prop `popover`.
+
 ### Préférence par appareil (useCookie)
 
 Pour un réglage d'affichage propre à chaque poste (ex. un filtre Perso / Pro), un cookie plutôt que `localStorage` : il est lu pendant le rendu serveur, donc la page arrive déjà filtrée, sans saut à l'hydratation.

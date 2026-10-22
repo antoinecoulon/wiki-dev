@@ -8,6 +8,13 @@
       "when": 1792353474610,
       "tag": "0000_daily_rocket_racer",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1792678212498,
+      "tag": "0001_boring_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

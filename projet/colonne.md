@@ -11,7 +11,7 @@
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau (à tester) | □ Drag & drop des blocs + bouton « + » |
-| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
+| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) (à tester) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro (à tester) | ■ Déplacer entre espaces (à tester, couvert par N1) |  |
@@ -35,7 +35,7 @@
 
 ## Tranche en cours
 
-Aucune. Pages N2 et Espaces N1-N2 livrées le 2026-10-22, restent à valider : voir « À tester ».
+Aucune. Pages N2, Espaces N1-N2 et Retrouver N2 livrées le 2026-10-22, restent à valider : voir « À tester ».
 
 ## À tester
 
@@ -56,6 +56,17 @@ Aucune. Pages N2 et Espaces N1-N2 livrées le 2026-10-22, restent à valider : v
 - [ ] Sur une page, le sélecteur Perso / Pro la déplace (enregistré, et la sidebar bascule avec elle)
 - [ ] L'espace choisi est retenu par appareil : le poste pro reste en Pro après rechargement
 - [ ] Barre du haut d'une page sur smartphone : statut, espace, section et suppression tiennent sur une ligne
+
+**Retrouver N2 · arborescence** (déployé le 2026-10-22 ; API testée en local, pas l'interface)
+
+- [ ] « Sous-page » (sous le titre) crée une page rangée sous la page courante, dans le même espace et la même section
+- [ ] Sidebar : les sous-pages s'affichent sous leur parent, le chevron replie / déplie, la branche de la page ouverte est dépliée au chargement
+- [ ] Le sélecteur « page parente » (avec recherche) déplace la page dans l'arbre ; « Aucune (racine) » la remet à la racine ; ni la page ni ses sous-pages ne sont proposées
+- [ ] Le fil d'Ariane au-dessus du sélecteur montre le chemin et ses liens marchent
+- [ ] Changer l'espace ou la section d'une page : elle repasse à la racine et ses sous-pages la suivent
+- [ ] Supprimer une page avec des sous-pages : la confirmation annonce qu'elles remontent, et elles remontent d'un niveau
+- [ ] Sidebar repliée : seules les pages racines apparaissent (comportement attendu)
+- [ ] Sur smartphone, la ligne fil d'Ariane / sélecteur / « Sous-page » passe à la ligne proprement
 
 DoD : voir [dod.md](dod.md)
 
@@ -107,7 +118,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Toutes les pages listées dans la sidebar, cliquables
   - [N1] ■ Recherche par titre (palette Ctrl+K)
-  - [N2] □ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar
+  - [N2] ■ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar (à tester ; via un sélecteur « page parente », glisser-déposer non retenu)
   - [N3] □ Favoris / pages récentes dans la sidebar
 
 - je retrouve une page

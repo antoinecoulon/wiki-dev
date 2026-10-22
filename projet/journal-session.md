@@ -5,6 +5,14 @@
 
 ---
 
+## 20 · 2026-10-22 · <1h> · tranche : Retrouver N2
+
+- **Fait :** arborescence. Colonne `parent_id` (migration 0001, sauvegarde de la base faite avant). Sidebar en arbre (branche de la page ouverte dépliée) ; sous le titre d'une page : fil d'Ariane, sélecteur « page parente » avec recherche, bouton « Sous-page ». Une sous-page hérite de l'espace et de la section de son parent ; changer l'espace ou la section d'une page la remet à la racine et emmène ses sous-pages. Suppression : les sous-pages remontent d'un niveau. API testée en local (héritage, boucles, section, propagation, suppression), rendu serveur vérifié. Déployé par push.
+- **Blocage / question :** interface non testée (session depuis le téléphone) : voir « À tester ». « Nouvelle sous-page » au survol dans la sidebar abandonné (le slot de `UNavigationMenu` remplace le chevron) : bouton sur la page à la place.
+- **➜ Prochaine action :** tests « À tester » depuis le PC, puis migration Notion.
+
+---
+
 ## 19 · 2026-10-22 · <1h> · tranche : Espaces N1
 
 - **Fait :** switch Perso / Pro en haut de la sidebar (onglets ; bouton de bascule quand elle est repliée), qui filtre sidebar et recherche. Espace retenu par appareil (cookie `space`). Nouvelle page créée dans l'espace affiché ; sélecteur d'espace sur la page (couvre aussi Espaces N2 « déplacer ») et la sidebar suit l'espace de la page ouverte. API : `space` accepté en POST et PATCH. Déployé par push.

@@ -4,6 +4,7 @@ import type { CommandPaletteItem, NavigationMenuItem } from '@nuxt/ui'
 // Clé fixe : les pages rafraîchissent la liste avec refreshNuxtData('pages')
 const { data: pages } = await useFetch('/api/pages', { key: 'pages' })
 const { clear } = useUserSession()
+const route = useRoute()
 const collapsed = ref(false)
 const space = useSpace()
 const currentSpace = computed(() => spaces.find(s => s.value === space.value) ?? spaces[0]!)
@@ -14,22 +15,50 @@ const sections = [
   { value: 'doc' as const, label: 'Documentation', icon: 'i-lucide-book-open' }
 ]
 
-const groups = computed(() => sections.map(section => ({
+type Page = NonNullable<typeof pages.value>[number]
+
+// Pages de l'espace affiché, par section
+const visiblePages = computed(() => sections.map(section => ({
   ...section,
-  items: (pages.value ?? [])
-    .filter(page => page.space === space.value && page.section === section.value)
-    .map((page): NavigationMenuItem => ({
-      label: page.title,
-      icon: section.icon,
-      to: `/pages/${page.id}`
-    }))
+  pages: (pages.value ?? []).filter(page => page.space === space.value && page.section === section.value)
 })))
 
-// Mêmes groupes que la sidebar, au format attendu par la palette (id requis)
-const searchGroups = computed(() => groups.value.map(group => ({
+// Branches ouvertes au chargement : les parents de la page affichée
+const openIds = computed(() => {
+  const byId = new Map((pages.value ?? []).map(page => [page.id, page]))
+  const ids = new Set<string>()
+  let parentId = byId.get(route.params.pageId as string)?.parentId
+  while (parentId && !ids.has(parentId)) {
+    ids.add(parentId)
+    parentId = byId.get(parentId)?.parentId
+  }
+  return ids
+})
+
+// Arborescence : une page dont le parent n'est pas dans le groupe est affichée à la racine
+const groups = computed(() => visiblePages.value.map((group) => {
+  const ids = new Set(group.pages.map(page => page.id))
+  const toItem = (page: Page): NavigationMenuItem => {
+    const children = group.pages.filter(child => child.parentId === page.id).map(toItem)
+    return {
+      label: page.title,
+      icon: group.icon,
+      to: `/pages/${page.id}`,
+      children: children.length ? children : undefined,
+      defaultOpen: openIds.value.has(page.id)
+    }
+  }
+  return {
+    ...group,
+    items: group.pages.filter(page => !page.parentId || !ids.has(page.parentId)).map(toItem)
+  }
+}))
+
+// Toutes les pages de l'espace, à plat, au format attendu par la palette (id requis)
+const searchGroups = computed(() => visiblePages.value.map(group => ({
   id: group.value,
   label: group.label,
-  items: group.items.map(({ label, icon, to }): CommandPaletteItem => ({ label, icon, to }))
+  items: group.pages.map((page): CommandPaletteItem => ({ label: page.title, icon: group.icon, to: `/pages/${page.id}` }))
 })))
 
 async function createPage(section: typeof sections[number]['value']) {

@@ -8,6 +8,8 @@ export const pages = sqliteTable('pages', {
   // D-004
   space: text('space', { enum: ['perso', 'pro'] }).notNull().default('perso'),
   section: text('section', { enum: ['project', 'doc'] }).notNull().default('doc'),
+  // Page parente (arborescence) ; null = à la racine de la section. Pas de clé étrangère : la suppression fait remonter les sous-pages (API)
+  parentId: text('parent_id'),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 })
