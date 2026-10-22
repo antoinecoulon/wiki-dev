@@ -35,28 +35,22 @@
 
 ## Tranche en cours
 
-Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 validées le 2026-10-22 ; correctifs issus des retours à revalider : voir « À tester ».
+Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 validées le 2026-10-22, ainsi que les correctifs issus des retours de test.
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-**Correctifs des retours de test** (2026-10-22, Ctrl+Shift+R avant de tester)
+Rien en attente.
 
-- [ ] Tableau : « Ajouter des lignes » / « Ajouter des colonnes » ouvrent un sous-menu 1, 2 ou 3 ; les actions indisponibles sont nettement plus grisées
-- [x] Sidebar repliée : le bouton d'espace est coloré (primaire) et affiche une infobulle au survol
-- [x] Barre du haut : icône nuage (coché = enregistré, nuage = modifié, alerte = échec) ; assez parlante sur smartphone ?
-- [x] Une page avec des sous-pages les liste sous le titre (liens cliquables)
-- [x] Arborescence limitée à 5 niveaux : « Sous-page » grisé au niveau 5 ; le sélecteur « page parente » ne propose que les pages où la branche tient (les pages de test plus profondes restent éditables)
-- [x] Nouvelle page (sidebar, accueil, sous-page) : le titre « Sans titre » est sélectionné, on tape directement le nom
+## Notés pour plus tard
 
-**Notés pour plus tard** (retours de test, non traités)
+> Retours de test non traités, à reprendre au choix d'une prochaine tranche.
 
 - Thème : couleurs, contraste du grisé, à voir ensemble (Personnalisation)
 - Icône personnalisée par page, visible dans la sidebar (Personnalisation)
 - Au-delà de la limite d'arborescence : liens entre pages, groupes / projets (Retrouver)
 - 401 prise sur un rechargement depuis le smartphone : revoir les messages d'erreur (page d'erreur brute au lieu d'un retour au login) et mettre en place des logs (Accès N2, Socle)
-- Infobulle au toucher sur l'état de sauvegarde, si l'icône nuage ne suffit pas
 
 DoD : voir [dod.md](dod.md)
 
