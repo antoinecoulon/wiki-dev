@@ -14,7 +14,7 @@
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
-| **Espaces** |  | □ Switch Perso / Pro | □ Déplacer entre espaces |  |
+| **Espaces** |  | ■ Switch Perso / Pro (à tester) | ■ Déplacer entre espaces (à tester, couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
 | **Personnalisation** | □ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
@@ -35,7 +35,7 @@
 
 ## Tranche en cours
 
-Aucune. Pages N2 livrée le 2026-10-22 (citations déjà présentes depuis Pages N1, tableaux ajoutés), reste à valider : voir « À tester ».
+Aucune. Pages N2 et Espaces N1-N2 livrées le 2026-10-22, restent à valider : voir « À tester ».
 
 ## À tester
 
@@ -47,6 +47,15 @@ Aucune. Pages N2 livrée le 2026-10-22 (citations déjà présentes depuis Pages
 - [ ] Curseur dans une cellule : ajouter une ligne, une colonne ; supprimer la ligne, la colonne, le tableau ; actions grisées hors d'un tableau
 - [ ] Un tableau copié depuis Notion se colle en tableau
 - [ ] Sur smartphone, un tableau large défile horizontalement sans élargir la page
+
+**Espaces N1-N2 · Perso / Pro** (déployé le 2026-10-22)
+
+- [ ] Le switch Perso / Pro en haut de la sidebar filtre les pages (Projets et Documentation) et la recherche Ctrl+K ; toutes les pages existantes sont en Perso
+- [ ] Sidebar repliée : le bouton bascule d'un espace à l'autre
+- [ ] Le « + » de la sidebar et « Nouvelle page » de l'accueil créent la page dans l'espace affiché
+- [ ] Sur une page, le sélecteur Perso / Pro la déplace (enregistré, et la sidebar bascule avec elle)
+- [ ] L'espace choisi est retenu par appareil : le poste pro reste en Pro après rechargement
+- [ ] Barre du haut d'une page sur smartphone : statut, espace, section et suppression tiennent sur une ligne
 
 DoD : voir [dod.md](dod.md)
 
@@ -136,8 +145,8 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** switch dans la sidebar
 - **Tranches :**
   - [N0] pas de tranche (l'espace en base est une décision de modèle de données → ADR)
-  - [N1] □ Switch Perso / Pro qui filtre pages, projets et doc
-  - [N2] □ Déplacer une page ou un projet d'un espace à l'autre
+  - [N1] ■ Switch Perso / Pro qui filtre pages, projets et doc (à tester)
+  - [N2] ■ Déplacer une page ou un projet d'un espace à l'autre (à tester ; sélecteur d'espace de la page, livré avec N1)
   - [N3] pas prévu (espaces personnalisés : Perso/Pro suffit)
 
 - je navigue entre les parties pro et perso

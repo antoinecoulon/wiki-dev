@@ -669,6 +669,21 @@ const searchGroups = computed(() => [{
 - Ne pas passer des `NavigationMenuItem` tels quels : erreur de type (`chip`), reconstruire `{ label, icon, to }`.
 - Textes en anglais par défaut (pas de `locale` sur `UApp`) : `placeholder` et slot `#empty`.
 
+### Préférence par appareil (useCookie)
+
+Pour un réglage d'affichage propre à chaque poste (ex. un filtre Perso / Pro), un cookie plutôt que `localStorage` : il est lu pendant le rendu serveur, donc la page arrive déjà filtrée, sans saut à l'hydratation.
+
+```ts
+// app/composables/useSpace.ts
+export function useSpace() {
+  return useCookie<'perso' | 'pro'>('space', { default: () => 'perso', maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
+}
+```
+
+- Les refs `useCookie` de même nom sont synchronisées entre composants : modifier la valeur dans une page met à jour la sidebar du layout.
+- Le filtrage se fait côté client sur la liste déjà chargée (`computed`) : pas de nouvelle requête au changement.
+- `UTabs` avec `:content="false"` fait un sélecteur à onglets compact (`v-model` sur la valeur).
+
 ## 8. Sauvegardes (Turso + Vercel Blob)
 
 Un script Node lancé à la main : dump SQL horodaté de la base, et copie incrémentale des fichiers Blob, vers un dossier `backups/` du repo, ignoré par git.

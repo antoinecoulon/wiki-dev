@@ -5,6 +5,14 @@
 
 ---
 
+## 19 · 2026-10-22 · <1h> · tranche : Espaces N1
+
+- **Fait :** switch Perso / Pro en haut de la sidebar (onglets ; bouton de bascule quand elle est repliée), qui filtre sidebar et recherche. Espace retenu par appareil (cookie `space`). Nouvelle page créée dans l'espace affiché ; sélecteur d'espace sur la page (couvre aussi Espaces N2 « déplacer ») et la sidebar suit l'espace de la page ouverte. API : `space` accepté en POST et PATCH. Déployé par push.
+- **Blocage / question :** pas testé (session depuis le téléphone) : voir « À tester » dans la Colonne.
+- **➜ Prochaine action :** tests « À tester » depuis le PC, puis migration Notion (en rangeant les pages pro dans Pro).
+
+---
+
 ## 18 · 2026-10-22 · <1h> · tranche : Pages N2
 
 - **Fait :** tranche choisie pour la migration Notion (les tableaux collés ne doivent pas perdre leur forme). Les citations existaient déjà ; ajout des tableaux (TableKit) : bouton « Tableau » dans la barre (insérer, ajouter ligne / colonne, supprimer ligne / colonne / tableau) et entrée « Tableau » dans le menu « / ». Lint, typecheck et build OK, déployé par push. `gh` installé et connecté dans WSL : Claude peut pousser depuis le remote.

@@ -20,6 +20,10 @@ if (error.value) {
 const title = ref(page.value!.title)
 const content = ref<JSONContent | null>(page.value!.content)
 const section = ref(page.value!.section)
+// L'espace affiché suit la page ouverte, pour qu'elle reste visible dans la sidebar
+const space = ref(page.value!.space)
+const currentSpace = useSpace()
+watch(space, value => currentSpace.value = value, { immediate: true })
 const sections = [
   { label: 'Projets', value: 'project' as const },
   { label: 'Documentation', value: 'doc' as const }
@@ -215,7 +219,7 @@ let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
 let current: Promise<void> | undefined
 
-watch([title, content, section], () => {
+watch([title, content, section, space], () => {
   dirty = true
   status.value = 'pending'
   clearTimeout(timer)
@@ -232,7 +236,7 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value }
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value }
   }).then(async () => {
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
@@ -294,10 +298,16 @@ async function remove() {
             @click="flush"
           />
           <USelect
+            v-model="space"
+            :items="spaces"
+            aria-label="Espace"
+            class="w-24"
+          />
+          <USelect
             v-model="section"
             :items="sections"
             aria-label="Section"
-            class="w-40"
+            class="w-32 sm:w-40"
           />
           <UButton
             icon="i-lucide-trash-2"

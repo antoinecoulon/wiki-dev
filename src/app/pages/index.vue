@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const space = useSpace()
+
 async function createPage() {
-  const page = await $fetch('/api/pages', { method: 'POST' })
+  const page = await $fetch('/api/pages', { method: 'POST', body: { space: space.value } })
   await refreshNuxtData('pages')
   await navigateTo(`/pages/${page!.id}`)
 }

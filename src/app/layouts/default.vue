@@ -5,6 +5,9 @@ import type { CommandPaletteItem, NavigationMenuItem } from '@nuxt/ui'
 const { data: pages } = await useFetch('/api/pages', { key: 'pages' })
 const { clear } = useUserSession()
 const collapsed = ref(false)
+const space = useSpace()
+const currentSpace = computed(() => spaces.find(s => s.value === space.value) ?? spaces[0]!)
+const otherSpace = computed(() => spaces.find(s => s.value !== space.value)!)
 
 const sections = [
   { value: 'project' as const, label: 'Projets', icon: 'i-lucide-folder-kanban' },
@@ -14,7 +17,7 @@ const sections = [
 const groups = computed(() => sections.map(section => ({
   ...section,
   items: (pages.value ?? [])
-    .filter(page => page.section === section.value)
+    .filter(page => page.space === space.value && page.section === section.value)
     .map((page): NavigationMenuItem => ({
       label: page.title,
       icon: section.icon,
@@ -30,7 +33,7 @@ const searchGroups = computed(() => groups.value.map(group => ({
 })))
 
 async function createPage(section: typeof sections[number]['value']) {
-  const page = await $fetch('/api/pages', { method: 'POST', body: { section } })
+  const page = await $fetch('/api/pages', { method: 'POST', body: { section, space: space.value } })
   await refreshNuxtData('pages')
   await navigateTo(`/pages/${page!.id}`)
 }
@@ -70,6 +73,24 @@ async function logout() {
       </template>
 
       <template #default>
+        <!-- Repliée : un bouton bascule vers l'autre espace -->
+        <UButton
+          v-if="collapsed"
+          :icon="currentSpace.icon"
+          color="neutral"
+          variant="ghost"
+          square
+          :aria-label="`Espace ${currentSpace.label}, passer en ${otherSpace.label}`"
+          @click="space = otherSpace.value"
+        />
+        <UTabs
+          v-else
+          v-model="space"
+          :items="spaces"
+          :content="false"
+          size="xs"
+          class="w-full"
+        />
         <UDashboardSearchButton
           label="Rechercher"
           :collapsed="collapsed"
