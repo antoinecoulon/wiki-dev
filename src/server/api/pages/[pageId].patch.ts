@@ -3,11 +3,12 @@ import { db, schema } from 'hub:db'
 
 type Section = typeof schema.pages.$inferInsert.section
 type Space = typeof schema.pages.$inferInsert.space
+type Status = typeof schema.pages.$inferInsert.status
 
 export default defineEventHandler(async (event) => {
   const pageId = getRouterParam(event, 'pageId')!
-  const { title, content, section, space, parentId } = await readValidatedBody(event, (body) => {
-    const { title, content, section, space, parentId } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown }
+  const { title, content, section, space, parentId, status } = await readValidatedBody(event, (body) => {
+    const { title, content, section, space, parentId, status } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown }
     if (title !== undefined && (typeof title !== 'string' || !title.trim())) {
       throw createError({ status: 400, statusText: 'Titre invalide' })
     }
@@ -23,7 +24,10 @@ export default defineEventHandler(async (event) => {
     if (parentId !== undefined && parentId !== null && typeof parentId !== 'string') {
       throw createError({ status: 400, statusText: 'Page parente invalide' })
     }
-    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId }
+    if (status !== undefined && status !== null && !schema.pages.status.enumValues.includes(status as never)) {
+      throw createError({ status: 400, statusText: 'Statut invalide' })
+    }
+    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status }
   })
 
   const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true } })
@@ -74,6 +78,7 @@ export default defineEventHandler(async (event) => {
       section,
       space,
       parentId,
+      status,
       updatedAt: new Date().toISOString()
     })
     .where(eq(schema.pages.id, pageId))

@@ -5,6 +5,14 @@
 
 ---
 
+## 23 · 2026-10-22 · <1h> · tranche : Gestion de projet N1
+
+- **Fait :** migration Notion / dev-docs sortie du chemin (petit à petit). Cadrage N1 (D-007) puis livraison : colonne `status` (migration 0002), le « + » de Projets crée la fiche + 4 sous-pages pré-remplies d'après `methode/templates/`, sélecteur de statut sous le titre du projet, badge du statut sur ses sous-pages. Modèles validés contre le schéma TipTap ; API et rendu serveur testés en local.
+- **Blocage / question :** pas testé dans l'app : voir « À tester ». Accès N1 et Mobile N1 probablement déjà couverts par les tests du jour, à confirmer pour les cocher. `GET /api/pages` renvoie le contenu de toutes les pages : à alléger avant une migration en volume.
+- **➜ Prochaine action :** tests « À tester », puis créer le projet wiki-dev dans wiki-dev.
+
+---
+
 ## 22 · 2026-10-22 · <1h> · tranche : retours de test
 
 - **Fait :** tests des 4 tranches du 2026-10-22 validés. Correctifs des retours : sous-menus 1/2/3 lignes ou colonnes, grisé des menus plus marqué (`app.config`), bouton d'espace replié en couleur primaire + infobulle, icônes nuage pour la sauvegarde, sous-pages directes listées sous le titre, arborescence limitée à 5 niveaux (client + API, vérifiée seulement au changement de parent pour ne pas bloquer l'autosave des pages déjà plus profondes), titre présélectionné sur une page neuve. Lint + typecheck OK, requêtes de profondeur testées sur SQLite.

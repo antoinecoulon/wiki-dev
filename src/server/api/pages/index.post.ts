@@ -39,6 +39,22 @@ export default defineEventHandler(async (event) => {
     return page
   }
 
+  // Page racine dans Projets = nouveau projet : fiche pré-remplie, statut « idée » et pages du noyau en sous-pages
+  if (section === 'project') {
+    const template = projectTemplate(new Date().toISOString().slice(0, 10))
+    const [project] = await db.insert(schema.pages)
+      .values({ section, space, status: 'idea', content: JSON.stringify(template.fiche) })
+      .returning()
+    await db.insert(schema.pages).values(template.children.map(child => ({
+      title: child.title,
+      content: JSON.stringify(child.content),
+      section,
+      space,
+      parentId: project!.id
+    })))
+    return project
+  }
+
   const [page] = await db.insert(schema.pages).values({ section, space }).returning()
   return page
 })

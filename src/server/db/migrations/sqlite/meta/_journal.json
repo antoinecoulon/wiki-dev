@@ -15,6 +15,13 @@
       "when": 1792678212498,
       "tag": "0001_boring_rawhide_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792697669016,
+      "tag": "0002_long_runaways",
+      "breakpoints": true
     }
   ]
 }

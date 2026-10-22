@@ -19,10 +19,10 @@ if (error.value) {
 
 const title = ref(page.value!.title)
 const content = ref<JSONContent | null>(page.value!.content)
-// Page neuve (titre par défaut, vide) : titre sélectionné pour le nommer tout de suite
+// Page pas encore nommée (titre par défaut, y compris un projet pré-rempli) : titre sélectionné pour la nommer tout de suite
 const titleInput = useTemplateRef('titleInput')
 onMounted(() => {
-  if (title.value === 'Sans titre' && !content.value) titleInput.value?.inputRef?.select()
+  if (title.value === 'Sans titre') titleInput.value?.inputRef?.select()
 })
 const section = ref(page.value!.section)
 // L'espace affiché suit la page ouverte, pour qu'elle reste visible dans la sidebar
@@ -99,6 +99,16 @@ async function createSubpage() {
     toast.add({ title: 'Échec de la création de la sous-page', color: 'error' })
   }
 }
+// Projet = page racine de la section Projets : son statut s'affiche en badge sur toutes ses sous-pages
+const projectStatus = ref(page.value!.status ?? undefined)
+const statuses = [
+  { label: 'Idée', value: 'idea' as const, color: 'neutral' as const, icon: 'i-lucide-lightbulb' },
+  { label: 'En cours', value: 'active' as const, color: 'primary' as const, icon: 'i-lucide-loader' },
+  { label: 'Terminé', value: 'done' as const, color: 'success' as const, icon: 'i-lucide-circle-check' }
+]
+const isProject = computed(() => section.value === 'project' && !parentId.value)
+const rootStatus = computed(() => section.value === 'project' ? statuses.find(s => s.value === ancestors.value[0]?.status) : undefined)
+
 const sections = [
   { label: 'Projets', value: 'project' as const },
   { label: 'Documentation', value: 'doc' as const }
@@ -307,7 +317,7 @@ let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
 let current: Promise<void> | undefined
 
-watch([title, content, section, space, parentId], () => {
+watch([title, content, section, space, parentId, projectStatus], () => {
   dirty = true
   status.value = 'pending'
   clearTimeout(timer)
@@ -324,7 +334,7 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value }
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value }
   }).then(async () => {
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
@@ -423,8 +433,26 @@ async function remove() {
           :ui="{ base: 'text-3xl font-bold px-0' }"
         />
 
-        <!-- Arborescence : chemin, page parente, sous-page -->
+        <!-- Statut du projet, arborescence : chemin, page parente, sous-page -->
         <div class="flex flex-wrap items-center gap-2">
+          <USelect
+            v-if="isProject"
+            v-model="projectStatus"
+            :items="statuses"
+            :icon="statuses.find(s => s.value === projectStatus)?.icon ?? 'i-lucide-circle-dashed'"
+            placeholder="Statut"
+            aria-label="Statut du projet"
+            size="sm"
+            variant="soft"
+            class="w-32"
+          />
+          <UBadge
+            v-else-if="rootStatus"
+            :label="rootStatus.label"
+            :icon="rootStatus.icon"
+            :color="rootStatus.color"
+            variant="subtle"
+          />
           <UBreadcrumb
             v-if="breadcrumb.length"
             :items="breadcrumb"
