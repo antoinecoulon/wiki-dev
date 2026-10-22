@@ -12,14 +12,14 @@
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
-| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) (à tester) | □ Briques à la demande + kanban des tranches |  |
+| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
 | **Performance** (bonus) | □ Liste des pages allégée |  |  |  |
 | **Personnalisation** | ■ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
-> **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches.
+> **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches. À migrer aussi : les notes du dossier `documentation/` du repo (dont le guide technique).
 
 ## Version 1 (ordre des tranches)
 
@@ -36,27 +36,24 @@
 
 ## Tranche en cours
 
-Aucune. Gestion de projet N1 livrée le 2026-10-22, reste à valider : voir « À tester ».
+Aucune. Gestion de projet N1 validée le 2026-10-22 ; correctif des retours à valider : voir « À tester ».
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-**Gestion de projet N1 · noyau + statut** (2026-10-22, Ctrl+Shift+R avant de tester ; API testée en local)
+**Correctif Gestion de projet N1 · états de la Colonne** (2026-10-22, Ctrl+Shift+R avant de tester)
 
-- [ ] Le « + » de la section Projets crée un projet : fiche pré-remplie (titre « Sans titre » sélectionné) et 4 sous-pages Colonne, DoD, Journal de session, Décisions, pré-remplies d'après `methode/templates/`
-- [ ] Le tableau de la Colonne et les checklists (DoD, tranche en cours) s'éditent normalement
-- [ ] Sur la page projet, le sélecteur de statut (Idée par défaut / En cours / Terminé) est enregistré
-- [ ] Sur chaque sous-page du projet (tous niveaux), un badge affiche le statut du projet
-- [ ] « Nouvelle page » de l'accueil, « + » de Documentation et « Sous-page » créent toujours des pages vierges
-- [ ] Sur smartphone, la ligne statut / fil d'Ariane / page parente / « Sous-page » passe à la ligne proprement
-- [ ] Créer le projet wiki-dev dans wiki-dev (dogfooding)
+- [ ] Nouveau projet : toutes les cases de la grille de la Colonne sont pré-remplies avec « □ » (le projet wiki-dev déjà créé garde l'ancien modèle)
+- [ ] Dans n'importe quelle page (paragraphe, liste, tableau), un clic sur □ ◧ ■ le fait passer □ → ◧ → ■ → □ ; curseur « main » au survol ; rien dans un bloc de code
+- [ ] Sur smartphone, un toucher sur le symbole fait la même chose
 
 ## Notés pour plus tard
 
 > Retours de test non traités, à reprendre au choix d'une prochaine tranche.
 
 - Thème : couleurs, contraste du grisé, à voir ensemble (Personnalisation)
+- Accès de Claude à l'app (jeton d'API ou serveur MCP) pour remplir un projet en coopération, à réfléchir (Accès / Gestion de projet)
 - Vue d'ensemble des projets : page `/projects`, résumé, ou stats / suivi type BI, à décider (Gestion de projet)
 - Ordre des sous-pages dans la sidebar : par date de modification, donc Colonne / DoD / Journal / Décisions changent de place (Retrouver)
 - Icône personnalisée par page, visible dans la sidebar (Personnalisation)
@@ -125,8 +122,8 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** page projet (`/pages/:id`, statut sous le titre) ; vue d'ensemble des projets plus tard (voir « Notés pour plus tard »)
 - **Tranches :**
   - [N0] ■ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
-  - [N1] ■ Un nouveau projet = une page fiche pré-remplie + sous-pages du noyau (Colonne, DoD, journal, décisions) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev** (à tester, D-007)
-  - [N2] □ Briques à la demande (D-007) : grosses briques (C4, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
+  - [N1] ■ Un nouveau projet = une page fiche pré-remplie + sous-pages du noyau (Colonne, DoD, journal, décisions) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev** (D-007, validé le 2026-10-22)
+  - [N2] □ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
   - [N2] □ Vue kanban des tranches d'un projet
   - [N3] pas prévu (suggestions de briques)
 

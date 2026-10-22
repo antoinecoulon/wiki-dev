@@ -574,6 +574,22 @@ const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [[{
 
 - Pas de style par défaut : bordures sur `th, td`, `margin: 0` sur leurs `p`, `.tableWrapper { overflow-x: auto }` pour le défilement sur mobile, `.selectedCell` pour la sélection de cellules.
 - Un `<table>` HTML collé (depuis Notion, une page web) devient un tableau TipTap.
+- Sous-menu dans la barre : un item sans `kind` avec `children` ; `execute(editor, item)` reçoit l'item, donc on peut y ajouter un champ (ex. `count`).
+- Ajouter N colonnes : **pas** N fois `addColumnAfter()` dans une même `chain()` (une seule transaction, les suivantes échouent). Lancer N-1 `chain()…run()` puis renvoyer la dernière chaîne ; l'historique les regroupe en un seul Ctrl+Z.
+
+### Contenu pré-rempli et extension maison
+
+Pré-remplir une page côté serveur : construire le JSON TipTap avec de petites fonctions (`p()`, `h()`, `table()`…) et le stocker comme n'importe quel contenu. Le valider contre le schéma de l'éditeur, sans navigateur :
+
+```ts
+import { getSchema } from '@tiptap/core'
+import { Node } from '@tiptap/pm/model'
+
+const schema = getSchema([StarterKit, TableKit, TaskList, TaskItem]) // mêmes extensions que la page
+Node.fromJSON(schema, json).check() // lève une erreur si un nœud ou un attribut est invalide
+```
+
+Réagir au clic sur certains caractères (ex. faire tourner □ → ◧ → ■) : une `Extension` avec un plugin ProseMirror qui pose une décoration (`Decoration.inline`, classe CSS) sur chaque caractère, recalculée seulement si `tr.docChanged`, et un `handleClick` qui ne réagit que si `event.target` porte cette classe. La position reçue tombe avant **ou** après le caractère selon le côté du clic : tester `pos` et `pos - 1`.
 
 ## 7. Layout avec sidebar (UDashboard*)
 

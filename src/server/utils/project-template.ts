@@ -58,9 +58,10 @@ export function projectTemplate(date: string) {
           h(2, 'Grille'),
           table(
             ['Vertèbre', '0 · Squelette', '1 · Utilisable', '2 · Confortable', '3 · Soigné'],
-            ['Socle technique', '□ …', '□ …', '', ''],
-            ['Vertèbre 1', '□ …', '□ …', '', ''],
-            ['Vertèbre 2', '□ …', '', '', '']
+            // Toutes les cases prévues : plus simple d'en effacer que d'en saisir (un clic change l'état)
+            ['Socle technique', '□ ', '□ ', '□ ', '□ '],
+            ['Vertèbre 1', '□ ', '□ ', '□ ', '□ '],
+            ['Vertèbre 2', '□ ', '□ ', '□ ', '□ ']
           ),
           h(2, 'Tranche en cours'),
           p(text('Vertèbre · N0 · titre', true)),

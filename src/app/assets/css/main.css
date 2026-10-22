@@ -113,3 +113,8 @@
 .ProseMirror .selectedCell {
   background: color-mix(in oklab, var(--ui-primary) 15%, transparent);
 }
+
+/* États de la Colonne (□ ◧ ■) : un clic les fait tourner */
+.ProseMirror .colonne-state {
+  cursor: pointer;
+}

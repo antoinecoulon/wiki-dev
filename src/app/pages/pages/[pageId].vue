@@ -4,6 +4,7 @@ import type { EditorCustomHandlers, EditorSuggestionMenuItem, EditorToolbarItem 
 import { TaskItem, TaskList } from '@tiptap/extension-list'
 import { TableKit } from '@tiptap/extension-table'
 import { CodeBlock } from '~/editor/code-block'
+import { ColonneState } from '~/editor/colonne-state'
 
 // Recrée le composant à chaque page : sinon titre et contenu restent ceux de la page précédente
 definePageMeta({ key: route => route.fullPath })
@@ -119,7 +120,8 @@ const extensions = [
   CodeBlock,
   TaskList,
   TaskItem.configure({ nested: true }),
-  TableKit.configure({ table: { resizable: false } })
+  TableKit.configure({ table: { resizable: false } }),
+  ColonneState
 ]
 
 // Images : envoyées à /api/images (store Vercel Blob privé), insérées une fois enregistrées

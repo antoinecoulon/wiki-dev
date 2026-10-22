@@ -5,6 +5,14 @@
 
 ---
 
+## 24 · 2026-10-22 · <1h> · tranche : retours Gestion de projet N1
+
+- **Fait :** Gestion de projet N1 validée, projet wiki-dev créé dans wiki-dev (base de prod vidée avant, sauvegarde faite). Retours : grille de la Colonne pré-remplie avec « □ » ; extension d'éditeur `colonne-state` (un clic fait tourner □ → ◧ → ■, hors blocs de code), testée sur un état ProseMirror.
+- **Blocage / question :** C4 prédéfini → Gestion de projet N2 ; accès de Claude à l'app noté pour plus tard.
+- **➜ Prochaine action :** tester le correctif, puis choisir la prochaine tranche (Gestion de projet N2 ou Performance N0 avant une migration en volume).
+
+---
+
 ## 23 · 2026-10-22 · <1h> · tranche : Gestion de projet N1
 
 - **Fait :** migration Notion / dev-docs sortie du chemin (petit à petit). Cadrage N1 (D-007) puis livraison : colonne `status` (migration 0002), le « + » de Projets crée la fiche + 4 sous-pages pré-remplies d'après `methode/templates/`, sélecteur de statut sous le titre du projet, badge du statut sur ses sous-pages. Modèles validés contre le schéma TipTap ; API et rendu serveur testés en local.
