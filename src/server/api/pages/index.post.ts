@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { db, schema } from 'hub:db'
 
 type Section = typeof schema.pages.$inferInsert.section
@@ -24,6 +24,16 @@ export default defineEventHandler(async (event) => {
     const parent = await db.query.pages.findFirst({ where: eq(schema.pages.id, parentId), columns: { space: true, section: true } })
     if (!parent) {
       throw createError({ status: 400, statusText: 'Page parente introuvable' })
+    }
+    const [level] = await db.all<{ depth: number }>(sql`
+      WITH RECURSIVE up(id, depth) AS (
+        SELECT parent_id, 1 FROM pages WHERE id = ${parentId}
+        UNION ALL SELECT pages.parent_id, up.depth + 1 FROM pages JOIN up ON pages.id = up.id WHERE up.depth < ${MAX_PAGE_DEPTH}
+      )
+      SELECT max(depth) AS depth FROM up`)
+    // Niveau du parent : la sous-page serait un niveau en dessous
+    if (level!.depth >= MAX_PAGE_DEPTH) {
+      throw createError({ status: 400, statusText: `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux` })
     }
     const [page] = await db.insert(schema.pages).values({ ...parent, parentId }).returning()
     return page

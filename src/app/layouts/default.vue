@@ -102,16 +102,21 @@ async function logout() {
       </template>
 
       <template #default>
-        <!-- Repliée : un bouton bascule vers l'autre espace -->
-        <UButton
+        <!-- Repliée : un bouton bascule vers l'autre espace ; couleur primaire pour le distinguer des pages -->
+        <UTooltip
           v-if="collapsed"
-          :icon="currentSpace.icon"
-          color="neutral"
-          variant="ghost"
-          square
-          :aria-label="`Espace ${currentSpace.label}, passer en ${otherSpace.label}`"
-          @click="space = otherSpace.value"
-        />
+          :text="`Espace ${currentSpace.label}, passer en ${otherSpace.label}`"
+          :content="{ side: 'right' }"
+        >
+          <UButton
+            :icon="currentSpace.icon"
+            color="primary"
+            variant="soft"
+            square
+            :aria-label="`Espace ${currentSpace.label}, passer en ${otherSpace.label}`"
+            @click="space = otherSpace.value"
+          />
+        </UTooltip>
         <UTabs
           v-else
           v-model="space"

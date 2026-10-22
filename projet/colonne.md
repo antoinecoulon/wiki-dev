@@ -10,13 +10,13 @@
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau (à tester) | □ Drag & drop des blocs + bouton « + » |
-| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) (à tester) | □ Favoris / pages récentes (sidebar) |
+| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
+| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
-| **Espaces** |  | ■ Switch Perso / Pro (à tester) | ■ Déplacer entre espaces (à tester, couvert par N1) |  |
+| **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | □ Navigation mobile | □ Confort de lecture |  |
-| **Personnalisation** | ■ Accueil avec projets récents (à tester) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
+| **Personnalisation** | ■ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Elle se fait **après Socle N1** (sauvegardes DB).
 
@@ -35,45 +35,28 @@
 
 ## Tranche en cours
 
-Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 livrées le 2026-10-22, restent à valider : voir « À tester ».
+Aucune. Pages N2, Espaces N1-N2, Retrouver N2 et Personnalisation N0 validées le 2026-10-22 ; correctifs issus des retours à revalider : voir « À tester ».
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-**Pages N2 · tableaux** (déployé le 2026-10-22, Ctrl+Shift+R avant de tester)
+**Correctifs des retours de test** (2026-10-22, Ctrl+Shift+R avant de tester)
 
-- [ ] Insérer un tableau depuis le bouton « Tableau » de la barre et depuis le menu « / » (3×3 avec en-tête)
-- [ ] Curseur dans une cellule : ajouter une ligne, une colonne ; supprimer la ligne, la colonne, le tableau ; actions grisées hors d'un tableau
-- [ ] Un tableau copié depuis Notion se colle en tableau
-- [ ] Sur smartphone, un tableau large défile horizontalement sans élargir la page
+- [ ] Tableau : « Ajouter des lignes » / « Ajouter des colonnes » ouvrent un sous-menu 1, 2 ou 3 ; les actions indisponibles sont nettement plus grisées
+- [ ] Sidebar repliée : le bouton d'espace est coloré (primaire) et affiche une infobulle au survol
+- [ ] Barre du haut : icône nuage (coché = enregistré, nuage = modifié, alerte = échec) ; assez parlante sur smartphone ?
+- [ ] Une page avec des sous-pages les liste sous le titre (liens cliquables)
+- [ ] Arborescence limitée à 5 niveaux : « Sous-page » grisé au niveau 5 ; le sélecteur « page parente » ne propose que les pages où la branche tient (les pages de test plus profondes restent éditables)
+- [ ] Nouvelle page (sidebar, accueil, sous-page) : le titre « Sans titre » est sélectionné, on tape directement le nom
 
-**Espaces N1-N2 · Perso / Pro** (déployé le 2026-10-22)
+**Notés pour plus tard** (retours de test, non traités)
 
-- [ ] Le switch Perso / Pro en haut de la sidebar filtre les pages (Projets et Documentation) et la recherche Ctrl+K ; toutes les pages existantes sont en Perso
-- [ ] Sidebar repliée : le bouton bascule d'un espace à l'autre
-- [ ] Le « + » de la sidebar et « Nouvelle page » de l'accueil créent la page dans l'espace affiché
-- [ ] Sur une page, le sélecteur Perso / Pro la déplace (enregistré, et la sidebar bascule avec elle)
-- [ ] L'espace choisi est retenu par appareil : le poste pro reste en Pro après rechargement
-- [ ] Barre du haut d'une page sur smartphone : statut, espace, section et suppression tiennent sur une ligne
-
-**Retrouver N2 · arborescence** (déployé le 2026-10-22 ; API testée en local, pas l'interface)
-
-- [ ] « Sous-page » (sous le titre) crée une page rangée sous la page courante, dans le même espace et la même section
-- [ ] Sidebar : les sous-pages s'affichent sous leur parent, le chevron replie / déplie, la branche de la page ouverte est dépliée au chargement
-- [ ] Le sélecteur « page parente » (avec recherche) déplace la page dans l'arbre ; « Aucune (racine) » la remet à la racine ; ni la page ni ses sous-pages ne sont proposées
-- [ ] Le fil d'Ariane au-dessus du sélecteur montre le chemin et ses liens marchent
-- [ ] Changer l'espace ou la section d'une page : elle repasse à la racine et ses sous-pages la suivent
-- [ ] Supprimer une page avec des sous-pages : la confirmation annonce qu'elles remontent, et elles remontent d'un niveau
-- [ ] Sidebar repliée : seules les pages racines apparaissent (comportement attendu)
-- [ ] Sur smartphone, la ligne fil d'Ariane / sélecteur / « Sous-page » passe à la ligne proprement
-
-**Personnalisation N0 · accueil** (déployé le 2026-10-22 ; rendu serveur vérifié en local)
-
-- [ ] L'accueil montre « Projets récents » (pages racines de Projets, 6 max, classées par dernière modification dans leur branche) et « Pages récentes » (8 dernières modifiées), de l'espace affiché
-- [ ] Changer d'espace dans la sidebar met l'accueil à jour ; espace vide : message + « Nouvelle page »
-- [ ] Dates relatives en français (« il y a 2 heures ») ; cartes et lignes cliquables
-- [ ] Sur smartphone, les cartes passent en une colonne et le bouton « Nouvelle page » tient dans la barre
+- Thème : couleurs, contraste du grisé, à voir ensemble (Personnalisation)
+- Icône personnalisée par page, visible dans la sidebar (Personnalisation)
+- Au-delà de la limite d'arborescence : liens entre pages, groupes / projets (Retrouver)
+- 401 prise sur un rechargement depuis le smartphone : revoir les messages d'erreur (page d'erreur brute au lieu d'un retour au login) et mettre en place des logs (Accès N2, Socle)
+- Infobulle au toucher sur l'état de sauvegarde, si l'icône nuage ne suffit pas
 
 DoD : voir [dod.md](dod.md)
 
@@ -107,7 +90,7 @@ DoD : voir [dod.md](dod.md)
   - [N0] ■ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
   - [N1] ■ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
   - [N1] ■ Images (upload Vercel Blob, captures collées dans l'éditeur)
-  - [N2] ■ Citations et tableaux (à tester)
+  - [N2] ■ Citations et tableaux
   - [N3] □ Drag & drop des blocs dans une page + bouton « + » à côté de chaque bloc pour en insérer un au-dessus / en dessous (comme Notion ; `UEditorDragHandle` de Nuxt UI couvre les deux)
 
 - je crée une page
@@ -125,7 +108,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Toutes les pages listées dans la sidebar, cliquables
   - [N1] ■ Recherche par titre (palette Ctrl+K)
-  - [N2] ■ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar (à tester ; via un sélecteur « page parente », glisser-déposer non retenu)
+  - [N2] ■ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar (via un sélecteur « page parente », glisser-déposer non retenu), 5 niveaux max
   - [N3] □ Favoris / pages récentes dans la sidebar
 
 - je retrouve une page
@@ -163,8 +146,8 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** switch dans la sidebar
 - **Tranches :**
   - [N0] pas de tranche (l'espace en base est une décision de modèle de données → ADR)
-  - [N1] ■ Switch Perso / Pro qui filtre pages, projets et doc (à tester)
-  - [N2] ■ Déplacer une page ou un projet d'un espace à l'autre (à tester ; sélecteur d'espace de la page, livré avec N1)
+  - [N1] ■ Switch Perso / Pro qui filtre pages, projets et doc
+  - [N2] ■ Déplacer une page ou un projet d'un espace à l'autre (sélecteur d'espace de la page, livré avec N1)
   - [N3] pas prévu (espaces personnalisés : Perso/Pro suffit)
 
 - je navigue entre les parties pro et perso
@@ -184,7 +167,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** permettre la personnalisation de mon workspace
 - **Écrans :** `/settings`
 - **Tranches :**
-  - [N0] ■ Page d'accueil avec projets récents (à tester)
+  - [N0] ■ Page d'accueil avec projets récents
   - [N1] □ Personnalisation de la disposition de la page d'accueil
   - [N2] □ Personnalisation de la sidebar
   - [N3] pas prévu (statistiques)

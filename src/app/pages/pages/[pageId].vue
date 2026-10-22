@@ -19,6 +19,11 @@ if (error.value) {
 
 const title = ref(page.value!.title)
 const content = ref<JSONContent | null>(page.value!.content)
+// Page neuve (titre par défaut, vide) : titre sélectionné pour le nommer tout de suite
+const titleInput = useTemplateRef('titleInput')
+onMounted(() => {
+  if (title.value === 'Sans titre' && !content.value) titleInput.value?.inputRef?.select()
+})
 const section = ref(page.value!.section)
 // L'espace affiché suit la page ouverte, pour qu'elle reste visible dans la sidebar
 const space = ref(page.value!.space)
@@ -43,28 +48,40 @@ const ancestors = computed(() => {
   }
   return chain
 })
-const descendantIds = computed(() => {
-  const ids = new Set<string>()
-  const queue = [pageId]
-  while (queue.length) {
-    const id = queue.shift()
-    for (const p of pages.value ?? []) {
-      if (p.parentId === id && !ids.has(p.id)) {
-        ids.add(p.id)
-        queue.push(p.id)
-      }
-    }
+// Niveau d'une page dans l'arbre : 1 à la racine
+function levelOf(id: string) {
+  let level = 1
+  let parent = pagesById.value.get(id)?.parentId
+  while (parent && level < 50) {
+    level++
+    parent = pagesById.value.get(parent)?.parentId
   }
-  return ids
+  return level
+}
+// Sous-pages (tous niveaux) et hauteur de la branche : 1 si la page n'a pas de sous-page
+const descendants = computed(() => {
+  const ids = new Set<string>()
+  let height = 1
+  let level = [pageId]
+  while (level.length) {
+    const next = (pages.value ?? []).filter(p => level.includes(p.parentId!) && !ids.has(p.id))
+    if (next.length) height++
+    next.forEach(p => ids.add(p.id))
+    level = next.map(p => p.id)
+  }
+  return { ids, height }
 })
-const childCount = computed(() => (pages.value ?? []).filter(p => p.parentId === pageId).length)
+const children = computed(() => (pages.value ?? []).filter(p => p.parentId === pageId))
+const canCreateSubpage = computed(() => ancestors.value.length + 1 < MAX_PAGE_DEPTH)
 
-// Parents possibles : même espace et même section, ni la page ni ses sous-pages (boucle)
+// Parents possibles : même espace et même section, ni la page ni ses sous-pages (boucle),
+// et assez haut pour que la branche tienne dans la limite (le parent actuel reste affiché)
 const ROOT = 'root'
 const parentItems = computed(() => [
   { label: 'Aucune (racine)', value: ROOT, icon: 'i-lucide-corner-left-up' },
   ...(pages.value ?? [])
-    .filter(p => p.space === space.value && p.section === section.value && p.id !== pageId && !descendantIds.value.has(p.id))
+    .filter(p => p.space === space.value && p.section === section.value && p.id !== pageId && !descendants.value.ids.has(p.id))
+    .filter(p => p.id === parentId.value || levelOf(p.id) + descendants.value.height <= MAX_PAGE_DEPTH)
     .map(p => ({ label: p.title, value: p.id, icon: 'i-lucide-file-text' }))
 ])
 const parentValue = computed({
@@ -155,12 +172,16 @@ function onFilePicked(event: Event) {
   input.value = ''
 }
 
-// Actions sur le tableau : grisées hors d'un tableau (can() échoue)
+// Actions sur le tableau : grisées hors d'un tableau (can() échoue) ; count : ajouts en une fois
 type TableCommand = 'addRowAfter' | 'addColumnAfter' | 'deleteRow' | 'deleteColumn' | 'deleteTable'
 function tableHandler(command: TableCommand) {
   return {
     canExecute: (editor: Editor) => editor.can()[command](),
-    execute: (editor: Editor) => editor.chain().focus()[command](),
+    execute: (editor: Editor, item?: { count?: number }) => {
+      const chain = editor.chain().focus()
+      for (let i = 0; i < (item?.count ?? 1); i++) chain[command]()
+      return chain
+    },
     isActive: () => false
   }
 }
@@ -228,8 +249,16 @@ const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [
     content: { align: 'start' },
     items: [
       { kind: 'table', icon: 'i-lucide-table', label: 'Insérer un tableau' },
-      { kind: 'addRowAfter', icon: 'i-lucide-between-horizontal-start', label: 'Ajouter une ligne' },
-      { kind: 'addColumnAfter', icon: 'i-lucide-between-vertical-start', label: 'Ajouter une colonne' },
+      {
+        icon: 'i-lucide-between-horizontal-start',
+        label: 'Ajouter des lignes',
+        children: [1, 2, 3].map(count => ({ kind: 'addRowAfter' as const, count, label: count > 1 ? `${count} lignes` : '1 ligne' }))
+      },
+      {
+        icon: 'i-lucide-between-vertical-start',
+        label: 'Ajouter des colonnes',
+        children: [1, 2, 3].map(count => ({ kind: 'addColumnAfter' as const, count, label: count > 1 ? `${count} colonnes` : '1 colonne' }))
+      },
       { kind: 'deleteRow', icon: 'i-lucide-rows-3', label: 'Supprimer la ligne' },
       { kind: 'deleteColumn', icon: 'i-lucide-columns-3', label: 'Supprimer la colonne' },
       { kind: 'deleteTable', icon: 'i-lucide-trash-2', label: 'Supprimer le tableau' }
@@ -265,10 +294,10 @@ const suggestionItems: EditorSuggestionMenuItem<typeof handlers>[][] = [
 type SaveStatus = 'saved' | 'pending' | 'saving' | 'error'
 const status = ref<SaveStatus>('saved')
 const statusDisplay = {
-  saved: { label: 'Enregistré', icon: 'i-lucide-check' },
-  pending: { label: 'Modifié', icon: 'i-lucide-pencil' },
+  saved: { label: 'Enregistré', icon: 'i-lucide-cloud-check' },
+  pending: { label: 'Modifié', icon: 'i-lucide-cloud' },
   saving: { label: 'Enregistrement…', icon: 'i-lucide-loader-circle' },
-  error: { label: 'Échec, réessayer', icon: 'i-lucide-triangle-alert' }
+  error: { label: 'Échec, réessayer', icon: 'i-lucide-cloud-alert' }
 }
 const displayedStatus = computed(() => uploading.value
   ? { label: 'Envoi de l\'image…', icon: 'i-lucide-loader-circle' }
@@ -383,6 +412,7 @@ async function remove() {
     <template #body>
       <UContainer class="space-y-4">
         <UInput
+          ref="titleInput"
           v-model="title"
           placeholder="Titre"
           aria-label="Titre"
@@ -416,7 +446,26 @@ async function remove() {
             color="neutral"
             variant="ghost"
             size="sm"
+            :disabled="!canCreateSubpage"
+            :title="canCreateSubpage ? undefined : `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux`"
             @click="createSubpage"
+          />
+        </div>
+
+        <!-- Sous-pages directes -->
+        <div
+          v-if="children.length"
+          class="flex flex-wrap items-center gap-1"
+        >
+          <UButton
+            v-for="child in children"
+            :key="child.id"
+            :to="`/pages/${child.id}`"
+            :label="child.title"
+            icon="i-lucide-file-text"
+            color="neutral"
+            variant="soft"
+            size="xs"
           />
         </div>
 
@@ -454,8 +503,8 @@ async function remove() {
       <UModal
         v-model:open="confirmDelete"
         title="Supprimer la page ?"
-        :description="childCount
-          ? `La suppression est définitive. ${childCount > 1 ? `Ses ${childCount} sous-pages remonteront` : 'Sa sous-page remontera'} d'un niveau.`
+        :description="children.length
+          ? `La suppression est définitive. ${children.length > 1 ? `Ses ${children.length} sous-pages remonteront` : 'Sa sous-page remontera'} d'un niveau.`
           : 'La suppression est définitive.'"
       >
         <template #footer>

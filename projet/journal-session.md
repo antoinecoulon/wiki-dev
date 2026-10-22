@@ -5,6 +5,14 @@
 
 ---
 
+## 22 · 2026-10-22 · <1h> · tranche : retours de test
+
+- **Fait :** tests des 4 tranches du 2026-10-22 validés. Correctifs des retours : sous-menus 1/2/3 lignes ou colonnes, grisé des menus plus marqué (`app.config`), bouton d'espace replié en couleur primaire + infobulle, icônes nuage pour la sauvegarde, sous-pages directes listées sous le titre, arborescence limitée à 5 niveaux (client + API, vérifiée seulement au changement de parent pour ne pas bloquer l'autosave des pages déjà plus profondes), titre présélectionné sur une page neuve. Lint + typecheck OK, requêtes de profondeur testées sur SQLite.
+- **Blocage / question :** correctifs pas testés dans l'app ; retours notés pour plus tard (thème, icône de page, liens/groupes, erreurs et logs) dans la Colonne.
+- **➜ Prochaine action :** revalider « À tester », puis migration Notion.
+
+---
+
 ## 21 · 2026-10-22 · <1h> · tranche : Personnalisation N0
 
 - **Fait :** page d'accueil de l'espace affiché : « Projets récents » (cartes, pages racines de Projets classées par activité dans leur branche) et « Pages récentes » (8 dernières), dates relatives (`NuxtTime`), « Nouvelle page » dans la barre. Choisie pour ne pas retoucher sidebar ni barre de page, déjà non testées. Rendu serveur vérifié en local. Déployé par push.

@@ -26,18 +26,20 @@ export default defineEventHandler(async (event) => {
     return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId }
   })
 
-  const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true } })
+  const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true } })
   if (!current) {
     throw createError({ status: 404, statusText: 'Page introuvable' })
   }
   const nextSpace = space ?? current.space
   const nextSection = section ?? current.section
-  const descendants = (await db.all<{ id: string }>(sql`
-    WITH RECURSIVE tree(id) AS (
-      SELECT id FROM pages WHERE parent_id = ${pageId}
-      UNION SELECT pages.id FROM pages JOIN tree ON pages.parent_id = tree.id
+  // depth : 1 pour une sous-page directe
+  const tree = await db.all<{ id: string, depth: number }>(sql`
+    WITH RECURSIVE tree(id, depth) AS (
+      SELECT id, 1 FROM pages WHERE parent_id = ${pageId}
+      UNION SELECT pages.id, tree.depth + 1 FROM pages JOIN tree ON pages.parent_id = tree.id
     )
-    SELECT id FROM tree`)).map(row => row.id)
+    SELECT id, depth FROM tree`)
+  const descendants = tree.map(row => row.id)
 
   // Parent : ni la page elle-même ni une de ses sous-pages (boucle), et dans le même espace et la même section
   if (parentId) {
@@ -47,6 +49,20 @@ export default defineEventHandler(async (event) => {
     }
     if (parent.space !== nextSpace || parent.section !== nextSection) {
       throw createError({ status: 400, statusText: 'Page parente hors espace ou section' })
+    }
+  }
+  // Niveau du parent + hauteur de la branche déplacée (la page et ses sous-pages) ; vérifié seulement si le parent change,
+  // pour que l'autosave d'une page déjà trop profonde (créée avant la limite) reste possible
+  if (parentId && parentId !== current.parentId) {
+    const [level] = await db.all<{ depth: number }>(sql`
+      WITH RECURSIVE up(id, depth) AS (
+        SELECT parent_id, 1 FROM pages WHERE id = ${parentId}
+        UNION ALL SELECT pages.parent_id, up.depth + 1 FROM pages JOIN up ON pages.id = up.id WHERE up.depth < ${MAX_PAGE_DEPTH}
+      )
+      SELECT max(depth) AS depth FROM up`)
+    const height = 1 + Math.max(0, ...tree.map(row => row.depth))
+    if (level!.depth + height > MAX_PAGE_DEPTH) {
+      throw createError({ status: 400, statusText: `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux` })
     }
   }
 
