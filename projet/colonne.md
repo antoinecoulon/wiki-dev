@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | □ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ◧ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
+| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau (à tester) | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | □ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | □ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
@@ -35,12 +35,18 @@
 
 ## Tranche en cours
 
-◧ **Pages N2 · citations et tableaux** (ouverte le 2026-10-22). Les citations existaient déjà depuis Pages N1 ; reste les tableaux, pour que ceux de Notion se collent sans perte avant la migration.
+Aucune. Pages N2 livrée le 2026-10-22 (citations déjà présentes depuis Pages N1, tableaux ajoutés), reste à valider : voir « À tester ».
 
-- [ ] Insérer un tableau (barre d'outils et menu « / »)
-- [ ] Ajouter / supprimer une ligne ou une colonne, supprimer le tableau
+## À tester
+
+> Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
+
+**Pages N2 · tableaux** (déployé le 2026-10-22, Ctrl+Shift+R avant de tester)
+
+- [ ] Insérer un tableau depuis le bouton « Tableau » de la barre et depuis le menu « / » (3×3 avec en-tête)
+- [ ] Curseur dans une cellule : ajouter une ligne, une colonne ; supprimer la ligne, la colonne, le tableau ; actions grisées hors d'un tableau
 - [ ] Un tableau copié depuis Notion se colle en tableau
-- [ ] Lisible sur mobile (défilement horizontal)
+- [ ] Sur smartphone, un tableau large défile horizontalement sans élargir la page
 
 DoD : voir [dod.md](dod.md)
 
@@ -74,7 +80,7 @@ DoD : voir [dod.md](dod.md)
   - [N0] ■ Créer, écrire (texte brut) et supprimer une page ; sauvegarde manuelle
   - [N1] ■ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
   - [N1] ■ Images (upload Vercel Blob, captures collées dans l'éditeur)
-  - [N2] ◧ Citations et tableaux
+  - [N2] ■ Citations et tableaux (à tester)
   - [N3] □ Drag & drop des blocs dans une page + bouton « + » à côté de chaque bloc pour en insérer un au-dessus / en dessous (comme Notion ; `UEditorDragHandle` de Nuxt UI couvre les deux)
 
 - je crée une page

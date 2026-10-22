@@ -5,6 +5,14 @@
 
 ---
 
+## 18 · 2026-10-22 · <1h> · tranche : Pages N2
+
+- **Fait :** tranche choisie pour la migration Notion (les tableaux collés ne doivent pas perdre leur forme). Les citations existaient déjà ; ajout des tableaux (TableKit) : bouton « Tableau » dans la barre (insérer, ajouter ligne / colonne, supprimer ligne / colonne / tableau) et entrée « Tableau » dans le menu « / ». Lint, typecheck et build OK, déployé par push. `gh` installé et connecté dans WSL : Claude peut pousser depuis le remote.
+- **Blocage / question :** session depuis le téléphone, rien n'a été testé dans l'app : tests notés dans la section « À tester » de la Colonne.
+- **➜ Prochaine action :** faire les tests « À tester » depuis le PC, puis migration Notion.
+
+---
+
 ## 17 · 2026-10-22 · <1h> · hors tranche : CI
 
 - **Fait :** diagnostic des déploiements en « Error » : c'étaient les déploiements auto Vercel à chaque push, construits depuis la racine du dépôt (Root Directory `.`) ; la prod (dernier `pnpm run deploy`) était à jour. Root Directory passé à `src` : chaque push sur `main` déploie en prod. Workflow GitHub Actions lint + typecheck. Script `deploy` retiré (ne marche plus avec ce réglage).

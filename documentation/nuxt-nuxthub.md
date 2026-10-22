@@ -535,6 +535,46 @@ Côté éditeur (`UEditor` inclut déjà l'extension Image) :
 - Bouton : surcharger le handler `image` (prop `handlers` de `UEditor`, sinon il demande une URL) pour ouvrir un `<input type="file">` caché ; il sert à la fois à la barre d'outils et au menu « / ».
 - Erreur de l'API : lire `error.data.statusMessage` (le `statusText` HTTP est vide en HTTP/2).
 
+### Tableaux
+
+```bash
+pnpm add @tiptap/extension-table   # même version que les autres @tiptap
+```
+
+`UEditor` n'a pas de handler pour les tableaux : on en déclare (prop `handlers`), et les items les appellent par leur clé dans `kind`. Typer les items avec `EditorToolbarItem<typeof handlers>` pour que ces `kind` soient acceptés.
+
+```ts
+import { TableKit } from '@tiptap/extension-table' // Table + TableRow + TableHeader + TableCell
+
+const extensions = [TableKit.configure({ table: { resizable: false } })]
+
+// Action grisée hors d'un tableau : can() échoue
+function tableHandler(command: 'addRowAfter' | 'addColumnAfter' | 'deleteRow' | 'deleteColumn' | 'deleteTable') {
+  return {
+    canExecute: (editor: Editor) => editor.can()[command](),
+    execute: (editor: Editor) => editor.chain().focus()[command](),
+    isActive: () => false
+  }
+}
+const handlers = {
+  table: {
+    canExecute: (editor: Editor) => editor.can().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+    execute: (editor: Editor) => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+    isActive: (editor: Editor) => editor.isActive('table')
+  },
+  addRowAfter: tableHandler('addRowAfter'),
+  deleteTable: tableHandler('deleteTable')
+} satisfies EditorCustomHandlers
+
+const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [[{
+  icon: 'i-lucide-table',
+  items: [{ kind: 'table', label: 'Insérer un tableau' }, { kind: 'addRowAfter', label: 'Ajouter une ligne' }]
+}]]
+```
+
+- Pas de style par défaut : bordures sur `th, td`, `margin: 0` sur leurs `p`, `.tableWrapper { overflow-x: auto }` pour le défilement sur mobile, `.selectedCell` pour la sélection de cellules.
+- Un `<table>` HTML collé (depuis Notion, une page web) devient un tableau TipTap.
+
 ## 7. Layout avec sidebar (UDashboard*)
 
 Les composants `UDashboard*` de Nuxt UI donnent une sidebar redimensionnable, repliable et en tiroir sur mobile, sans CSS à écrire.
