@@ -43,14 +43,14 @@ Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-
 - [x] Modèle C4 côté serveur, validé contre le schéma TipTap
 - [x] API : `POST /api/pages` avec `brick` (projet racine seulement, refus si le projet a déjà une page « C4 »)
 - [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
-- [ ] Tester dans l'app
+- [x] Tester dans l'app (validé en prod le 2026-10-23)
 - [ ] Briques suivantes (wireframes, modèle de données), puis petites briques en blocs « / »
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] Brique C4 : sur un projet, « Brique » → « C4 (niveaux 1-2) » ouvre la page pré-remplie ; l'option est ensuite grisée ; absente sur une sous-page
+- [x] Brique C4 : sur un projet, « Brique » → « C4 (niveaux 1-2) » ouvre la page pré-remplie ; l'option est ensuite grisée ; absente sur une sous-page
 
 ## Notés pour plus tard
 

@@ -8,8 +8,8 @@
 ## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (C4)
 
 - **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Modèle validé contre le schéma TipTap ; lint + typecheck OK.
-- **Blocage / question :** pas testé dans l'app (voir « À tester »).
-- **➜ Prochaine action :** tester la brique C4, puis brique suivante (wireframes ou modèle de données).
+- **Blocage / question :** aucun, brique C4 validée en prod.
+- **➜ Prochaine action :** brique suivante (wireframes ou modèle de données).
 
 ---
 
