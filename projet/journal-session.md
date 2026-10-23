@@ -8,8 +8,8 @@
 ## 29 · 2026-10-23 · <1h> · tranche : Pages N3
 
 - **Fait :** Gestion de projet N2 validée et close. Pages N3 : poignée `UEditorDragHandle` à gauche du bloc survolé, « + » (dessous, Alt+clic dessus, ouvre « / ») et ⡇ (glisser, ou menu Monter / Descendre / Dupliquer / Supprimer), masquée sur mobile. Lint + typecheck OK.
-- **Blocage / question :** pas testé dans l'app (voir « À tester ») ; place de la poignée non vérifiée sur écran étroit (si elle est coupée, ajouter une marge à gauche de l'éditeur).
-- **➜ Prochaine action :** tester la poignée des blocs.
+- **Blocage / question :** aucun, validée en prod (poignée bien placée) : Pages N3 terminée. Poignée des blocs ajoutée au guide technique.
+- **➜ Prochaine action :** choisir la prochaine tranche dans la Colonne.
 
 ---
 

@@ -606,6 +606,25 @@ Vue dérivée d'un contenu (ex. un kanban construit à partir d'un tableau de la
 
 Réagir au clic sur certains caractères (ex. faire tourner □ → ◧ → ■) : une `Extension` avec un plugin ProseMirror qui pose une décoration (`Decoration.inline`, classe CSS) sur chaque caractère, recalculée seulement si `tr.docChanged`, et un `handleClick` qui ne réagit que si `event.target` porte cette classe. La position reçue tombe avant **ou** après le caractère selon le côté du clic : tester `pos` et `pos - 1`.
 
+### Poignée des blocs (glisser-déposer, « + »)
+
+`UEditorDragHandle` (dépendance déjà incluse dans `@nuxt/ui`) affiche une poignée à gauche du bloc survolé. Les actions existent déjà dans les handlers de l'éditeur, exposés par le slot de `UEditor` : `suggestion` (insère un paragraphe « / » après le bloc, ce qui ouvre le menu « / »), `moveUp`, `moveDown`, `duplicate`, `delete`, tous appelés avec `{ pos }`.
+
+```vue
+<UEditor v-slot="{ editor, handlers }" ...>
+  <UEditorDragHandle v-slot="{ ui, onClick }" :editor="editor" @node-change="selected = $event">
+    <UButton icon="i-lucide-plus" :class="ui.handle()"
+      @click="(e) => { e.stopPropagation(); handlers.suggestion.execute(editor, { pos: onClick()?.pos }).run() }" />
+    <UDropdownMenu :items="items(editor, handlers)" :modal="false"
+      @update:open="editor.chain().setMeta('lockDragHandle', $event).run()">
+      <UButton icon="i-lucide-grip-vertical" :class="ui.handle()" />
+    </UDropdownMenu>
+  </UEditorDragHandle>
+</UEditor>
+```
+
+Pièges : `onClick()` (slot) sélectionne le bloc et renvoie sa position, et `stopPropagation` évite un second appel par la poignée elle-même. `lockDragHandle` empêche la poignée de suivre la souris pendant que le menu est ouvert. Les handlers sont typés avec l'`Editor` de `@tiptap/vue-3`, pas celui de `@tiptap/core`. Pas de survol au doigt : masquer la poignée sur mobile (`class="max-sm:hidden"`).
+
 ## 7. Layout avec sidebar (UDashboard*)
 
 Les composants `UDashboard*` de Nuxt UI donnent une sidebar redimensionnable, repliable et en tiroir sur mobile, sans CSS à écrire.

@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
-| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ◧ Drag & drop des blocs + bouton « + » |
+| **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
@@ -36,20 +36,13 @@
 
 ## Tranche en cours
 
-**Pages · N3 · glisser-déposer des blocs + bouton « + »**
-
-Terminée quand : au survol d'un bloc, « + » insère un bloc dessous (Alt+clic : dessus) et ouvre le menu « / » ; la poignée ⡇ se glisse pour déplacer le bloc, ou ouvre un menu Monter / Descendre / Dupliquer / Supprimer.
-
-- [x] `UEditorDragHandle` avec « + » et poignée (actions fournies par Nuxt UI)
-- [x] Menu de la poignée (Monter, Descendre, Dupliquer, Supprimer)
-- [x] Poignée masquée sur mobile (pas de survol au doigt)
-- [ ] Tester dans l'app (dont la place de la poignée sur un écran étroit)
+Aucune. Pages N3 (glisser-déposer des blocs + bouton « + ») validée le 2026-10-23.
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] Poignée des blocs : au survol, « + » insère dessous et ouvre « / », Alt+clic dessus ; glisser ⡇ déplace le bloc (paragraphe, liste, tableau, bloc de code, image) ; clic sur ⡇ → Monter / Descendre / Dupliquer / Supprimer ; poignée visible en entier (pas coupée à gauche)
+Rien en attente.
 
 ## Notés pour plus tard
 
@@ -96,7 +89,7 @@ DoD : voir [dod.md](dod.md)
   - [N1] ■ Sauvegarde automatique + mise en forme (styles, titres, séparateurs) + checklists + blocs de code (C#)
   - [N1] ■ Images (upload Vercel Blob, captures collées dans l'éditeur)
   - [N2] ■ Citations et tableaux
-  - [N3] ◧ Drag & drop des blocs dans une page + bouton « + » à côté de chaque bloc pour en insérer un au-dessus / en dessous (comme Notion ; `UEditorDragHandle` de Nuxt UI couvre les deux)
+  - [N3] ■ Drag & drop des blocs dans une page + bouton « + » à côté de chaque bloc pour en insérer un au-dessus / en dessous (comme Notion ; `UEditorDragHandle` de Nuxt UI couvre les deux)
 
 - je crée une page
 - je sauvegarde mes ajouts/modifications
