@@ -8,8 +8,8 @@
 ## 28 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (kanban des tranches)
 
 - **Fait :** composant `ColonneKanban` : lit la grille de la sous-page Colonne (cases □ ◧ ■ avec texte), 3 colonnes, menu sur la carte qui réécrit le symbole dans le contenu (sauvegarde auto). Bascule « Grille / Kanban » sur la Colonne d'un projet. Lecture et réécriture testées sur le modèle de Colonne (texte en gras compris) ; lint + typecheck OK.
-- **Blocage / question :** pas testé dans l'app (voir « À tester »).
-- **➜ Prochaine action :** tester le kanban ; si OK, Gestion de projet N2 terminée.
+- **Blocage / question :** aucun, kanban validé en prod (smartphone compris) : Gestion de projet N2 terminée. Lecture / réécriture du JSON TipTap hors éditeur ajoutée au guide technique.
+- **➜ Prochaine action :** choisir la prochaine tranche dans la Colonne.
 
 ---
 

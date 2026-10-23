@@ -12,7 +12,7 @@
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
-| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ◧ Briques à la demande + kanban des tranches |  |
+| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
@@ -36,20 +36,13 @@
 
 ## Tranche en cours
 
-**Gestion de projet · N2 · kanban des tranches**
-
-Terminée quand : sur la sous-page Colonne d'un projet, un bascule « Grille / Kanban » affiche les tranches de la grille en 3 colonnes (Prévue / En cours / Faite) ; un clic sur une carte change son état, réécrit dans la grille.
-
-- [x] Lecture de la grille (premier tableau : vertèbre en 1re colonne, niveau = colonne ; case « □ » sans texte ignorée)
-- [x] Menu sur la carte qui réécrit le symbole □ ◧ ■ (sauvegarde auto de la page)
-- [x] Bascule « Grille / Kanban » sur la sous-page « Colonne » d'un projet
-- [ ] Tester dans l'app
+Aucune. Gestion de projet N2 (briques à la demande + kanban des tranches) validée le 2026-10-23.
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] Kanban : sur la Colonne d'un projet, « Kanban » montre les cases remplies dans la bonne colonne ; changer l'état d'une carte la déplace et la grille est à jour en revenant sur « Grille » (et après rechargement) ; aussi sur smartphone
+Rien en attente.
 
 ## Notés pour plus tard
 
@@ -127,7 +120,7 @@ DoD : voir [dod.md](dod.md)
   - [N0] ■ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
   - [N1] ■ Un nouveau projet = une page fiche pré-remplie + sous-pages du noyau (Colonne, DoD, journal, décisions) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev** (D-007, validé le 2026-10-22)
   - [N2] ■ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
-  - [N2] ◧ Vue kanban des tranches d'un projet
+  - [N2] ■ Vue kanban des tranches d'un projet (validée le 2026-10-23)
   - [N3] pas prévu (suggestions de briques)
 
 - je vois les projets (en cours, terminés, idées)

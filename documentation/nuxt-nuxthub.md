@@ -602,6 +602,8 @@ Partager ces modèles entre serveur et client (ex. un bloc inséré aussi par le
 
 Insérer un bloc depuis le menu « / » : un handler maison (`EditorCustomHandlers`) dont `execute` renvoie `editor.chain().focus().insertContent(blocs)`. `UEditorSuggestionMenu` a déjà supprimé le « / » tapé avant d'appeler le handler. Un `computed` pour les items permet d'afficher une section selon la page.
 
+Vue dérivée d'un contenu (ex. un kanban construit à partir d'un tableau de la page) : lire le JSON TipTap directement (`content.find(n => n.type === 'table')`, texte d'une cellule = concaténation récursive des nœuds `text`, car une marque comme le gras coupe le texte en plusieurs nœuds). Pour modifier : copier le JSON (`JSON.parse(JSON.stringify(...))`, `structuredClone` échoue sur un proxy Vue), changer le nœud `text` visé, réassigner le `v-model` ; la sauvegarde auto suit. Afficher la vue **à la place** de l'éditeur (`v-if`/`v-else`) : l'éditeur remonté repart du contenu modifié.
+
 Réagir au clic sur certains caractères (ex. faire tourner □ → ◧ → ■) : une `Extension` avec un plugin ProseMirror qui pose une décoration (`Decoration.inline`, classe CSS) sur chaque caractère, recalculée seulement si `tr.docChanged`, et un `handleClick` qui ne réagit que si `event.target` porte cette classe. La position reçue tombe avant **ou** après le caractère selon le côté du clic : tester `pos` et `pos - 1`.
 
 ## 7. Layout avec sidebar (UDashboard*)
