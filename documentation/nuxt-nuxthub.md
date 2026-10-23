@@ -776,6 +776,45 @@ export function useSpace() {
 - Le filtrage se fait côté client sur la liste déjà chargée (`computed`) : pas de nouvelle requête au changement.
 - `UTabs` avec `:content="false"` fait un sélecteur à onglets compact (`v-model` sur la valeur).
 
+### Thème : couleurs, police, mode sombre
+
+Palettes maison dans `@theme static` (sans `static`, Tailwind ne génère pas les variables qu'aucune classe n'utilise, or Nuxt UI les lit via `var()`), puis branchées sur les alias de Nuxt UI dans `app.config.ts`.
+
+```css
+/* app/assets/css/main.css */
+@theme {
+  --font-sans: "JetBrains Mono", ui-monospace, monospace; /* téléchargée au build par @nuxt/fonts (inclus dans Nuxt UI) */
+}
+@theme static {
+  --color-lagon-50: #dffbff;
+  /* … 100 à 900 … */
+  --color-lagon-950: #001f25;
+}
+/* Jetons sémantiques : dans la même couche que Nuxt UI, déclarée après */
+@layer theme {
+  :root, .dark {
+    --ui-radius: 0;
+    --ui-bg: var(--ui-color-neutral-950);
+    --ui-text-muted: var(--ui-color-neutral-400);
+  }
+}
+```
+
+```ts
+// app.config.ts
+export default defineAppConfig({
+  ui: {
+    colors: { primary: 'lagon', neutral: 'terminal' },
+    button: { slots: { base: 'uppercase' } } // surcharge globale d'un slot ; class="normal-case" au cas par cas
+  }
+})
+```
+
+- **Police** : déclarer la famille dans `@theme` suffit, `@nuxt/fonts` la télécharge au build et la sert depuis l'app (aucun appel à Google côté client, utile derrière un proxy).
+- **Mode sombre forcé** : `colorMode: { preference: 'dark', fallback: 'dark', storageKey: '…' }` dans `nuxt.config.ts`. Une nouvelle `storageKey` ignore une préférence déjà stockée par le navigateur.
+- **Couleur primaire dynamique** : `useAppConfig().ui.colors.primary = 'ambre'` dans un plugin (avec `watch`) change toute l'interface. Les variables sont générées par un `computed` sur l'app config, clonée par requête côté serveur : pas de fuite entre utilisateurs, pas de flash si la valeur vient d'un cookie.
+- **Primaire en sombre** = nuance 400 (500 en clair) ; le texte des boutons pleins est `--ui-text-inverted`.
+
 ## 8. Sauvegardes (Turso + Vercel Blob)
 
 Un script Node lancé à la main : dump SQL horodaté de la base, et copie incrémentale des fichiers Blob, vers un dossier `backups/` du repo, ignoré par git.
@@ -853,6 +892,7 @@ mon-app/
 | `vercel logs --since 2h` : « outside the available retention » | plan Hobby : 30 min de logs | reproduire en local (`nuxt dev`) |
 | Classe Tailwind sans effet sur un élément de `UEditor` (ex. `pt-10` sur un `pre`) | le thème cible `[&_pre]:…` depuis le parent, plus spécifique | suffixe `!` : `max-sm:pt-10!` |
 | Barre d'actions qui déborde sur mobile | libellés des boutons | `:ui="{ label: 'max-sm:hidden' }"` + `aria-label` |
+| Mode sombre terne : textes surchargés restent ceux du mode clair | `:root { --ui-… }` hors `@layer` : une règle hors couche bat toujours celles de `@layer theme`, dont `.dark` de Nuxt UI | déclarer les surcharges dans `@layer theme`, et les redéclarer sous `.dark` |
 | `turso db create --from-dump dump.sql` : base créée **vide**, sans erreur | — | créer la base vide puis `turso db shell <base> < dump.sql` |
 
 ## Références

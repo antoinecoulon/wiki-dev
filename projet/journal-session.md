@@ -5,6 +5,14 @@
 
 ---
 
+## 31 · 2026-10-23 · <1h> · tranche : Personnalisation · Thème
+
+- **Fait :** première version « encre et papier » (indigo / pétrole, IBM Plex) livrée puis écartée : trop sobre. Refaite en style terminal d'après une référence : sombre forcé, JetBrains Mono (servie par @nuxt/fonts), angles droits, accent cyan (Perso) / ambre (Pro) basculé par un plugin sur l'app config, panneaux encadrés sur l'accueil et la connexion, libellés et boutons en majuscules, barre du lien actif. Vérifiée par captures (desktop, mobile, deux espaces) ; lint + typecheck OK.
+- **Blocage / question :** aucun, validée en prod : thème terminé. Section thème (palettes, police, sombre forcé, primaire dynamique, piège `@layer`) ajoutée au guide technique.
+- **➜ Prochaine action :** choisir la prochaine tranche dans la Colonne.
+
+---
+
 ## 30 · 2026-10-23 · <1h> · tranche : Retrouver N3
 
 - **Fait :** colonne `favorite` (migration 0003, testée sur SQLite), `PATCH` accepte `favorite` sans changer `updatedAt`. Étoile à côté du titre. Sidebar : groupes « Favoris » et « Récentes » (5 dernières modifiées) en haut, pour l'espace affiché. Lint + typecheck OK.

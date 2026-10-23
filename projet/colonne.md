@@ -17,7 +17,7 @@
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
 | **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
-| **Personnalisation** | ■ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
+| **Personnalisation** | ■ Accueil avec projets récents ; thème (style terminal) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches. À migrer aussi : les notes du dossier `documentation/` du repo (dont le guide technique).
 
@@ -36,7 +36,7 @@
 
 ## Tranche en cours
 
-◧ Personnalisation · Thème (style terminal) : sombre forcé, JetBrains Mono, angles droits, accent cyan (Perso) / ambre (Pro), panneaux encadrés, libellés en majuscules. Livrée le 2026-10-23, à valider dans l'app réelle (dont le poste pro : police servie par l'app).
+Aucune. Personnalisation · Thème (style terminal) validée le 2026-10-23.
 
 ## À tester
 
