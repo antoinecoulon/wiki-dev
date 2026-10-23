@@ -9,7 +9,7 @@
 - **Contexte :** Gestion de projet N1 (méthode Colonne dans wiki-dev) ; il faudra ensuite ajouter des briques facultatives (N2).
 - **Choix :** un projet est une page racine de la section Projets, avec un `status` en base (idée / en cours / terminé, null ailleurs). Sa page est la fiche ; Colonne, DoD, journal et décisions sont des sous-pages pré-remplies (modèles en JSON TipTap côté serveur, repris de `methode/templates/`). N2 mixte : grosses briques en sous-pages, petites en blocs « / ». Écartés : une seule page à sections (page longue, journal noyé), table `projects` séparée, briques toutes en sous-pages ou toutes en blocs.
 - **Pourquoi :** réutilise l'arborescence (le noyau est au niveau 2 sur 5) sans nouvel écran ; le statut est la seule donnée structurée utile pour l'instant (principe « données structurées seulement si ça se répète »).
-- **Conséquences :** le « + » de Projets crée toujours un projet ; espace et statut ne sont plus dans la fiche ; vue d'ensemble des projets à décider plus tard.
+- **Conséquences :** le « + » de Projets crée toujours un projet ; espace et statut ne sont plus dans la fiche ; vue d'ensemble des projets à décider plus tard. Complément du 2026-10-23 : supprimer un projet supprime toute sa branche (des pages du noyau orphelines n'ont pas de sens) ; les autres pages font toujours remonter leurs sous-pages.
 
 ---
 

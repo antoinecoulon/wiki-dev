@@ -5,6 +5,14 @@
 
 ---
 
+## 25 · 2026-10-23 · <1h> · tranche : retours Gestion de projet N1
+
+- **Fait :** états de la Colonne validés (grille pré-remplie, clic □ → ◧ → ■, aussi sur smartphone). Retour « les sous-pages d'un projet ne remontent pas » : pas un bug (la remontée marche, la suppression n'avait pas été confirmée), mais choix de supprimer toute la branche d'un projet ; les autres pages gardent la remontée. Testé en local (projet avec sous-sous-page, page Doc avec sous-page).
+- **Blocage / question :** logs Vercel inaccessibles depuis le MCP (403) et CLI `vercel` absente de WSL : diagnostic en prod impossible, à prévoir avec le point « logs » des notés pour plus tard.
+- **➜ Prochaine action :** tester la suppression d'un projet, puis choisir la prochaine tranche (Gestion de projet N2 ou Performance N0).
+
+---
+
 ## 24 · 2026-10-22 · <1h> · tranche : retours Gestion de projet N1
 
 - **Fait :** Gestion de projet N1 validée, projet wiki-dev créé dans wiki-dev (base de prod vidée avant, sauvegarde faite). Retours : grille de la Colonne pré-remplie avec « □ » ; extension d'éditeur `colonne-state` (un clic fait tourner □ → ◧ → ■, hors blocs de code), testée sur un état ProseMirror.

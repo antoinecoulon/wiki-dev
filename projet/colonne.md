@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-22
+> Mise à jour : 2026-10-23
 
 ## Grille
 
@@ -36,17 +36,16 @@
 
 ## Tranche en cours
 
-Aucune. Gestion de projet N1 validée le 2026-10-22 ; correctif des retours à valider : voir « À tester ».
+Aucune. Gestion de projet N1 validée le 2026-10-22 (états de la Colonne validés le 2026-10-23) ; suppression d'un projet à valider : voir « À tester ».
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-**Correctif Gestion de projet N1 · états de la Colonne** (2026-10-22, Ctrl+Shift+R avant de tester)
+**Correctif Gestion de projet N1 · suppression d'un projet** (2026-10-23, Ctrl+Shift+R avant de tester ; API testée en local)
 
-- [ ] Nouveau projet : toutes les cases de la grille de la Colonne sont pré-remplies avec « □ » (le projet wiki-dev déjà créé garde l'ancien modèle)
-- [ ] Dans n'importe quelle page (paragraphe, liste, tableau), un clic sur □ ◧ ■ le fait passer □ → ◧ → ■ → □ ; curseur « main » au survol ; rien dans un bloc de code
-- [ ] Sur smartphone, un toucher sur le symbole fait la même chose
+- [ ] Supprimer un projet : la modale s'intitule « Supprimer le projet ? » et annonce le nombre de sous-pages supprimées ; après confirmation, le projet et toute sa branche (noyau, sous-pages ajoutées) disparaissent de la sidebar
+- [ ] Supprimer une page qui n'est pas un projet (Doc, ou sous-page d'un projet) : ses sous-pages remontent toujours d'un niveau
 
 ## Notés pour plus tard
 

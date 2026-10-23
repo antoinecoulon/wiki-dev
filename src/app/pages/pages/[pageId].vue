@@ -115,6 +115,13 @@ const sections = [
   { label: 'Documentation', value: 'doc' as const }
 ]
 const confirmDelete = ref(false)
+// Un projet part avec toute sa branche ; une autre page fait remonter ses sous-pages d'un niveau (API)
+const deleteDescription = computed(() => {
+  const removed = descendants.value.ids.size
+  if (isProject.value && removed) return `La suppression est définitive, ${removed > 1 ? `ses ${removed} sous-pages comprises` : 'sa sous-page comprise'}.`
+  if (children.value.length) return `La suppression est définitive. ${children.value.length > 1 ? `Ses ${children.value.length} sous-pages remonteront` : 'Sa sous-page remontera'} d'un niveau.`
+  return 'La suppression est définitive.'
+})
 
 const extensions = [
   CodeBlock,
@@ -533,10 +540,8 @@ async function remove() {
 
       <UModal
         v-model:open="confirmDelete"
-        title="Supprimer la page ?"
-        :description="children.length
-          ? `La suppression est définitive. ${children.length > 1 ? `Ses ${children.length} sous-pages remonteront` : 'Sa sous-page remontera'} d'un niveau.`
-          : 'La suppression est définitive.'"
+        :title="isProject ? 'Supprimer le projet ?' : 'Supprimer la page ?'"
+        :description="deleteDescription"
       >
         <template #footer>
           <UButton
