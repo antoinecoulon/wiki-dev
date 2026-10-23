@@ -152,6 +152,24 @@ export const BRICKS = {
       h(2, 'Schéma'),
       p(text('Coller ici une capture du schéma (Excalidraw…)'))
     )
+  }),
+  data: () => ({
+    title: 'Modèle de données',
+    content: doc(
+      quote('Quand les relations se compliquent. À mettre à jour avec le schéma.'),
+      h(2, 'Entités'),
+      h(3, 'Entité 1'),
+      p(text('Rôle :', true), text(' …')),
+      table(
+        ['Champ', 'Type', 'Obligatoire', 'Note'],
+        ['id', 'texte (UUID)', 'oui', 'clé'],
+        ['…', '…', '…', '…']
+      ),
+      h(2, 'Relations'),
+      bullets([text('Entité 1 1 → n Entité 2 : …')]),
+      h(2, 'Schéma'),
+      p(text('Coller ici une capture du schéma (Excalidraw, dbdiagram…)'))
+    )
   })
 }
 export type Brick = keyof typeof BRICKS

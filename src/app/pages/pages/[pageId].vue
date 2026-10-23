@@ -102,7 +102,8 @@ async function createSubpage() {
 }
 // Briques à la demande (D-007) : une seule de chaque par projet, repérée par son titre (vérifié aussi par l'API)
 const bricks = computed(() => [
-  { brick: 'c4', title: 'C4', label: 'C4 (niveaux 1-2)', icon: 'i-lucide-network' }
+  { brick: 'c4', title: 'C4', label: 'C4 (niveaux 1-2)', icon: 'i-lucide-network' },
+  { brick: 'data', title: 'Modèle de données', label: 'Modèle de données', icon: 'i-lucide-database' }
 ].map(({ brick, title, ...item }) => ({
   ...item,
   disabled: children.value.some(child => child.title === title),

@@ -44,7 +44,8 @@ Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-
 - [x] API : `POST /api/pages` avec `brick` (projet racine seulement, refus si le projet a déjà une page « C4 »)
 - [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
 - [x] Tester dans l'app (validé en prod le 2026-10-23)
-- [ ] Briques suivantes (wireframes, modèle de données), puis petites briques en blocs « / »
+- [x] Brique modèle de données (un tableau par entité, relations, capture)
+- [ ] Brique wireframes, puis petites briques en blocs « / »
 
 ## À tester
 
