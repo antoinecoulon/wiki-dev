@@ -5,11 +5,11 @@
 
 ---
 
-## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (C4, modèle de données)
+## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (briques C4, modèle de données, wireframes)
 
-- **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Validée en prod. Puis brique modèle de données (un tableau par entité, relations, capture). Modèles validés contre le schéma TipTap ; lint + typecheck OK.
-- **Blocage / question :** brique modèle de données pas testée dans l'app (voir « À tester »).
-- **➜ Prochaine action :** tester la brique modèle de données, puis brique wireframes.
+- **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Validée en prod. Puis briques modèle de données (un tableau par entité, relations, capture), validée en prod, et wireframes (un bloc par écran : route, capture, états). Modèles validés contre le schéma TipTap ; lint + typecheck OK.
+- **Blocage / question :** brique wireframes pas testée dans l'app (voir « À tester »).
+- **➜ Prochaine action :** tester la brique wireframes, puis petites briques en blocs « / ».
 
 ---
 

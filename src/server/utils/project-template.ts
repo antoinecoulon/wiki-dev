@@ -170,6 +170,22 @@ export const BRICKS = {
       h(2, 'Schéma'),
       p(text('Coller ici une capture du schéma (Excalidraw, dbdiagram…)'))
     )
+  }),
+  wireframes: () => ({
+    title: 'Wireframes',
+    content: doc(
+      quote('Un wireframe quand une tranche crée ou change un écran (Excalidraw…), avec 2 ou 3 lignes d\'états.'),
+      h(2, 'Écran 1 · /route'),
+      p(text('Rôle :', true), text(' …')),
+      p(text('Coller ici la capture du wireframe')),
+      p(text('États :', true)),
+      bullets(
+        [text('Vide :'), text(' …')],
+        [text('Erreur :'), text(' …')],
+        [text('Chargement / sauvegarde :'), text(' …')],
+        [text('Mobile :'), text(' …')]
+      )
+    )
   })
 }
 export type Brick = keyof typeof BRICKS

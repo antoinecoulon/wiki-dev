@@ -45,7 +45,8 @@ Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-
 - [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
 - [x] Tester dans l'app (validé en prod le 2026-10-23)
 - [x] Brique modèle de données (un tableau par entité, relations, capture)
-- [ ] Brique wireframes, puis petites briques en blocs « / »
+- [x] Brique wireframes (un bloc par écran : route, capture, états)
+- [ ] Petites briques en blocs « / » (checklist de tranche, prochaine action)
 
 ## À tester
 
