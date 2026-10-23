@@ -5,11 +5,11 @@
 
 ---
 
-## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (briques C4, modèle de données, wireframes)
+## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (briques)
 
-- **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Validée en prod. Puis briques modèle de données (un tableau par entité, relations, capture), validée en prod, et wireframes (un bloc par écran : route, capture, états). Modèles validés contre le schéma TipTap ; lint + typecheck OK.
-- **Blocage / question :** brique wireframes pas testée dans l'app (voir « À tester »).
-- **➜ Prochaine action :** tester la brique wireframes, puis petites briques en blocs « / ».
+- **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Validée en prod. Puis briques modèle de données (un tableau par entité, relations, capture), validée en prod, et wireframes (un bloc par écran : route, capture, états), validée en prod. Petites briques dans le menu « / » des pages de Projets (checklist de tranche, entrée de journal) : modèles déplacés dans `shared/utils/` pour servir aussi au client, contenu du noyau inchangé (comparé). Modèles validés contre le schéma TipTap ; lint + typecheck + build OK.
+- **Blocage / question :** petites briques pas testées dans l'app (voir « À tester »).
+- **➜ Prochaine action :** tester les petites briques ; si OK, briques à la demande terminées (reste le kanban des tranches en N2).
 
 ---
 

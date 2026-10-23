@@ -36,23 +36,23 @@
 
 ## Tranche en cours
 
-**Gestion de projet · N2 · briques à la demande, C4 en premier**
+**Gestion de projet · N2 · briques à la demande**
 
-Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-page C4 pré-remplie (niveaux 1-2 en tableaux + emplacement pour la capture du schéma), une seule par projet.
+Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-page pré-remplie (C4, modèle de données, wireframes), une seule de chaque ; le menu « / » des pages de Projets insère les petites briques (checklist de tranche, entrée de journal).
 
 - [x] Modèle C4 côté serveur, validé contre le schéma TipTap
 - [x] API : `POST /api/pages` avec `brick` (projet racine seulement, refus si le projet a déjà une page « C4 »)
 - [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
 - [x] Tester dans l'app (validé en prod le 2026-10-23)
-- [x] Brique modèle de données (un tableau par entité, relations, capture)
-- [x] Brique wireframes (un bloc par écran : route, capture, états)
-- [ ] Petites briques en blocs « / » (checklist de tranche, prochaine action)
+- [x] Brique modèle de données (un tableau par entité, relations, capture), validée en prod
+- [x] Brique wireframes (un bloc par écran : route, capture, états), validée en prod
+- [x] Petites briques : section « Méthode » du menu « / » (pages de Projets), « Checklist de tranche » et « Entrée de journal », mêmes blocs que les modèles du noyau
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [x] Brique C4 : sur un projet, « Brique » → « C4 (niveaux 1-2) » ouvre la page pré-remplie ; l'option est ensuite grisée ; absente sur une sous-page
+- [ ] Petites briques : sur une page de Projets, « / » → section Méthode → « Checklist de tranche » et « Entrée de journal » (datée du jour) ; section absente sur une page de Documentation ; nouveau projet toujours pré-rempli comme avant
 
 ## Notés pour plus tard
 

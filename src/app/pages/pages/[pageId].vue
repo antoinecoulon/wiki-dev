@@ -247,7 +247,18 @@ const handlers = {
   addColumnAfter: tableHandler('addColumnAfter'),
   deleteRow: tableHandler('deleteRow'),
   deleteColumn: tableHandler('deleteColumn'),
-  deleteTable: tableHandler('deleteTable')
+  deleteTable: tableHandler('deleteTable'),
+  // Petites briques de la méthode (menu « / » des pages de Projets)
+  sliceBlock: {
+    canExecute: () => true,
+    execute: (editor: Editor) => editor.chain().focus().insertContent(sliceBlock()),
+    isActive: () => false
+  },
+  journalEntry: {
+    canExecute: () => true,
+    execute: (editor: Editor) => editor.chain().focus().insertContent(journalEntry(new Date().toISOString().slice(0, 10))),
+    isActive: () => false
+  }
 } satisfies EditorCustomHandlers
 
 const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [
@@ -307,7 +318,7 @@ const toolbarItems: EditorToolbarItem<typeof handlers>[][] = [
   }]
 ]
 
-const suggestionItems: EditorSuggestionMenuItem<typeof handlers>[][] = [
+const suggestionItems = computed<EditorSuggestionMenuItem<typeof handlers>[][]>(() => [
   [
     { type: 'label', label: 'Texte' },
     { kind: 'paragraph', label: 'Texte', icon: 'i-lucide-type' },
@@ -328,8 +339,15 @@ const suggestionItems: EditorSuggestionMenuItem<typeof handlers>[][] = [
     { kind: 'horizontalRule', label: 'Séparateur', icon: 'i-lucide-separator-horizontal' },
     { kind: 'image', label: 'Image', icon: 'i-lucide-image' },
     { kind: 'table', label: 'Tableau', icon: 'i-lucide-table' }
-  ]
-]
+  ],
+  ...(section.value === 'project'
+    ? [[
+        { type: 'label' as const, label: 'Méthode' },
+        { kind: 'sliceBlock' as const, label: 'Checklist de tranche', icon: 'i-lucide-list-todo' },
+        { kind: 'journalEntry' as const, label: 'Entrée de journal', icon: 'i-lucide-notebook-pen' }
+      ]]
+    : [])
+])
 
 // Sauvegarde automatique : 1 s après la dernière modification
 type SaveStatus = 'saved' | 'pending' | 'saving' | 'error'

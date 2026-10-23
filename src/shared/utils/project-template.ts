@@ -1,6 +1,7 @@
 import type { JSONContent } from '@tiptap/core'
 
 // Pages du noyau d'un nouveau projet (méthode Colonne, methode/templates/), en JSON TipTap (D-003)
+// Dans shared/ : les petites briques servent aussi à l'éditeur, côté client
 // Les champs Espace et Statut de la fiche ne sont pas repris : ce sont des données de la page
 
 const text = (value: string, bold = false): JSONContent => ({ type: 'text', text: value, ...(bold && { marks: [{ type: 'bold' }] }) })
@@ -27,6 +28,23 @@ const table = (header: string[], ...rows: string[][]): JSONContent => ({
   ]
 })
 const doc = (...content: JSONContent[]): JSONContent => ({ type: 'doc', content })
+
+// Petites briques (D-007) : aussi insérées par le menu « / » des pages de Projets
+export const sliceBlock = (): JSONContent[] => [
+  p(text('Vertèbre · N0 · titre', true)),
+  p(text('Terminée quand :')),
+  bullets([text('…')]),
+  p(text('Checklist (3 à 7 verbes, le plus incertain en premier) :')),
+  tasks('…')
+]
+export const journalEntry = (date: string): JSONContent[] => [
+  h(2, `${date} · durée · tranche : …`),
+  bullets(
+    [text('Fait :', true), text(' …')],
+    [text('Blocage / question :', true), text(' …')],
+    [text('➜ Prochaine action :', true), text(' …')]
+  )
+]
 
 export function projectTemplate(date: string) {
   return {
@@ -64,11 +82,7 @@ export function projectTemplate(date: string) {
             ['Vertèbre 2', '□ ', '□ ', '□ ', '□ ']
           ),
           h(2, 'Tranche en cours'),
-          p(text('Vertèbre · N0 · titre', true)),
-          p(text('Terminée quand :')),
-          bullets([text('…')]),
-          p(text('Checklist (3 à 7 verbes, le plus incertain en premier) :')),
-          tasks('…'),
+          ...sliceBlock(),
           h(2, 'Détail des vertèbres'),
           h(3, 'Socle technique'),
           bullets(
@@ -103,12 +117,7 @@ export function projectTemplate(date: string) {
         title: 'Journal de session',
         content: doc(
           quote('Entrées les plus récentes en haut. En début de session, lire la première entrée. En fin de session, 3 champs (2 min). S\'arrêter de préférence quand on sait quoi faire ensuite.'),
-          h(2, `${date} · durée · tranche : …`),
-          bullets(
-            [text('Fait :', true), text(' …')],
-            [text('Blocage / question :', true), text(' …')],
-            [text('➜ Prochaine action :', true), text(' …')]
-          )
+          ...journalEntry(date)
         )
       },
       {
