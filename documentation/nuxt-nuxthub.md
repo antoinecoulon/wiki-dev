@@ -124,6 +124,8 @@ pnpm nuxt db generate
 
 Les fichiers SQL vont dans `server/db/migrations/sqlite/`, à **commiter**. `nuxt dev` les applique au démarrage.
 
+Booléen : SQLite n'en a pas, utiliser `integer('favorite', { mode: 'boolean' }).notNull().default(false)` (Drizzle convertit 0/1 en `false`/`true`). Ajoutée à une table existante, la colonne doit avoir une valeur par défaut, sinon `ALTER TABLE ... NOT NULL` échoue sur les lignes déjà présentes.
+
 ### L'utiliser dans une route API
 
 ```ts

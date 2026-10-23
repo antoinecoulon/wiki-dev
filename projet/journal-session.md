@@ -8,8 +8,8 @@
 ## 30 · 2026-10-23 · <1h> · tranche : Retrouver N3
 
 - **Fait :** colonne `favorite` (migration 0003, testée sur SQLite), `PATCH` accepte `favorite` sans changer `updatedAt`. Étoile à côté du titre. Sidebar : groupes « Favoris » et « Récentes » (5 dernières modifiées) en haut, pour l'espace affiché. Lint + typecheck OK.
-- **Blocage / question :** pas testé dans l'app (voir « À tester »). Migration appliquée au démarrage en prod, sans sauvegarde (base de test).
-- **➜ Prochaine action :** tester favoris et récentes.
+- **Blocage / question :** aucun, validée en prod (migration passée, sans sauvegarde : base de test) : Retrouver N3 terminée. Colonne booléenne ajoutée au guide technique.
+- **➜ Prochaine action :** choisir la prochaine tranche dans la Colonne.
 
 ---
 

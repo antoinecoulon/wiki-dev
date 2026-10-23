@@ -24,4 +24,4 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - App déployée sur `wiki-dev-blond.vercel.app` (déploiement auto à chaque push sur `main`, CI lint + typecheck en GitHub Actions), validée derrière le proxy pro (D-006).
 - **v1 terminée** (Socle N0-N1, Accès N0, Pages N0-N1, Retrouver N0-N1, Gestion de projet N0, Mobile N0). Sauvegardes : `pnpm run backup` depuis `src/` → `backups/` (gitignoré).
 - Migration Notion / dev-docs : à part, petit à petit, sans bloquer les tranches.
-- Gestion de projet N1 (D-007) et N2 (briques à la demande, kanban des tranches) validées, Performance N0 validée (liste des pages sans contenu). Pages N3 validée (glisser-déposer des blocs + bouton « + »). Tranche en cours : Retrouver N3 (favoris et pages récentes).
+- Gestion de projet N1 (D-007) et N2 (briques à la demande, kanban des tranches) validées, Performance N0 validée (liste des pages sans contenu). Pages N3 validée (glisser-déposer des blocs + bouton « + »). Retrouver N3 validée (favoris et pages récentes). Aucune tranche en cours.

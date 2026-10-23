@@ -11,7 +11,7 @@
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
-| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ◧ Favoris / pages récentes (sidebar) |
+| **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ■ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
@@ -36,20 +36,13 @@
 
 ## Tranche en cours
 
-**Retrouver · N3 · favoris et pages récentes dans la sidebar**
-
-Terminée quand : l'étoile à côté du titre met une page en favori (en base, même liste sur tous les postes) ; la sidebar affiche en haut « Favoris » et « Récentes » (5 pages modifiées en dernier) pour l'espace affiché.
-
-- [x] Colonne `favorite` (migration 0003) ; `PATCH` accepte `favorite` sans changer la date de modification
-- [x] Étoile à côté du titre, enregistrée tout de suite
-- [x] Groupes « Favoris » et « Récentes » en haut de la sidebar (masqués s'ils sont vides)
-- [ ] Tester dans l'app
+Aucune. Retrouver N3 (favoris et pages récentes dans la sidebar) validée le 2026-10-23.
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] Favoris / récentes : l'étoile ajoute et retire la page de « Favoris » (aussi depuis un autre poste) ; mettre en favori ne fait pas remonter la page dans « Récentes » ; modifier une page la fait remonter ; groupes filtrés par espace ; sidebar repliée lisible
+Rien en attente.
 
 ## Notés pour plus tard
 
@@ -114,7 +107,7 @@ DoD : voir [dod.md](dod.md)
   - [N0] ■ Toutes les pages listées dans la sidebar, cliquables
   - [N1] ■ Recherche par titre (palette Ctrl+K)
   - [N2] ■ Arborescence : sous-pages, déplacer une page dans l'arbre de la sidebar (via un sélecteur « page parente », glisser-déposer non retenu), 5 niveaux max
-  - [N3] ◧ Favoris / pages récentes dans la sidebar
+  - [N3] ■ Favoris / pages récentes dans la sidebar
 
 - je retrouve une page
 - je déplace une page
