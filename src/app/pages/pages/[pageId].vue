@@ -145,6 +145,19 @@ const sections = [
   { label: 'Documentation', value: 'doc' as const }
 ]
 const confirmDelete = ref(false)
+
+// Favori : enregistré tout de suite, hors sauvegarde auto (ne change pas la date de modification)
+const favorite = ref(page.value!.favorite)
+async function toggleFavorite() {
+  favorite.value = !favorite.value
+  try {
+    await $fetch(`/api/pages/${pageId}`, { method: 'PATCH', body: { favorite: favorite.value } })
+    await refreshNuxtData('pages')
+  } catch {
+    favorite.value = !favorite.value
+    toast.add({ title: 'Échec de la mise en favori', color: 'error' })
+  }
+}
 // Un projet part avec toute sa branche ; une autre page fait remonter ses sous-pages d'un niveau (API)
 const deleteDescription = computed(() => {
   const removed = descendants.value.ids.size
@@ -506,16 +519,26 @@ async function remove() {
 
     <template #body>
       <UContainer class="space-y-4">
-        <UInput
-          ref="titleInput"
-          v-model="title"
-          placeholder="Titre"
-          aria-label="Titre"
-          variant="none"
-          size="xl"
-          class="w-full"
-          :ui="{ base: 'text-3xl font-bold px-0' }"
-        />
+        <div class="flex items-center gap-2">
+          <UInput
+            ref="titleInput"
+            v-model="title"
+            placeholder="Titre"
+            aria-label="Titre"
+            variant="none"
+            size="xl"
+            class="w-full"
+            :ui="{ base: 'text-3xl font-bold px-0' }"
+          />
+          <UButton
+            icon="i-lucide-star"
+            :aria-label="favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+            :title="favorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+            :color="favorite ? 'warning' : 'neutral'"
+            :variant="favorite ? 'soft' : 'ghost'"
+            @click="toggleFavorite"
+          />
+        </div>
 
         <!-- Statut du projet, arborescence : chemin, page parente, sous-page -->
         <div class="flex flex-wrap items-center gap-2">

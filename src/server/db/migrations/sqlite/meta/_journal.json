@@ -22,6 +22,13 @@
       "when": 1792697669016,
       "tag": "0002_long_runaways",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792787992929,
+      "tag": "0003_sturdy_mercury",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,14 @@
 
 ---
 
+## 30 · 2026-10-23 · <1h> · tranche : Retrouver N3
+
+- **Fait :** colonne `favorite` (migration 0003, testée sur SQLite), `PATCH` accepte `favorite` sans changer `updatedAt`. Étoile à côté du titre. Sidebar : groupes « Favoris » et « Récentes » (5 dernières modifiées) en haut, pour l'espace affiché. Lint + typecheck OK.
+- **Blocage / question :** pas testé dans l'app (voir « À tester »). Migration appliquée au démarrage en prod, sans sauvegarde (base de test).
+- **➜ Prochaine action :** tester favoris et récentes.
+
+---
+
 ## 29 · 2026-10-23 · <1h> · tranche : Pages N3
 
 - **Fait :** Gestion de projet N2 validée et close. Pages N3 : poignée `UEditorDragHandle` à gauche du bloc survolé, « + » (dessous, Alt+clic dessus, ouvre « / ») et ⡇ (glisser, ou menu Monter / Descendre / Dupliquer / Supprimer), masquée sur mobile. Lint + typecheck OK.

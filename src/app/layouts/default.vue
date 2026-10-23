@@ -54,6 +54,16 @@ const groups = computed(() => visiblePages.value.map((group) => {
   }
 }))
 
+// Accès rapide en haut de la sidebar, pour l'espace affiché : favoris, puis les 5 pages modifiées en dernier (API triée par date)
+const shortcuts = computed(() => {
+  const inSpace = (pages.value ?? []).filter(page => page.space === space.value)
+  const toItem = (icon: string) => (page: Page): NavigationMenuItem => ({ label: page.title, icon, to: `/pages/${page.id}` })
+  return [
+    { label: 'Favoris', items: inSpace.filter(page => page.favorite).map(toItem('i-lucide-star')) },
+    { label: 'Récentes', items: inSpace.slice(0, 5).map(toItem('i-lucide-clock')) }
+  ].filter(group => group.items.length)
+})
+
 // Toutes les pages de l'espace, à plat, au format attendu par la palette (id requis)
 const searchGroups = computed(() => visiblePages.value.map(group => ({
   id: group.value,
@@ -130,6 +140,23 @@ async function logout() {
           :collapsed="collapsed"
           :tooltip="collapsed"
         />
+        <div
+          v-for="group in shortcuts"
+          :key="group.label"
+        >
+          <span
+            v-if="!collapsed"
+            class="block px-2.5 py-1 text-xs font-semibold text-muted uppercase"
+          >
+            {{ group.label }}
+          </span>
+          <UNavigationMenu
+            :items="group.items"
+            :collapsed="collapsed"
+            tooltip
+            orientation="vertical"
+          />
+        </div>
         <div
           v-for="group in groups"
           :key="group.value"

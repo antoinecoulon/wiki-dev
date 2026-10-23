@@ -7,8 +7,8 @@ type Status = typeof schema.pages.$inferInsert.status
 
 export default defineEventHandler(async (event) => {
   const pageId = getRouterParam(event, 'pageId')!
-  const { title, content, section, space, parentId, status } = await readValidatedBody(event, (body) => {
-    const { title, content, section, space, parentId, status } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown }
+  const { title, content, section, space, parentId, status, favorite } = await readValidatedBody(event, (body) => {
+    const { title, content, section, space, parentId, status, favorite } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown, favorite?: unknown }
     if (title !== undefined && (typeof title !== 'string' || !title.trim())) {
       throw createError({ status: 400, statusText: 'Titre invalide' })
     }
@@ -27,7 +27,10 @@ export default defineEventHandler(async (event) => {
     if (status !== undefined && status !== null && !schema.pages.status.enumValues.includes(status as never)) {
       throw createError({ status: 400, statusText: 'Statut invalide' })
     }
-    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status }
+    if (favorite !== undefined && typeof favorite !== 'boolean') {
+      throw createError({ status: 400, statusText: 'Favori invalide' })
+    }
+    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite }
   })
 
   const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true } })
@@ -79,7 +82,9 @@ export default defineEventHandler(async (event) => {
       space,
       parentId,
       status,
-      updatedAt: new Date().toISOString()
+      favorite,
+      // Mettre en favori n'est pas une modification : la page ne remonte pas dans les récentes
+      updatedAt: [title, content, section, space, parentId, status].some(value => value !== undefined) ? new Date().toISOString() : undefined
     })
     .where(eq(schema.pages.id, pageId))
     .returning({ id: schema.pages.id, updatedAt: schema.pages.updatedAt })
