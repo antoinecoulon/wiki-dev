@@ -5,6 +5,14 @@
 
 ---
 
+## 27 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (C4)
+
+- **Fait :** brique C4 : menu « Brique » sur la page d'un projet, crée une sous-page « C4 » pré-remplie (tableaux Contexte et Conteneurs, emplacement pour la capture), une seule par projet (option grisée + refus 409 côté API). Modèle validé contre le schéma TipTap ; lint + typecheck OK.
+- **Blocage / question :** pas testé dans l'app (voir « À tester »).
+- **➜ Prochaine action :** tester la brique C4, puis brique suivante (wireframes ou modèle de données).
+
+---
+
 ## 26 · 2026-10-23 · <1h> · tranche : Performance N0
 
 - **Fait :** `GET /api/pages` ne renvoie plus `content` (sélection de toutes les colonnes sauf le contenu) ; aucun appelant ne le lisait (sidebar, accueil, page). Lint + typecheck OK. Testé en prod : sidebar, accueil, recherche et page OK, tranche validée. Astuce `getTableColumns` ajoutée au guide technique.

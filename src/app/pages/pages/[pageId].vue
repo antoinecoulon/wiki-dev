@@ -100,6 +100,25 @@ async function createSubpage() {
     toast.add({ title: 'Échec de la création de la sous-page', color: 'error' })
   }
 }
+// Briques à la demande (D-007) : une seule de chaque par projet, repérée par son titre (vérifié aussi par l'API)
+const bricks = computed(() => [
+  { brick: 'c4', title: 'C4', label: 'C4 (niveaux 1-2)', icon: 'i-lucide-network' }
+].map(({ brick, title, ...item }) => ({
+  ...item,
+  disabled: children.value.some(child => child.title === title),
+  onSelect: () => addBrick(brick)
+})))
+
+async function addBrick(brick: string) {
+  try {
+    const child = await $fetch('/api/pages', { method: 'POST', body: { parentId: pageId, brick } })
+    await refreshNuxtData('pages')
+    await navigateTo(`/pages/${child!.id}`)
+  } catch {
+    toast.add({ title: 'Échec de l\'ajout de la brique', color: 'error' })
+  }
+}
+
 // Projet = page racine de la section Projets : son statut s'affiche en badge sur toutes ses sous-pages
 const projectStatus = ref(page.value!.status ?? undefined)
 const statuses = [
@@ -488,6 +507,18 @@ async function remove() {
             :title="canCreateSubpage ? undefined : `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux`"
             @click="createSubpage"
           />
+          <UDropdownMenu
+            v-if="isProject"
+            :items="bricks"
+          >
+            <UButton
+              icon="i-lucide-blocks"
+              label="Brique"
+              color="neutral"
+              variant="ghost"
+              size="sm"
+            />
+          </UDropdownMenu>
         </div>
 
         <!-- Sous-pages directes -->

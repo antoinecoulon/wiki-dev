@@ -12,7 +12,7 @@
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | □ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | □ Favoris / pages récentes (sidebar) |
-| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | □ Briques à la demande + kanban des tranches |  |
+| **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ◧ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
@@ -36,13 +36,21 @@
 
 ## Tranche en cours
 
-Aucune. Gestion de projet N1 validée le 2026-10-22, correctifs (états de la Colonne, suppression d'un projet) validés le 2026-10-23.
+**Gestion de projet · N2 · briques à la demande, C4 en premier**
+
+Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-page C4 pré-remplie (niveaux 1-2 en tableaux + emplacement pour la capture du schéma), une seule par projet.
+
+- [x] Modèle C4 côté serveur, validé contre le schéma TipTap
+- [x] API : `POST /api/pages` avec `brick` (projet racine seulement, refus si le projet a déjà une page « C4 »)
+- [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
+- [ ] Tester dans l'app
+- [ ] Briques suivantes (wireframes, modèle de données), puis petites briques en blocs « / »
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-Rien en attente.
+- [ ] Brique C4 : sur un projet, « Brique » → « C4 (niveaux 1-2) » ouvre la page pré-remplie ; l'option est ensuite grisée ; absente sur une sous-page
 
 ## Notés pour plus tard
 
@@ -119,7 +127,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
   - [N1] ■ Un nouveau projet = une page fiche pré-remplie + sous-pages du noyau (Colonne, DoD, journal, décisions) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev** (D-007, validé le 2026-10-22)
-  - [N2] □ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
+  - [N2] ◧ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
   - [N2] □ Vue kanban des tranches d'un projet
   - [N3] pas prévu (suggestions de briques)
 

@@ -127,3 +127,31 @@ export function projectTemplate(date: string) {
     ]
   }
 }
+
+// Briques à la demande (D-007) : sous-pages ajoutées à un projet, créées une seule fois (repérées par leur titre)
+export const BRICKS = {
+  c4: (project: string) => ({
+    title: 'C4',
+    content: doc(
+      quote('C4 niveaux 1-2 (c4model.com). À mettre à jour quand l\'architecture change.'),
+      h(2, 'Niveau 1 · Contexte'),
+      table(
+        ['Élément', 'Type', 'Rôle'],
+        ['Moi', 'Personne', '…'],
+        [project, 'Système', '…'],
+        ['…', 'Système externe', '…']
+      ),
+      p(text('Relations :', true)),
+      bullets([text('A → B : ce qui passe')]),
+      h(2, 'Niveau 2 · Conteneurs'),
+      table(
+        ['Conteneur', 'Techno', 'Rôle', 'Échange avec'],
+        ['App web', '…', '…', '…'],
+        ['Base de données', '…', '…', '…']
+      ),
+      h(2, 'Schéma'),
+      p(text('Coller ici une capture du schéma (Excalidraw…)'))
+    )
+  })
+}
+export type Brick = keyof typeof BRICKS
