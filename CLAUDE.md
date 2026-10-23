@@ -18,10 +18,10 @@ App personnelle pour **remplacer Notion** : documentation de dev (perso et pro) 
 - Réponses en **français**.
 - **Skills à charger** selon la tâche : `nuxt` (routes serveur, pages, middleware), `nuxt-ui` (composants, `UEditor`), `vercel:vercel-storage` (Blob), `vercel:vercel-cli` (déploiement, env, logs), `pnpm` (dépendances).
 
-## État (2026-10-21)
+## État (2026-10-23)
 
 - Recadrage fait (D-005) : v1 définie dans la Colonne.
 - App déployée sur `wiki-dev-blond.vercel.app` (déploiement auto à chaque push sur `main`, CI lint + typecheck en GitHub Actions), validée derrière le proxy pro (D-006).
 - **v1 terminée** (Socle N0-N1, Accès N0, Pages N0-N1, Retrouver N0-N1, Gestion de projet N0, Mobile N0). Sauvegardes : `pnpm run backup` depuis `src/` → `backups/` (gitignoré).
 - Migration Notion / dev-docs : à part, petit à petit, sans bloquer les tranches.
-- Gestion de projet N1 validée (D-007). Aucune tranche en cours ; candidates : Gestion de projet N2 (C4 en premier) ou Performance N0.
+- Gestion de projet N1 validée (D-007), Performance N0 validée (liste des pages sans contenu). Aucune tranche en cours ; candidate : Gestion de projet N2 (C4 en premier).

@@ -16,7 +16,7 @@
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
-| **Performance** (bonus) | ◧ Liste des pages allégée |  |  |  |
+| **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
 | **Personnalisation** | ■ Accueil avec projets récents | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches. À migrer aussi : les notes du dossier `documentation/` du repo (dont le guide technique).
@@ -165,7 +165,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** garder l'app rapide quand le volume grossit (migration Notion)
 - **Écrans :** aucun (transverse)
 - **Tranches :**
-  - [N0] ◧ `GET /api/pages` ne renvoie plus le contenu des pages (la sidebar, l'accueil et la recherche n'ont besoin que des métadonnées) : à faire avant une migration en volume
+  - [N0] ■ `GET /api/pages` ne renvoie plus le contenu des pages (la sidebar, l'accueil et la recherche n'ont besoin que des métadonnées) : à faire avant une migration en volume
   - Autres soucis à ajouter ici au fil de l'eau (niveaux à définir)
 
 ### Personnalisation

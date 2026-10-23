@@ -155,6 +155,15 @@ if (section !== undefined && !schema.pages.section.enumValues.includes(section a
 }
 ```
 
+Alléger une liste en excluant une colonne lourde (ex. le contenu) : partir de `getTableColumns` plutôt que lister les colonnes à garder, une nouvelle colonne y sera incluse d'office.
+
+```ts
+import { getTableColumns } from 'drizzle-orm'
+
+const { content: _content, ...columns } = getTableColumns(schema.pages)
+export default defineEventHandler(() => db.select(columns).from(schema.pages))
+```
+
 ### Commandes utiles
 
 | Commande | Rôle |
