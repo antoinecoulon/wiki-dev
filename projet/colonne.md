@@ -36,23 +36,20 @@
 
 ## Tranche en cours
 
-**Gestion de projet · N2 · briques à la demande**
+**Gestion de projet · N2 · kanban des tranches**
 
-Terminée quand : sur la page d'un projet, le menu « Brique » ajoute une sous-page pré-remplie (C4, modèle de données, wireframes), une seule de chaque ; le menu « / » des pages de Projets insère les petites briques (checklist de tranche, entrée de journal).
+Terminée quand : sur la sous-page Colonne d'un projet, un bascule « Grille / Kanban » affiche les tranches de la grille en 3 colonnes (Prévue / En cours / Faite) ; un clic sur une carte change son état, réécrit dans la grille.
 
-- [x] Modèle C4 côté serveur, validé contre le schéma TipTap
-- [x] API : `POST /api/pages` avec `brick` (projet racine seulement, refus si le projet a déjà une page « C4 »)
-- [x] Menu « Brique » sur la page du projet, option grisée si le C4 existe
-- [x] Tester dans l'app (validé en prod le 2026-10-23)
-- [x] Brique modèle de données (un tableau par entité, relations, capture), validée en prod
-- [x] Brique wireframes (un bloc par écran : route, capture, états), validée en prod
-- [x] Petites briques : section « Méthode » du menu « / » (pages de Projets), « Checklist de tranche » et « Entrée de journal », mêmes blocs que les modèles du noyau
+- [x] Lecture de la grille (premier tableau : vertèbre en 1re colonne, niveau = colonne ; case « □ » sans texte ignorée)
+- [x] Menu sur la carte qui réécrit le symbole □ ◧ ■ (sauvegarde auto de la page)
+- [x] Bascule « Grille / Kanban » sur la sous-page « Colonne » d'un projet
+- [ ] Tester dans l'app
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] Petites briques : sur une page de Projets, « / » → section Méthode → « Checklist de tranche » et « Entrée de journal » (datée du jour) ; section absente sur une page de Documentation ; nouveau projet toujours pré-rempli comme avant
+- [ ] Kanban : sur la Colonne d'un projet, « Kanban » montre les cases remplies dans la bonne colonne ; changer l'état d'une carte la déplace et la grille est à jour en revenant sur « Grille » (et après rechargement) ; aussi sur smartphone
 
 ## Notés pour plus tard
 
@@ -129,8 +126,8 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Une page est rangée dans une section (Projets ou Documentation) et y reste (couvre aussi Documentation N0)
   - [N1] ■ Un nouveau projet = une page fiche pré-remplie + sous-pages du noyau (Colonne, DoD, journal, décisions) + un statut (idée / en cours / terminé) → **wiki-dev est suivi dans wiki-dev** (D-007, validé le 2026-10-22)
-  - [N2] ◧ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
-  - [N2] □ Vue kanban des tranches d'un projet
+  - [N2] ■ Briques à la demande (D-007) : grosses briques (C4 prédéfini en premier, wireframes, modèle de données, features plus tard) en sous-pages via « Ajouter une brique » ; petites (checklist de tranche, prochaine action) en blocs du menu « / », section « Méthode »
+  - [N2] ◧ Vue kanban des tranches d'un projet
   - [N3] pas prévu (suggestions de briques)
 
 - je vois les projets (en cours, terminés, idées)

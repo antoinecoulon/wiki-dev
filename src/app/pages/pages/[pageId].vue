@@ -129,6 +129,14 @@ const statuses = [
   { label: 'Terminé', value: 'done' as const, color: 'success' as const, icon: 'i-lucide-circle-check' }
 ]
 const isProject = computed(() => section.value === 'project' && !parentId.value)
+// Sous-page Colonne d'un projet : bascule entre la grille (éditeur) et le kanban des tranches
+const isColonne = computed(() => section.value === 'project' && ancestors.value.length === 1 && title.value.trim() === 'Colonne')
+const view = ref<'grid' | 'kanban'>('grid')
+const views = [
+  { label: 'Grille', value: 'grid' as const, icon: 'i-lucide-table' },
+  { label: 'Kanban', value: 'kanban' as const, icon: 'i-lucide-square-kanban' }
+]
+const showKanban = computed(() => isColonne.value && view.value === 'kanban')
 const rootStatus = computed(() => section.value === 'project' ? statuses.find(s => s.value === ancestors.value[0]?.status) : undefined)
 
 const sections = [
@@ -558,7 +566,21 @@ async function remove() {
           />
         </div>
 
+        <UTabs
+          v-if="isColonne"
+          v-model="view"
+          :items="views"
+          :content="false"
+          size="xs"
+          class="w-fit"
+        />
+
+        <ColonneKanban
+          v-if="showKanban"
+          v-model="content"
+        />
         <UEditor
+          v-else
           v-slot="{ editor }"
           v-model="content"
           content-type="json"

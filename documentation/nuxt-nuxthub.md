@@ -598,6 +598,10 @@ const schema = getSchema([StarterKit, TableKit, TaskList, TaskItem]) // mêmes e
 Node.fromJSON(schema, json).check() // lève une erreur si un nœud ou un attribut est invalide
 ```
 
+Partager ces modèles entre serveur et client (ex. un bloc inséré aussi par le menu « / » de l'éditeur) : les mettre dans `shared/utils/`. Nuxt 4 y auto-importe les exports, côté `app/` comme côté `server/`. Seuls les exports sont visibles : garder les petites fonctions (`p()`, `h()`…) non exportées pour ne pas polluer les auto-imports. Le code doit rester sans dépendance serveur (pas de `hub:db`, pas de `node:*`) ; un `import type` de `@tiptap/core` ne coûte rien.
+
+Insérer un bloc depuis le menu « / » : un handler maison (`EditorCustomHandlers`) dont `execute` renvoie `editor.chain().focus().insertContent(blocs)`. `UEditorSuggestionMenu` a déjà supprimé le « / » tapé avant d'appeler le handler. Un `computed` pour les items permet d'afficher une section selon la page.
+
 Réagir au clic sur certains caractères (ex. faire tourner □ → ◧ → ■) : une `Extension` avec un plugin ProseMirror qui pose une décoration (`Decoration.inline`, classe CSS) sur chaque caractère, recalculée seulement si `tr.docChanged`, et un `handleClick` qui ne réagit que si `event.target` porte cette classe. La position reçue tombe avant **ou** après le caractère selon le côté du clic : tester `pos` et `pos - 1`.
 
 ## 7. Layout avec sidebar (UDashboard*)
