@@ -93,16 +93,17 @@ async function logout() {
       :ui="{ body: collapsed ? '[scrollbar-width:none]' : undefined }"
     >
       <template #header>
-        <!-- Marque ◧ (état « en cours » de la Colonne), à l'encre de l'espace -->
+        <!-- Repliée : marque ◧ (état « en cours » de la Colonne) ; dépliée : nom et espace, façon invite de terminal -->
         <NuxtLink
           to="/"
-          class="flex items-center gap-2 font-semibold text-highlighted truncate"
+          class="min-w-0"
           :class="collapsed ? 'mx-auto' : 'px-1'"
           :aria-label="collapsed ? 'Accueil' : undefined"
         >
           <svg
+            v-if="collapsed"
             viewBox="0 0 16 16"
-            class="size-5 shrink-0 text-primary"
+            class="size-5 text-primary"
             aria-hidden="true"
           >
             <rect
@@ -110,17 +111,22 @@ async function logout() {
               y="1.75"
               width="12.5"
               height="12.5"
-              rx="1.5"
               fill="none"
               stroke="currentColor"
               stroke-width="1.5"
             />
-            <path
-              d="M1.75 3.25a1.5 1.5 0 0 1 1.5-1.5H8v12.5H3.25a1.5 1.5 0 0 1-1.5-1.5z"
+            <rect
+              x="1.75"
+              y="1.75"
+              width="6.25"
+              height="12.5"
               fill="currentColor"
             />
           </svg>
-          <span v-if="!collapsed">wiki.dev</span>
+          <template v-else>
+            <span class="block text-lg font-bold tracking-widest text-primary">WIKI_DEV</span>
+            <span class="block text-xs text-muted uppercase">~/{{ currentSpace.label }}</span>
+          </template>
         </NuxtLink>
       </template>
 
@@ -159,7 +165,7 @@ async function logout() {
         >
           <span
             v-if="!collapsed"
-            class="block px-2.5 py-1 text-sm font-medium text-muted"
+            class="block px-2.5 py-1 text-xs font-semibold tracking-wider text-muted uppercase"
           >
             {{ group.label }}
           </span>
@@ -178,7 +184,7 @@ async function logout() {
             v-if="!collapsed"
             class="flex items-center justify-between px-2.5 py-1"
           >
-            <span class="text-sm font-medium text-muted">
+            <span class="text-xs font-semibold tracking-wider text-muted uppercase">
               {{ group.label }}
             </span>
             <UButton

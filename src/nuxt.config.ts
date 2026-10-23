@@ -10,6 +10,12 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/css/main.css'],
+  // Thème terminal : sombre uniquement ; nouvelle clé pour ignorer une préférence « system » déjà stockée
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
+    storageKey: 'wiki-color-mode'
+  },
   runtimeConfig: {
     adminPasswordHash: ''
   },

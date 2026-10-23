@@ -31,66 +31,56 @@ async function onSubmit() {
 
 <template>
   <div class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-xs space-y-8">
-      <div class="space-y-3">
-        <!-- Marque ◧, à l'encre du dernier espace affiché -->
-        <svg
-          viewBox="0 0 16 16"
-          class="size-10 text-primary"
-          aria-hidden="true"
-        >
-          <rect
-            x="1.75"
-            y="1.75"
-            width="12.5"
-            height="12.5"
-            rx="1.5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-          />
-          <path
-            d="M1.75 3.25a1.5 1.5 0 0 1 1.5-1.5H8v12.5H3.25a1.5 1.5 0 0 1-1.5-1.5z"
-            fill="currentColor"
-          />
-        </svg>
-        <h1 class="text-3xl font-semibold tracking-tight text-highlighted">
-          wiki.dev
+    <div class="w-full max-w-sm space-y-6">
+      <div>
+        <h1 class="text-3xl font-bold tracking-widest text-primary">
+          WIKI_DEV
         </h1>
-        <p class="text-muted">
+        <p class="mt-1 text-sm text-muted">
           Notes et projets de dev, perso et pro.
         </p>
       </div>
-      <UForm
-        :validate="validate"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <UFormField
-          label="Mot de passe"
-          name="password"
+      <!-- Panneau d'accès, façon terminal -->
+      <div class="border border-default">
+        <h2 class="px-4 py-3 border-b border-default text-sm font-semibold tracking-wider text-primary uppercase">
+          Accès
+        </h2>
+        <UForm
+          :validate="validate"
+          :state="state"
+          class="space-y-4 p-4"
+          @submit="onSubmit"
         >
-          <UInput
-            v-model="state.password"
-            type="password"
-            autofocus
-            class="w-full"
+          <UFormField
+            label="Mot de passe"
+            name="password"
+            :ui="{ label: 'text-xs tracking-wider text-muted uppercase' }"
+          >
+            <UInput
+              v-model="state.password"
+              type="password"
+              autofocus
+              class="w-full"
+            >
+              <template #leading>
+                <span class="text-primary">#</span>
+              </template>
+            </UInput>
+          </UFormField>
+          <UAlert
+            v-if="error"
+            color="error"
+            variant="subtle"
+            :title="error"
           />
-        </UFormField>
-        <UAlert
-          v-if="error"
-          color="error"
-          variant="subtle"
-          :title="error"
-        />
-        <UButton
-          label="Se connecter"
-          type="submit"
-          block
-          :loading="loading"
-        />
-      </UForm>
+          <UButton
+            label="Se connecter"
+            type="submit"
+            block
+            :loading="loading"
+          />
+        </UForm>
+      </div>
     </div>
   </div>
 </template>

@@ -1,79 +1,82 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-/* Identité « encre et papier » : polices servies par @nuxt/fonts (téléchargées au build, aucun appel externe derrière le proxy) */
+/* Identité « terminal » : JetBrains Mono partout, servie par @nuxt/fonts (téléchargée au build, aucun appel externe derrière le proxy) */
 @theme {
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "JetBrains Mono", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Palettes générées en oklch ; static : Nuxt UI les lit via des variables, sans classe utilitaire qui les référence */
 @theme static {
-  /* Encre indigo : primaire de l'espace Perso */
-  --color-encre-50: #eef1ff;
-  --color-encre-100: #e2e7ff;
-  --color-encre-200: #cddcff;
-  --color-encre-300: #aec1ff;
-  --color-encre-400: #859bf4;
-  --color-encre-500: #4657d6;
-  --color-encre-600: #3945be;
-  --color-encre-700: #2d37a0;
-  --color-encre-800: #212983;
-  --color-encre-900: #151962;
-  --color-encre-950: #0b0c48;
+  /* Lagon (cyan) : primaire de l'espace Perso */
+  --color-lagon-50: #dffbff;
+  --color-lagon-100: #c6f5ff;
+  --color-lagon-200: #a1f0ff;
+  --color-lagon-300: #76ebff;
+  --color-lagon-400: #86e1f5;
+  --color-lagon-500: #2dbed7;
+  --color-lagon-600: #0097ac;
+  --color-lagon-700: #007081;
+  --color-lagon-800: #00515e;
+  --color-lagon-900: #04343c;
+  --color-lagon-950: #001f25;
 
-  /* Pétrole : primaire de l'espace Pro */
-  --color-petrole-50: #e8f6f6;
-  --color-petrole-100: #dcf4f5;
-  --color-petrole-200: #c6e5e6;
-  --color-petrole-300: #a4cdcf;
-  --color-petrole-400: #5fadb1;
-  --color-petrole-500: #06787d;
-  --color-petrole-600: #00666a;
-  --color-petrole-700: #005358;
-  --color-petrole-800: #004246;
-  --color-petrole-900: #002e31;
-  --color-petrole-950: #001e21;
+  /* Ambre : primaire de l'espace Pro */
+  --color-ambre-50: #fff3dc;
+  --color-ambre-100: #ffe8c0;
+  --color-ambre-200: #ffdb9b;
+  --color-ambre-300: #ffce71;
+  --color-ambre-400: #fdc359;
+  --color-ambre-500: #d8a030;
+  --color-ambre-600: #ae7c08;
+  --color-ambre-700: #825b00;
+  --color-ambre-800: #5e4204;
+  --color-ambre-900: #3d2a05;
+  --color-ambre-950: #261800;
 
-  /* Papier : neutres froids, teintés bleu nuit */
-  --color-papier-50: #f7f8fa;
-  --color-papier-100: #eef0f4;
-  --color-papier-200: #dde3ee;
-  --color-papier-300: #cbd1dc;
-  --color-papier-400: #9aa5b8;
-  --color-papier-500: #778193;
-  --color-papier-600: #545e6f;
-  --color-papier-700: #3a4353;
-  --color-papier-800: #262e3d;
-  --color-papier-900: #19202f;
-  --color-papier-950: #0e1624;
+  /* Terminal : gris neutres, du noir de fond au blanc des titres */
+  --color-terminal-50: #f5f5f5;
+  --color-terminal-100: #ededed;
+  --color-terminal-200: #d4d4d4;
+  --color-terminal-300: #bdbdbd;
+  --color-terminal-400: #9a9a9a;
+  --color-terminal-500: #6b6b6b;
+  --color-terminal-600: #4a4a4a;
+  --color-terminal-700: #363636;
+  --color-terminal-800: #262626;
+  --color-terminal-900: #141414;
+  --color-terminal-950: #0a0a0a;
 }
 
-/* Fond papier et textes secondaires plus contrastés que par défaut (muted : 6:1 au lieu de 4:1).
+/* Sombre forcé (colorMode dans nuxt.config) ; mêmes valeurs sous :root au cas où la classe manque.
    Même couche que Nuxt UI et déclarée après : hors couche, :root écraserait aussi .dark */
 @layer theme {
-  :root {
-    --ui-bg: var(--ui-color-neutral-50);
-    --ui-bg-muted: var(--ui-color-neutral-100);
-    --ui-text-dimmed: var(--ui-color-neutral-500);
-    --ui-text-muted: var(--ui-color-neutral-600);
-    --ui-text-toned: var(--ui-color-neutral-700);
-    --ui-text: var(--ui-color-neutral-800);
-  }
-
+  :root,
   .dark {
+    --ui-radius: 0;
     --ui-bg: var(--ui-color-neutral-950);
     --ui-bg-muted: var(--ui-color-neutral-900);
     --ui-bg-elevated: var(--ui-color-neutral-900);
     --ui-bg-accented: var(--ui-color-neutral-800);
+    --ui-bg-inverted: var(--ui-color-neutral-50);
     --ui-text-dimmed: var(--ui-color-neutral-500);
     --ui-text-muted: var(--ui-color-neutral-400);
     --ui-text-toned: var(--ui-color-neutral-300);
     --ui-text: var(--ui-color-neutral-200);
     --ui-text-highlighted: var(--ui-color-neutral-50);
+    --ui-text-inverted: var(--ui-color-neutral-950);
     --ui-border: var(--ui-color-neutral-800);
     --ui-border-muted: var(--ui-color-neutral-800);
+    --ui-border-accented: var(--ui-color-neutral-700);
+    color-scheme: dark;
   }
+}
+
+/* Monospace pour tout le contenu : interligne aéré pour la lecture longue */
+.ProseMirror p,
+.ProseMirror li {
+  line-height: 1.75;
 }
 
 /* Checklists (TaskList / TaskItem) : non stylées par UEditor */
@@ -103,15 +106,6 @@
 
 /* Coloration des blocs de code (classes highlight.js produites par lowlight) */
 .ProseMirror pre {
-  --hl-keyword: #8250df;
-  --hl-string: #0a3069;
-  --hl-number: #0550ae;
-  --hl-comment: #6e7781;
-  --hl-title: #953800;
-  --hl-type: #116329;
-}
-
-.dark .ProseMirror pre {
   --hl-keyword: #d2a8ff;
   --hl-string: #a5d6ff;
   --hl-number: #79c0ff;

@@ -614,6 +614,7 @@ async function remove() {
             color="neutral"
             variant="soft"
             size="xs"
+            class="normal-case tracking-normal"
           />
         </div>
 

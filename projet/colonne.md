@@ -36,7 +36,7 @@
 
 ## Tranche en cours
 
-◧ Personnalisation · Thème (identité « encre et papier ») : palettes encre / pétrole / papier, une primaire par espace, IBM Plex Sans + Mono, marque ◧ et favicon, sidebar, connexion et accueil retouchés. Livrée le 2026-10-23, à valider dans l'app réelle (dont le poste pro : polices servies par l'app).
+◧ Personnalisation · Thème (style terminal) : sombre forcé, JetBrains Mono, angles droits, accent cyan (Perso) / ambre (Pro), panneaux encadrés, libellés en majuscules. Livrée le 2026-10-23, à valider dans l'app réelle (dont le poste pro : police servie par l'app).
 
 ## À tester
 
