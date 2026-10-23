@@ -5,6 +5,14 @@
 
 ---
 
+## 26 · 2026-10-23 · <1h> · tranche : Performance N0
+
+- **Fait :** `GET /api/pages` ne renvoie plus `content` (sélection de toutes les colonnes sauf le contenu) ; aucun appelant ne le lisait (sidebar, accueil, page). Lint + typecheck OK.
+- **Blocage / question :** pas testé dans l'app.
+- **➜ Prochaine action :** vérifier sidebar, accueil, recherche et page (fil d'Ariane, sous-pages, suppression) après déploiement, puis cocher Performance N0.
+
+---
+
 ## 25 · 2026-10-23 · <1h> · tranche : retours Gestion de projet N1
 
 - **Fait :** états de la Colonne validés (grille pré-remplie, clic □ → ◧ → ■, aussi sur smartphone). Retour « les sous-pages d'un projet ne remontent pas » : pas un bug (la remontée marche, la suppression n'avait pas été confirmée), mais choix de supprimer toute la branche d'un projet ; les autres pages gardent la remontée. Testé en local (projet avec sous-sous-page, page Doc avec sous-page).
