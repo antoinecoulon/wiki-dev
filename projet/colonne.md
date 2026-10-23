@@ -36,16 +36,13 @@
 
 ## Tranche en cours
 
-Aucune. Gestion de projet N1 validée le 2026-10-22 (états de la Colonne validés le 2026-10-23) ; suppression d'un projet à valider : voir « À tester ».
+Aucune. Gestion de projet N1 validée le 2026-10-22, correctifs (états de la Colonne, suppression d'un projet) validés le 2026-10-23.
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-**Correctif Gestion de projet N1 · suppression d'un projet** (2026-10-23, Ctrl+Shift+R avant de tester ; API testée en local)
-
-- [ ] Supprimer un projet : la modale s'intitule « Supprimer le projet ? » et annonce le nombre de sous-pages supprimées ; après confirmation, le projet et toute sa branche (noyau, sous-pages ajoutées) disparaissent de la sidebar
-- [ ] Supprimer une page qui n'est pas un projet (Doc, ou sous-page d'un projet) : ses sous-pages remontent toujours d'un niveau
+Rien en attente.
 
 ## Notés pour plus tard
 
