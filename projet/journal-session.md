@@ -5,6 +5,14 @@
 
 ---
 
+## 29 · 2026-10-23 · <1h> · tranche : Pages N3
+
+- **Fait :** Gestion de projet N2 validée et close. Pages N3 : poignée `UEditorDragHandle` à gauche du bloc survolé, « + » (dessous, Alt+clic dessus, ouvre « / ») et ⡇ (glisser, ou menu Monter / Descendre / Dupliquer / Supprimer), masquée sur mobile. Lint + typecheck OK.
+- **Blocage / question :** pas testé dans l'app (voir « À tester ») ; place de la poignée non vérifiée sur écran étroit (si elle est coupée, ajouter une marge à gauche de l'éditeur).
+- **➜ Prochaine action :** tester la poignée des blocs.
+
+---
+
 ## 28 · 2026-10-23 · <1h> · tranche : Gestion de projet N2 (kanban des tranches)
 
 - **Fait :** composant `ColonneKanban` : lit la grille de la sous-page Colonne (cases □ ◧ ■ avec texte), 3 colonnes, menu sur la carte qui réécrit le symbole dans le contenu (sauvegarde auto). Bascule « Grille / Kanban » sur la Colonne d'un projet. Lecture et réécriture testées sur le modèle de Colonne (texte en gras compris) ; lint + typecheck OK.

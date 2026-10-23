@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Editor, JSONContent } from '@tiptap/core'
-import type { EditorCustomHandlers, EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
+import type { DropdownMenuItem, EditorCustomHandlers, EditorHandlers, EditorSuggestionMenuItem, EditorToolbarItem } from '@nuxt/ui'
+import type { Editor as VueEditor } from '@tiptap/vue-3'
 import { TaskItem, TaskList } from '@tiptap/extension-list'
 import { TableKit } from '@tiptap/extension-table'
 import { CodeBlock } from '~/editor/code-block'
@@ -357,6 +358,33 @@ const suggestionItems = computed<EditorSuggestionMenuItem<typeof handlers>[][]>(
     : [])
 ])
 
+// Poignée à gauche du bloc survolé : « + » insère un bloc dessous (Alt : dessus) et ouvre le menu « / » ;
+// ⡇ se glisse pour déplacer le bloc, ou ouvre un menu (déplacer sans glisser, dupliquer, supprimer)
+const selectedNode = ref<{ pos: number }>()
+function insertBlock(editor: VueEditor, editorHandlers: EditorHandlers, event: MouseEvent, node?: { pos: number }) {
+  event.stopPropagation()
+  if (!node) return
+  if (event.altKey) {
+    editor.chain().focus().insertContentAt(node.pos, { type: 'paragraph', content: [{ type: 'text', text: '/' }] }).run()
+  } else {
+    editorHandlers.suggestion.execute(editor, { pos: node.pos }).run()
+  }
+}
+const blockActions = [
+  { kind: 'moveUp', label: 'Monter', icon: 'i-lucide-arrow-up' },
+  { kind: 'moveDown', label: 'Descendre', icon: 'i-lucide-arrow-down' },
+  { kind: 'duplicate', label: 'Dupliquer', icon: 'i-lucide-copy' },
+  { kind: 'delete', label: 'Supprimer', icon: 'i-lucide-trash-2', color: 'error' as const }
+] as const
+function blockItems(editor: VueEditor, editorHandlers: EditorHandlers): DropdownMenuItem[] {
+  const cmd = { pos: selectedNode.value?.pos }
+  return blockActions.map(({ kind, ...item }) => ({
+    ...item,
+    disabled: !editorHandlers[kind].canExecute(editor, cmd),
+    onSelect: () => editorHandlers[kind].execute(editor, cmd).run()
+  }))
+}
+
 // Sauvegarde automatique : 1 s après la dernière modification
 type SaveStatus = 'saved' | 'pending' | 'saving' | 'error'
 const status = ref<SaveStatus>('saved')
@@ -581,7 +609,7 @@ async function remove() {
         />
         <UEditor
           v-else
-          v-slot="{ editor }"
+          v-slot="{ editor, handlers: editorHandlers }"
           v-model="content"
           content-type="json"
           placeholder="Écris ici, ou tape « / » pour insérer un bloc…"
@@ -600,6 +628,42 @@ async function remove() {
             :editor="editor"
             :items="suggestionItems"
           />
+          <!-- Pas de survol au doigt : poignée masquée sur mobile -->
+          <UEditorDragHandle
+            v-slot="{ ui, onClick }"
+            :editor="editor"
+            class="max-sm:hidden"
+            @node-change="selectedNode = $event"
+          >
+            <UButton
+              icon="i-lucide-plus"
+              color="neutral"
+              variant="ghost"
+              size="sm"
+              aria-label="Insérer un bloc dessous (Alt : dessus)"
+              title="Insérer un bloc dessous (Alt : dessus)"
+              :class="ui.handle()"
+              @click="(event: MouseEvent) => insertBlock(editor, editorHandlers, event, onClick())"
+            />
+            <UDropdownMenu
+              v-slot="{ open }"
+              :modal="false"
+              :items="blockItems(editor, editorHandlers)"
+              :content="{ side: 'left' }"
+              @update:open="editor.chain().setMeta('lockDragHandle', $event).run()"
+            >
+              <UButton
+                icon="i-lucide-grip-vertical"
+                color="neutral"
+                variant="ghost"
+                active-variant="soft"
+                size="sm"
+                aria-label="Déplacer le bloc, ou ouvrir son menu"
+                :active="open"
+                :class="ui.handle()"
+              />
+            </UDropdownMenu>
+          </UEditorDragHandle>
         </UEditor>
         <input
           ref="fileInput"
