@@ -31,12 +31,36 @@ async function onSubmit() {
 
 <template>
   <div class="min-h-screen flex items-center justify-center p-4">
-    <UCard class="w-full max-w-sm">
-      <template #header>
-        <h1 class="text-xl font-bold">
+    <div class="w-full max-w-xs space-y-8">
+      <div class="space-y-3">
+        <!-- Marque ◧, à l'encre du dernier espace affiché -->
+        <svg
+          viewBox="0 0 16 16"
+          class="size-10 text-primary"
+          aria-hidden="true"
+        >
+          <rect
+            x="1.75"
+            y="1.75"
+            width="12.5"
+            height="12.5"
+            rx="1.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          />
+          <path
+            d="M1.75 3.25a1.5 1.5 0 0 1 1.5-1.5H8v12.5H3.25a1.5 1.5 0 0 1-1.5-1.5z"
+            fill="currentColor"
+          />
+        </svg>
+        <h1 class="text-3xl font-semibold tracking-tight text-highlighted">
           wiki.dev
         </h1>
-      </template>
+        <p class="text-muted">
+          Notes et projets de dev, perso et pro.
+        </p>
+      </div>
       <UForm
         :validate="validate"
         :state="state"
@@ -61,12 +85,12 @@ async function onSubmit() {
           :title="error"
         />
         <UButton
-          label="Connexion"
+          label="Se connecter"
           type="submit"
           block
           :loading="loading"
         />
       </UForm>
-    </UCard>
+    </div>
   </div>
 </template>

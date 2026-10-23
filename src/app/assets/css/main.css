@@ -1,6 +1,81 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* Identité « encre et papier » : polices servies par @nuxt/fonts (téléchargées au build, aucun appel externe derrière le proxy) */
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Palettes générées en oklch ; static : Nuxt UI les lit via des variables, sans classe utilitaire qui les référence */
+@theme static {
+  /* Encre indigo : primaire de l'espace Perso */
+  --color-encre-50: #eef1ff;
+  --color-encre-100: #e2e7ff;
+  --color-encre-200: #cddcff;
+  --color-encre-300: #aec1ff;
+  --color-encre-400: #859bf4;
+  --color-encre-500: #4657d6;
+  --color-encre-600: #3945be;
+  --color-encre-700: #2d37a0;
+  --color-encre-800: #212983;
+  --color-encre-900: #151962;
+  --color-encre-950: #0b0c48;
+
+  /* Pétrole : primaire de l'espace Pro */
+  --color-petrole-50: #e8f6f6;
+  --color-petrole-100: #dcf4f5;
+  --color-petrole-200: #c6e5e6;
+  --color-petrole-300: #a4cdcf;
+  --color-petrole-400: #5fadb1;
+  --color-petrole-500: #06787d;
+  --color-petrole-600: #00666a;
+  --color-petrole-700: #005358;
+  --color-petrole-800: #004246;
+  --color-petrole-900: #002e31;
+  --color-petrole-950: #001e21;
+
+  /* Papier : neutres froids, teintés bleu nuit */
+  --color-papier-50: #f7f8fa;
+  --color-papier-100: #eef0f4;
+  --color-papier-200: #dde3ee;
+  --color-papier-300: #cbd1dc;
+  --color-papier-400: #9aa5b8;
+  --color-papier-500: #778193;
+  --color-papier-600: #545e6f;
+  --color-papier-700: #3a4353;
+  --color-papier-800: #262e3d;
+  --color-papier-900: #19202f;
+  --color-papier-950: #0e1624;
+}
+
+/* Fond papier et textes secondaires plus contrastés que par défaut (muted : 6:1 au lieu de 4:1).
+   Même couche que Nuxt UI et déclarée après : hors couche, :root écraserait aussi .dark */
+@layer theme {
+  :root {
+    --ui-bg: var(--ui-color-neutral-50);
+    --ui-bg-muted: var(--ui-color-neutral-100);
+    --ui-text-dimmed: var(--ui-color-neutral-500);
+    --ui-text-muted: var(--ui-color-neutral-600);
+    --ui-text-toned: var(--ui-color-neutral-700);
+    --ui-text: var(--ui-color-neutral-800);
+  }
+
+  .dark {
+    --ui-bg: var(--ui-color-neutral-950);
+    --ui-bg-muted: var(--ui-color-neutral-900);
+    --ui-bg-elevated: var(--ui-color-neutral-900);
+    --ui-bg-accented: var(--ui-color-neutral-800);
+    --ui-text-dimmed: var(--ui-color-neutral-500);
+    --ui-text-muted: var(--ui-color-neutral-400);
+    --ui-text-toned: var(--ui-color-neutral-300);
+    --ui-text: var(--ui-color-neutral-200);
+    --ui-text-highlighted: var(--ui-color-neutral-50);
+    --ui-border: var(--ui-color-neutral-800);
+    --ui-border-muted: var(--ui-color-neutral-800);
+  }
+}
+
 /* Checklists (TaskList / TaskItem) : non stylées par UEditor */
 .ProseMirror ul[data-type="taskList"] {
   list-style: none;

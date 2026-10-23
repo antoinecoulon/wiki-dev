@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <style>g { color: #4657d6 } @media (prefers-color-scheme: dark) { g { color: #859bf4 } }</style>
+  <g>
+    <rect x="1.75" y="1.75" width="12.5" height="12.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+    <path d="M1.75 3.25a1.5 1.5 0 0 1 1.5-1.5H8v12.5H3.25a1.5 1.5 0 0 1-1.5-1.5z" fill="currentColor" />
+  </g>
+</svg>

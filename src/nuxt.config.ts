@@ -2,6 +2,13 @@
 export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxthub/core', 'nuxt-auth-utils'],
   devtools: { enabled: true },
+  app: {
+    head: {
+      title: 'wiki.dev',
+      // Marque ◧ (état « en cours » de la méthode Colonne)
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+    }
+  },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     adminPasswordHash: ''

@@ -36,7 +36,7 @@
 
 ## Tranche en cours
 
-Aucune. Retrouver N3 (favoris et pages récentes dans la sidebar) validée le 2026-10-23.
+◧ Personnalisation · Thème (identité « encre et papier ») : palettes encre / pétrole / papier, une primaire par espace, IBM Plex Sans + Mono, marque ◧ et favicon, sidebar, connexion et accueil retouchés. Livrée le 2026-10-23, à valider dans l'app réelle (dont le poste pro : polices servies par l'app).
 
 ## À tester
 
@@ -48,7 +48,6 @@ Rien en attente.
 
 > Retours de test non traités, à reprendre au choix d'une prochaine tranche.
 
-- Thème : couleurs, contraste du grisé, à voir ensemble (Personnalisation)
 - Accès de Claude à l'app (jeton d'API ou serveur MCP) pour remplir un projet en coopération, à réfléchir (Accès / Gestion de projet)
 - Vue d'ensemble des projets : page `/projects`, résumé, ou stats / suivi type BI, à décider (Gestion de projet)
 - Ordre des sous-pages dans la sidebar : par date de modification, donc Colonne / DoD / Journal / Décisions changent de place (Retrouver)

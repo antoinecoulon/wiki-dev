@@ -93,21 +93,34 @@ async function logout() {
       :ui="{ body: collapsed ? '[scrollbar-width:none]' : undefined }"
     >
       <template #header>
-        <UButton
-          v-if="collapsed"
-          icon="i-lucide-library"
-          to="/"
-          color="neutral"
-          variant="ghost"
-          square
-          aria-label="Accueil"
-        />
+        <!-- Marque ◧ (état « en cours » de la Colonne), à l'encre de l'espace -->
         <NuxtLink
-          v-else
           to="/"
-          class="font-bold truncate"
+          class="flex items-center gap-2 font-semibold text-highlighted truncate"
+          :class="collapsed ? 'mx-auto' : 'px-1'"
+          :aria-label="collapsed ? 'Accueil' : undefined"
         >
-          wiki.dev
+          <svg
+            viewBox="0 0 16 16"
+            class="size-5 shrink-0 text-primary"
+            aria-hidden="true"
+          >
+            <rect
+              x="1.75"
+              y="1.75"
+              width="12.5"
+              height="12.5"
+              rx="1.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+            <path
+              d="M1.75 3.25a1.5 1.5 0 0 1 1.5-1.5H8v12.5H3.25a1.5 1.5 0 0 1-1.5-1.5z"
+              fill="currentColor"
+            />
+          </svg>
+          <span v-if="!collapsed">wiki.dev</span>
         </NuxtLink>
       </template>
 
@@ -146,7 +159,7 @@ async function logout() {
         >
           <span
             v-if="!collapsed"
-            class="block px-2.5 py-1 text-xs font-semibold text-muted uppercase"
+            class="block px-2.5 py-1 text-sm font-medium text-muted"
           >
             {{ group.label }}
           </span>
@@ -165,7 +178,7 @@ async function logout() {
             v-if="!collapsed"
             class="flex items-center justify-between px-2.5 py-1"
           >
-            <span class="text-xs font-semibold text-muted uppercase">
+            <span class="text-sm font-medium text-muted">
               {{ group.label }}
             </span>
             <UButton

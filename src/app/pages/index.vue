@@ -69,7 +69,7 @@ async function createPage() {
           v-if="recentProjects.length"
           class="space-y-3"
         >
-          <h2 class="text-sm font-semibold text-muted uppercase">
+          <h2 class="font-semibold text-highlighted">
             Projets récents
           </h2>
           <UPageGrid class="lg:grid-cols-3 gap-4">
@@ -93,7 +93,7 @@ async function createPage() {
         </section>
 
         <section class="space-y-3">
-          <h2 class="text-sm font-semibold text-muted uppercase">
+          <h2 class="font-semibold text-highlighted">
             Pages récentes
           </h2>
           <ul class="divide-y divide-default rounded-md border border-default">
