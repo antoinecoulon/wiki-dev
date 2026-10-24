@@ -2,14 +2,14 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-23
+> Mise à jour : 2026-10-24
 
 ## Grille
 
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
-| **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | □ Session longue + expiration | □ Sécurité renforcée |
+| **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | ◧ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ■ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
@@ -36,7 +36,14 @@
 
 ## Tranche en cours
 
-Aucune. Personnalisation · Thème (style terminal) validée le 2026-10-23.
+Accès N2 · session longue, déconnexion, expiration sans perte de saisie (choix du 2026-10-24) :
+
+- [x] Session de 7 jours glissants (prolongée au plus une fois par heure), y compris pour la session déjà ouverte
+- [x] Session expirée pendant l'écriture : modale de reconnexion, le texte reste à l'écran et la sauvegarde repart
+- [x] 401 ou session expirée : retour au login, puis à la page demandée
+- [x] Page d'erreur au style terminal (`error.vue`) à la place de la page brute
+- [x] Déconnexion (déjà en place)
+- [ ] Validé en prod (smartphone compris)
 
 ## À tester
 
@@ -53,7 +60,6 @@ Rien en attente.
 - Ordre des sous-pages dans la sidebar : par date de modification, donc Colonne / DoD / Journal / Décisions changent de place (Retrouver)
 - Icône personnalisée par page, visible dans la sidebar (Personnalisation)
 - Au-delà de la limite d'arborescence : liens entre pages, groupes / projets (Retrouver)
-- 401 prise sur un rechargement depuis le smartphone : revoir les messages d'erreur (page d'erreur brute au lieu d'un retour au login) et mettre en place des logs (Accès N2, Socle)
 
 DoD : voir [dod.md](dod.md)
 
@@ -74,7 +80,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Je me connecte (mot de passe unique) sur l'app déployée
   - [N1] ■ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (validé par les tests du 2026-10-22)
-  - [N2] □ Session longue sur chaque poste, déconnexion, expiration sans perte de saisie
+  - [N2] ◧ Session longue sur chaque poste (7 jours glissants), déconnexion, expiration sans perte de saisie
   - [N3] □ Sécurité renforcée (limitation des tentatives, 2FA ou OAuth)
 
 - j'ouvre l'app au travail

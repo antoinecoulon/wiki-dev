@@ -435,9 +435,14 @@ async function flush() {
   }).then(async () => {
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
-  }).catch(() => {
+  }).catch((err) => {
     dirty = true
     status.value = 'error'
+    // Session expirée : on se reconnecte sur place, le texte reste à l'écran
+    if ((err as { statusCode?: number }).statusCode === 401) {
+      relogin.open = true
+      return
+    }
     toast.add({ title: 'Échec de l\'enregistrement', description: 'Tes modifications sont toujours à l\'écran, réessaie.', color: 'error' })
   }).finally(() => {
     current = undefined
@@ -460,6 +465,27 @@ function onBeforeUnload(event: BeforeUnloadEvent) {
 }
 onMounted(() => window.addEventListener('beforeunload', onBeforeUnload))
 onBeforeUnmount(() => window.removeEventListener('beforeunload', onBeforeUnload))
+
+// Reconnexion sans quitter la page, puis la sauvegarde repart
+const { fetch: refreshSession } = useUserSession()
+const relogin = reactive({ open: false, password: '', error: '', loading: false })
+
+async function submitRelogin() {
+  relogin.error = ''
+  relogin.loading = true
+  try {
+    await $fetch('/api/login', { method: 'POST', body: { password: relogin.password } })
+    await refreshSession()
+    relogin.open = false
+    relogin.password = ''
+    await flush()
+  } catch (err) {
+    const status = (err as { statusCode?: number }).statusCode
+    relogin.error = status === 401 ? 'Mot de passe incorrect' : 'Connexion impossible, réessaie plus tard'
+  } finally {
+    relogin.loading = false
+  }
+}
 
 async function remove() {
   clearTimeout(timer)
@@ -715,6 +741,49 @@ async function remove() {
             label="Supprimer"
             color="error"
             @click="remove"
+          />
+        </template>
+      </UModal>
+
+      <UModal
+        v-model:open="relogin.open"
+        title="Session expirée"
+        description="Reconnecte-toi pour enregistrer tes modifications, elles sont toujours à l'écran."
+      >
+        <template #body>
+          <form
+            id="relogin"
+            class="space-y-4"
+            @submit.prevent="submitRelogin"
+          >
+            <UInput
+              v-model="relogin.password"
+              type="password"
+              placeholder="Mot de passe"
+              autofocus
+              class="w-full"
+            />
+            <UAlert
+              v-if="relogin.error"
+              color="error"
+              variant="subtle"
+              :title="relogin.error"
+            />
+          </form>
+        </template>
+        <template #footer>
+          <UButton
+            label="Plus tard"
+            color="neutral"
+            variant="ghost"
+            @click="relogin.open = false"
+          />
+          <UButton
+            label="Se reconnecter"
+            type="submit"
+            form="relogin"
+            :loading="relogin.loading"
+            :disabled="!relogin.password"
           />
         </template>
       </UModal>

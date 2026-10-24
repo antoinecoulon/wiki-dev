@@ -17,7 +17,13 @@ export default defineNuxtConfig({
     storageKey: 'wiki-color-mode'
   },
   runtimeConfig: {
-    adminPasswordHash: ''
+    adminPasswordHash: '',
+    // Cookie gardé 7 jours, prolongé à chaque visite par server/middleware/auth.ts
+    // password : fourni par NUXT_SESSION_PASSWORD
+    session: {
+      password: '',
+      cookie: { maxAge: 60 * 60 * 24 * 7 }
+    }
   },
   compatibilityDate: '2025-07-15',
   // Preset détecté par Nitro (Vercel) ; DB Turso via TURSO_DATABASE_URL / TURSO_AUTH_TOKEN (D-006)

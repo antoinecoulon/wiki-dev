@@ -4,6 +4,12 @@ import type { FormError } from '@nuxt/ui'
 definePageMeta({ layout: false })
 
 const { fetch: refreshSession } = useUserSession()
+const route = useRoute()
+// Chemin interne uniquement (« //site » mènerait vers un autre domaine)
+const redirect = computed(() => {
+  const target = route.query.redirect
+  return typeof target === 'string' && target.startsWith('/') && !target.startsWith('//') ? target : '/'
+})
 
 const state = reactive({ password: '' })
 const error = ref('')
@@ -19,7 +25,7 @@ async function onSubmit() {
   try {
     await $fetch('/api/login', { method: 'POST', body: state })
     await refreshSession()
-    await navigateTo('/')
+    await navigateTo(redirect.value)
   } catch (err) {
     const status = (err as { statusCode?: number }).statusCode
     error.value = status === 401 ? 'Mot de passe incorrect' : 'Connexion impossible, réessaie plus tard'

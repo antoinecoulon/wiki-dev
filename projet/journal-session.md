@@ -5,6 +5,14 @@
 
 ---
 
+## 32 · 2026-10-24 · <1h> · tranche : Accès N2
+
+- **Fait :** cause du 401 sur smartphone trouvée : cookie de session sans durée, supprimé quand le navigateur ferme l'onglet. Cookie de 7 jours, prolongé par le middleware serveur (horodatage `refreshedAt` dans la session : le `maxAge` de h3 compte depuis la création et ne glisse pas). Modale de reconnexion quand la sauvegarde prend un 401 ; retour au login avec `?redirect=` ; `error.vue` au style terminal. Testé en local avec curl (cookie 7 j, prolongation, expiration avec des délais raccourcis) ; lint + typecheck OK. Modale et `error.vue` non testés dans un navigateur.
+- **Blocage / question :** à valider en prod. Logs écartés (ceux de Vercel suffisent).
+- **➜ Prochaine action :** tester sur le smartphone et le poste pro (rester connecté, recharger, se déconnecter) ; si c'est bon, clore Accès N2 et ajouter la section au guide technique.
+
+---
+
 ## 31 · 2026-10-23 · <1h> · tranche : Personnalisation · Thème
 
 - **Fait :** première version « encre et papier » (indigo / pétrole, IBM Plex) livrée puis écartée : trop sobre. Refaite en style terminal d'après une référence : sombre forcé, JetBrains Mono (servie par @nuxt/fonts), angles droits, accent cyan (Perso) / ambre (Pro) basculé par un plugin sur l'app config, panneaux encadrés sur l'accueil et la connexion, libellés et boutons en majuscules, barre du lien actif. Vérifiée par captures (desktop, mobile, deux espaces) ; lint + typecheck OK.

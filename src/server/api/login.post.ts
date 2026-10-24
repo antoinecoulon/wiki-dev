@@ -12,5 +12,5 @@ export default defineEventHandler(async (event) => {
     throw createError({ status: 401, statusText: 'Mot de passe incorrect' })
   }
 
-  await setUserSession(event, { user: { login: 'admin' } })
+  await setUserSession(event, { user: { login: 'admin' }, refreshedAt: Date.now() })
 })
