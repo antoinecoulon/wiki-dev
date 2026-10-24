@@ -5,6 +5,14 @@
 
 ---
 
+## 33 · 2026-10-24 · <1h> · tranche : Documentation N1 (tags)
+
+- **Fait :** Accès N2 passée dans « À tester ». Tags : colonne JSON `tags` (migration 0004, `DEFAULT '[]'`), `PATCH` les accepte (minuscules, sans doublon, 20 max). Champ sous les sélecteurs de la page (`UInputMenu` multiple, suggestions des tags existants, Entrée crée un tag). Page `/documentation` (doc de l'espace, filtre par tags cumulatifs), ouverte par l'en-tête « Documentation » de la sidebar. Tags en suffixe dans Ctrl+K, donc cherchables. Testé en local (API, captures desktop et mobile, création d'un tag au clavier puis sauvegarde) ; lint + typecheck OK.
+- **Blocage / question :** à valider en prod (la migration s'applique au déploiement).
+- **➜ Prochaine action :** tester en prod, puis clore Documentation N1 et ajouter la section au guide technique (colonne JSON, `UInputMenu` avec création).
+
+---
+
 ## 32 · 2026-10-24 · <1h> · tranche : Accès N2
 
 - **Fait :** cause du 401 sur smartphone trouvée : cookie de session sans durée, supprimé quand le navigateur ferme l'onglet. Cookie de 7 jours, prolongé par le middleware serveur (horodatage `refreshedAt` dans la session : le `maxAge` de h3 compte depuis la création et ne glisse pas). Modale de reconnexion quand la sauvegarde prend un 401 ; retour au login avec `?redirect=` ; `error.vue` au style terminal. Testé en local avec curl (cookie 7 j, prolongation, expiration avec des délais raccourcis) ; lint + typecheck OK. Modale et `error.vue` non testés dans un navigateur.

@@ -7,8 +7,8 @@ type Status = typeof schema.pages.$inferInsert.status
 
 export default defineEventHandler(async (event) => {
   const pageId = getRouterParam(event, 'pageId')!
-  const { title, content, section, space, parentId, status, favorite } = await readValidatedBody(event, (body) => {
-    const { title, content, section, space, parentId, status, favorite } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown, favorite?: unknown }
+  const { title, content, section, space, parentId, status, favorite, tags } = await readValidatedBody(event, (body) => {
+    const { title, content, section, space, parentId, status, favorite, tags } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown, favorite?: unknown, tags?: unknown }
     if (title !== undefined && (typeof title !== 'string' || !title.trim())) {
       throw createError({ status: 400, statusText: 'Titre invalide' })
     }
@@ -30,7 +30,12 @@ export default defineEventHandler(async (event) => {
     if (favorite !== undefined && typeof favorite !== 'boolean') {
       throw createError({ status: 400, statusText: 'Favori invalide' })
     }
-    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite }
+    if (tags !== undefined && (!Array.isArray(tags) || tags.length > 20 || tags.some(tag => typeof tag !== 'string' || !tag.trim() || tag.length > 40))) {
+      throw createError({ status: 400, statusText: 'Tags invalides' })
+    }
+    // « Unity » et « unity » : un seul tag
+    const normalizedTags = tags === undefined ? undefined : [...new Set((tags as string[]).map(tag => tag.trim().toLowerCase()))]
+    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite, tags: normalizedTags }
   })
 
   const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true } })
@@ -83,8 +88,9 @@ export default defineEventHandler(async (event) => {
       parentId,
       status,
       favorite,
+      tags,
       // Mettre en favori n'est pas une modification : la page ne remonte pas dans les récentes
-      updatedAt: [title, content, section, space, parentId, status].some(value => value !== undefined) ? new Date().toISOString() : undefined
+      updatedAt: [title, content, section, space, parentId, status, tags].some(value => value !== undefined) ? new Date().toISOString() : undefined
     })
     .where(eq(schema.pages.id, pageId))
     .returning({ id: schema.pages.id, updatedAt: schema.pages.updatedAt })

@@ -68,7 +68,8 @@ const shortcuts = computed(() => {
 const searchGroups = computed(() => visiblePages.value.map(group => ({
   id: group.value,
   label: group.label,
-  items: group.pages.map((page): CommandPaletteItem => ({ label: page.title, icon: group.icon, to: `/pages/${page.id}` }))
+  // Tags en suffixe : affichés, et cherchés par la palette (label, description, suffix)
+  items: group.pages.map((page): CommandPaletteItem => ({ label: page.title, suffix: page.tags.map(tag => `#${tag}`).join(' ') || undefined, icon: group.icon, to: `/pages/${page.id}` }))
 })))
 
 async function createPage(section: typeof sections[number]['value']) {
@@ -184,7 +185,18 @@ async function logout() {
             v-if="!collapsed"
             class="flex items-center justify-between px-2.5 py-1"
           >
-            <span class="text-xs font-semibold tracking-wider text-muted uppercase">
+            <!-- Documentation : l'en-tête mène à la liste filtrable par tag -->
+            <NuxtLink
+              v-if="group.value === 'doc'"
+              to="/documentation"
+              class="text-xs font-semibold tracking-wider text-muted uppercase hover:text-primary"
+            >
+              {{ group.label }}
+            </NuxtLink>
+            <span
+              v-else
+              class="text-xs font-semibold tracking-wider text-muted uppercase"
+            >
               {{ group.label }}
             </span>
             <UButton

@@ -9,11 +9,11 @@
 | Vertèbre | 0 · Squelette | 1 · Utilisable | 2 · Confortable | 3 · Soigné |
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
-| **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | ◧ Session longue + expiration | □ Sécurité renforcée |
+| **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | ■ Session longue + expiration | □ Sécurité renforcée |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ■ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
-| **Documentation** | ↖ inclus dans Gestion de projet N0 | □ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
+| **Documentation** | ↖ inclus dans Gestion de projet N0 | ◧ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
 | **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
@@ -36,20 +36,23 @@
 
 ## Tranche en cours
 
-Accès N2 · session longue, déconnexion, expiration sans perte de saisie (choix du 2026-10-24) :
+Documentation N1 · tags (choix du 2026-10-24) :
 
-- [x] Session de 7 jours glissants (prolongée au plus une fois par heure), y compris pour la session déjà ouverte
-- [x] Session expirée pendant l'écriture : modale de reconnexion, le texte reste à l'écran et la sauvegarde repart
-- [x] 401 ou session expirée : retour au login, puis à la page demandée
-- [x] Page d'erreur au style terminal (`error.vue`) à la place de la page brute
-- [x] Déconnexion (déjà en place)
-- [ ] Validé en prod (smartphone compris)
+- [x] Tags libres, plusieurs par page, sur toutes les pages (colonne JSON, une migration)
+- [x] Champ sous le titre avec suggestions des tags existants
+- [x] Page `/documentation` : pages de doc de l'espace, filtrables par tag, accessible depuis la sidebar
+- [x] Recherche Ctrl+K par tag
+- [ ] Validé en prod
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-Rien en attente.
+- [ ] Accès N2 (2026-10-24), smartphone et poste pro :
+  - [ ] reconnexion une dernière fois, puis toujours connecté le lendemain
+  - [ ] modale de reconnexion : supprimer le cookie `nuxt-session` pendant l'écriture, se reconnecter, la sauvegarde repart
+  - [ ] lien direct en navigation privée : login, puis retour sur la page
+  - [ ] déconnexion
 
 ## Notés pour plus tard
 
@@ -80,7 +83,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Je me connecte (mot de passe unique) sur l'app déployée
   - [N1] ■ Login, navigation et sauvegarde vérifiés derrière le proxy et en lecture sur smartphone (validé par les tests du 2026-10-22)
-  - [N2] ◧ Session longue sur chaque poste (7 jours glissants), déconnexion, expiration sans perte de saisie
+  - [N2] ■ Session longue sur chaque poste (7 jours glissants), déconnexion, expiration sans perte de saisie
   - [N3] □ Sécurité renforcée (limitation des tentatives, 2FA ou OAuth)
 
 - j'ouvre l'app au travail
@@ -138,7 +141,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** `/documentation`, `/documentation/categories`
 - **Tranches :**
   - [N0] inclus dans Gestion de projet N0 (même mécanisme de section)
-  - [N1] □ Catégories / tags (par techno, par sujet)
+  - [N1] ◧ Tags libres (par techno, par sujet) sur toutes les pages
   - [N2] □ Promotion d'un TIL de projet en page de doc
   - [N3] □ Templates de page de doc (fiche techno, how-to, référence…)
 

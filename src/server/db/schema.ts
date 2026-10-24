@@ -14,6 +14,8 @@ export const pages = sqliteTable('pages', {
   status: text('status', { enum: ['idea', 'active', 'done'] }),
   // Favori : affiché en haut de la sidebar
   favorite: integer('favorite', { mode: 'boolean' }).notNull().default(false),
+  // Tags libres (minuscules, sans doublon), tableau JSON
+  tags: text('tags', { mode: 'json' }).$type<string[]>().notNull().default([]),
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 })

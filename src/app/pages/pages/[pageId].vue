@@ -148,6 +148,14 @@ const confirmDelete = ref(false)
 
 // Favori : enregistré tout de suite, hors sauvegarde auto (ne change pas la date de modification)
 const favorite = ref(page.value!.favorite)
+
+// Tags : suggestions = tags déjà utilisés, tous espaces confondus ; même normalisation que l'API
+const tags = ref<string[]>(page.value!.tags)
+const tagItems = computed(() => [...new Set([...(pages.value ?? []).flatMap(p => p.tags), ...tags.value])].sort())
+function addTag(tag: string) {
+  const normalized = tag.trim().toLowerCase()
+  if (normalized && !tags.value.includes(normalized)) tags.value = [...tags.value, normalized]
+}
 async function toggleFavorite() {
   favorite.value = !favorite.value
   try {
@@ -414,7 +422,7 @@ let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
 let current: Promise<void> | undefined
 
-watch([title, content, section, space, parentId, projectStatus], () => {
+watch([title, content, section, space, parentId, projectStatus, tags], () => {
   dirty = true
   status.value = 'pending'
   clearTimeout(timer)
@@ -431,7 +439,7 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value }
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value, tags: tags.value }
   }).then(async () => {
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
@@ -625,6 +633,20 @@ async function remove() {
             />
           </UDropdownMenu>
         </div>
+
+        <UInputMenu
+          v-model="tags"
+          :items="tagItems"
+          multiple
+          create-item
+          placeholder="Ajouter un tag…"
+          aria-label="Tags"
+          icon="i-lucide-tag"
+          size="sm"
+          variant="ghost"
+          class="w-full"
+          @create="addTag"
+        />
 
         <!-- Sous-pages directes -->
         <div
