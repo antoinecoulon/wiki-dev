@@ -20,12 +20,18 @@ if (error.value) {
 }
 
 const title = ref(page.value!.title)
+// Titre sur plusieurs lignes à l'affichage, mais sans saut de ligne (Entrée bloquée, collage nettoyé)
+watch(title, value => title.value = value.replace(/\s*\n\s*/g, ' '))
 const content = ref<JSONContent | null>(page.value!.content)
 // Page pas encore nommée (titre par défaut, y compris un projet pré-rempli) : titre sélectionné pour la nommer tout de suite
 const titleInput = useTemplateRef('titleInput')
 onMounted(() => {
-  if (title.value === 'Sans titre') titleInput.value?.inputRef?.select()
+  if (title.value === 'Sans titre') titleInput.value?.textareaRef?.select()
 })
+// Largeur qui change (rotation, fenêtre) : autoresize ne recalcule la hauteur du titre qu'à la saisie
+const resizeTitle = () => titleInput.value?.autoResize()
+onMounted(() => window.addEventListener('resize', resizeTitle))
+onBeforeUnmount(() => window.removeEventListener('resize', resizeTitle))
 const section = ref(page.value!.section)
 // L'espace affiché suit la page ouverte, pour qu'elle reste visible dans la sidebar
 const space = ref(page.value!.space)
@@ -152,6 +158,8 @@ const favorite = ref(page.value!.favorite)
 // Tags : suggestions = tags déjà utilisés, tous espaces confondus ; même normalisation que l'API
 const tags = ref<string[]>(page.value!.tags)
 const tagItems = computed(() => [...new Set([...(pages.value ?? []).flatMap(p => p.tags), ...tags.value])].sort())
+// Téléphone : sélecteurs (parent, sous-page, brique, tags) repliés pour que le contenu commence plus haut
+const showProperties = ref(false)
 function addTag(tag: string) {
   const normalized = tag.trim().toLowerCase()
   if (normalized && !tags.value.includes(normalized)) tags.value = [...tags.value, normalized]
@@ -554,15 +562,18 @@ async function remove() {
     <template #body>
       <UContainer class="space-y-4">
         <div class="flex items-center gap-2">
-          <UInput
+          <UTextarea
             ref="titleInput"
             v-model="title"
             placeholder="Titre"
             aria-label="Titre"
             variant="none"
             size="xl"
+            :rows="1"
+            autoresize
             class="w-full"
-            :ui="{ base: 'text-3xl font-bold px-0' }"
+            :ui="{ base: 'text-2xl sm:text-3xl font-bold px-0 resize-none' }"
+            @keydown.enter.prevent
           />
           <UButton
             icon="i-lucide-star"
@@ -601,6 +612,7 @@ async function remove() {
           />
           <USelectMenu
             v-model="parentValue"
+            :class="{ 'max-sm:hidden': !showProperties }"
             :items="parentItems"
             value-key="value"
             :search-input="{ placeholder: 'Chercher une page…' }"
@@ -618,6 +630,7 @@ async function remove() {
             size="sm"
             :disabled="!canCreateSubpage"
             :title="canCreateSubpage ? undefined : `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux`"
+            :class="{ 'max-sm:hidden': !showProperties }"
             @click="createSubpage"
           />
           <UDropdownMenu
@@ -630,12 +643,30 @@ async function remove() {
               color="neutral"
               variant="ghost"
               size="sm"
+              :class="{ 'max-sm:hidden': !showProperties }"
             />
           </UDropdownMenu>
+          <UButton
+            :icon="showProperties ? 'i-lucide-chevron-up' : 'i-lucide-sliders-horizontal'"
+            :label="showProperties ? 'Masquer' : 'Propriétés'"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+            class="sm:hidden"
+            :aria-expanded="showProperties"
+            @click="showProperties = !showProperties"
+          />
+          <span
+            v-if="!showProperties && tags.length"
+            class="text-xs text-muted sm:hidden"
+          >
+            {{ tags.map(tag => `#${tag}`).join(' ') }}
+          </span>
         </div>
 
         <UInputMenu
           v-model="tags"
+          :class="{ 'max-sm:hidden': !showProperties }"
           :items="tagItems"
           multiple
           create-item
@@ -694,7 +725,7 @@ async function remove() {
           <UEditorToolbar
             :editor="editor"
             :items="toolbarItems"
-            class="sticky top-0 z-10 bg-default border-b border-default py-2 mb-4 overflow-x-auto"
+            class="sticky top-0 z-10 bg-default border-b border-default py-2 mb-4 overflow-x-auto max-sm:hidden"
           />
           <UEditorSuggestionMenu
             :editor="editor"

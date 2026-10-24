@@ -13,9 +13,9 @@
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ■ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
-| **Documentation** | ↖ inclus dans Gestion de projet N0 | ◧ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
+| **Documentation** | ↖ inclus dans Gestion de projet N0 | ■ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
-| **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | □ Confort de lecture |  |
+| **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | ◧ Confort de lecture |  |
 | **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
 | **Personnalisation** | ■ Accueil avec projets récents ; thème (style terminal) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
@@ -36,13 +36,13 @@
 
 ## Tranche en cours
 
-Documentation N1 · tags (choix du 2026-10-24) :
+Mobile N2 · confort de lecture (choix du 2026-10-24 ; tableaux et liens longs déjà corrects) :
 
-- [x] Tags libres, plusieurs par page, sur toutes les pages (colonne JSON, une migration)
-- [x] Champ sous le titre avec suggestions des tags existants
-- [x] Page `/documentation` : pages de doc de l'espace, filtrables par tag, accessible depuis la sidebar
-- [x] Recherche Ctrl+K par tag
-- [ ] Validé en prod
+- [x] Blocs de code : défilement horizontal, lignes intactes (tous écrans)
+- [x] Barre d'outils de l'éditeur masquée sur téléphone
+- [x] Titre long : retour à la ligne (tous écrans), plus petit sur téléphone
+- [x] Sélecteurs sous le titre repliés sur téléphone (bouton « Propriétés »), tags affichés en lecture
+- [ ] Validé en prod (téléphone)
 
 ## À tester
 
@@ -53,6 +53,11 @@ Documentation N1 · tags (choix du 2026-10-24) :
   - [ ] modale de reconnexion : supprimer le cookie `nuxt-session` pendant l'écriture, se reconnecter, la sauvegarde repart
   - [ ] lien direct en navigation privée : login, puis retour sur la page
   - [ ] déconnexion
+- [ ] Documentation N1 (2026-10-24) :
+  - [ ] ajouter des tags : suggestions des tags existants, Entrée en crée un
+  - [ ] `/documentation` depuis l'en-tête de la sidebar, filtre par un puis deux tags
+  - [ ] Ctrl+K trouve une page par son tag
+  - [ ] `/documentation` lisible sur le téléphone
 
 ## Notés pour plus tard
 
@@ -141,7 +146,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** `/documentation`, `/documentation/categories`
 - **Tranches :**
   - [N0] inclus dans Gestion de projet N0 (même mécanisme de section)
-  - [N1] ◧ Tags libres (par techno, par sujet) sur toutes les pages
+  - [N1] ■ Tags libres (par techno, par sujet) sur toutes les pages
   - [N2] □ Promotion d'un TIL de projet en page de doc
   - [N3] □ Templates de page de doc (fiche techno, how-to, référence…)
 
@@ -164,7 +169,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Une page s'ouvre et se lit sans zoomer
   - [N1] ■ Navigation mobile (sidebar rétractable ; validé par les tests du 2026-10-22)
-  - [N2] □ Confort de lecture (typo, blocs de code et tableaux qui défilent)
+  - [N2] ◧ Confort de lecture (typo, blocs de code et tableaux qui défilent)
   - [N3] pas prévu (PWA)
 
 - je consulte une page sur mon téléphone

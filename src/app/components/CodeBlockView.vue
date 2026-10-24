@@ -32,10 +32,14 @@ const language = computed({
       class="absolute top-1.5 right-1.5 w-32"
       contenteditable="false"
     />
-    <!-- Écran étroit : le code commence sous le sélecteur de langage (! pour passer devant le padding de UEditor) -->
+    <!-- Écran étroit : le code commence sous le sélecteur de langage (! pour passer devant le padding de UEditor).
+         Lignes intactes et défilement horizontal (! pour passer devant le pre-wrap injecté par TipTap) -->
     <pre
       spellcheck="false"
-      class="max-sm:pt-10!"
-    ><NodeViewContent as="code" /></pre>
+      class="max-sm:pt-10! whitespace-pre! overflow-x-auto"
+    ><NodeViewContent
+      as="code"
+      class="whitespace-pre!"
+    /></pre>
   </NodeViewWrapper>
 </template>

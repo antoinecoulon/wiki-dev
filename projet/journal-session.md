@@ -5,6 +5,14 @@
 
 ---
 
+## 34 · 2026-10-24 · <1h> · tranche : Mobile N2
+
+- **Fait :** Documentation N1 passée dans « À tester ». État des lieux par captures à 390 px : tableaux et liens longs déjà corrects. Code : lignes intactes et défilement horizontal (tous écrans ; `whitespace-pre!` sur `pre` et `code`, le `pre-wrap` injecté par TipTap passe devant une règle CSS de même spécificité). Barre d'outils masquée sur téléphone. Titre en `UTextarea` autoresize (Entrée bloquée, sauts de ligne retirés, hauteur recalculée au redimensionnement). Sélecteurs repliés derrière « Propriétés » sur téléphone, tags affichés en lecture. Vérifié par captures (mobile, desktop) ; lint + typecheck OK.
+- **Blocage / question :** à valider sur le téléphone.
+- **➜ Prochaine action :** tester en prod (avec Accès N2 et Documentation N1), puis clore les trois tranches.
+
+---
+
 ## 33 · 2026-10-24 · <1h> · tranche : Documentation N1 (tags)
 
 - **Fait :** Accès N2 passée dans « À tester ». Tags : colonne JSON `tags` (migration 0004, `DEFAULT '[]'`), `PATCH` les accepte (minuscules, sans doublon, 20 max). Champ sous les sélecteurs de la page (`UInputMenu` multiple, suggestions des tags existants, Entrée crée un tag). Page `/documentation` (doc de l'espace, filtre par tags cumulatifs), ouverte par l'en-tête « Documentation » de la sidebar. Tags en suffixe dans Ctrl+K, donc cherchables. Testé en local (API, captures desktop et mobile, création d'un tag au clavier puis sauvegarde) ; lint + typecheck OK.
