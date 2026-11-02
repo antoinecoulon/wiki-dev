@@ -5,6 +5,14 @@
 
 ---
 
+## 35 · 2026-10-25 · <1h> · tranche : Retrouver · ordre stable de la sidebar
+
+- **Fait :** Mobile N2 passée dans « À tester ». Sidebar (racine et sous-pages) et boutons des sous-pages triés par création puis titre, au lieu de la date de modification ; « Récentes » inchangé. Création d'un projet : dates des sous-pages du noyau décalées d'1 ms pour garder l'ordre du modèle (les projets existants, créés d'un bloc, sont départagés par titre). Testé en local (nouveau projet, Journal modifié, ordre inchangé) ; lint + typecheck OK.
+- **Blocage / question :** à valider en prod.
+- **➜ Prochaine action :** session de test en prod des quatre tranches livrées (Accès N2, Documentation N1, Mobile N2, ordre de la sidebar).
+
+---
+
 ## 34 · 2026-10-24 · <1h> · tranche : Mobile N2
 
 - **Fait :** Documentation N1 passée dans « À tester ». État des lieux par captures à 390 px : tableaux et liens longs déjà corrects. Code : lignes intactes et défilement horizontal (tous écrans ; `whitespace-pre!` sur `pre` et `code`, le `pre-wrap` injecté par TipTap passe devant une règle CSS de même spécificité). Barre d'outils masquée sur téléphone. Titre en `UTextarea` autoresize (Entrée bloquée, sauts de ligne retirés, hauteur recalculée au redimensionnement). Sélecteurs repliés derrière « Propriétés » sur téléphone, tags affichés en lecture. Vérifié par captures (mobile, desktop) ; lint + typecheck OK.

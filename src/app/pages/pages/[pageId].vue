@@ -79,7 +79,10 @@ const descendants = computed(() => {
   }
   return { ids, height }
 })
-const children = computed(() => (pages.value ?? []).filter(p => p.parentId === pageId))
+// Même ordre que la sidebar : création, puis titre
+const children = computed(() => (pages.value ?? [])
+  .filter(p => p.parentId === pageId)
+  .sort((a, b) => a.createdAt.localeCompare(b.createdAt) || a.title.localeCompare(b.title, 'fr')))
 const canCreateSubpage = computed(() => ancestors.value.length + 1 < MAX_PAGE_DEPTH)
 
 // Parents possibles : même espace et même section, ni la page ni ses sous-pages (boucle),

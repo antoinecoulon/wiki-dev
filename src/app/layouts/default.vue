@@ -38,8 +38,10 @@ const openIds = computed(() => {
 // Arborescence : une page dont le parent n'est pas dans le groupe est affichée à la racine
 const groups = computed(() => visiblePages.value.map((group) => {
   const ids = new Set(group.pages.map(page => page.id))
+  // Ordre stable : création, puis titre (sous-pages d'un projet créées d'un bloc avant le décalage des dates)
+  const sorted = [...group.pages].sort((a, b) => a.createdAt.localeCompare(b.createdAt) || a.title.localeCompare(b.title, 'fr'))
   const toItem = (page: Page): NavigationMenuItem => {
-    const children = group.pages.filter(child => child.parentId === page.id).map(toItem)
+    const children = sorted.filter(child => child.parentId === page.id).map(toItem)
     return {
       label: page.title,
       icon: group.icon,
@@ -50,7 +52,7 @@ const groups = computed(() => visiblePages.value.map((group) => {
   }
   return {
     ...group,
-    items: group.pages.filter(page => !page.parentId || !ids.has(page.parentId)).map(toItem)
+    items: sorted.filter(page => !page.parentId || !ids.has(page.parentId)).map(toItem)
   }
 }))
 

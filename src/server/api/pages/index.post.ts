@@ -65,8 +65,12 @@ export default defineEventHandler(async (event) => {
     const [project] = await db.insert(schema.pages)
       .values({ section, space, status: 'idea', content: JSON.stringify(template.fiche) })
       .returning()
-    await db.insert(schema.pages).values(template.children.map(child => ({
+    // Dates de création décalées d'1 ms : la sidebar trie par création, les sous-pages gardent l'ordre du modèle
+    const createdAt = Date.now()
+    await db.insert(schema.pages).values(template.children.map((child, index) => ({
       title: child.title,
+      createdAt: new Date(createdAt + index).toISOString(),
+      updatedAt: new Date(createdAt + index).toISOString(),
       content: JSON.stringify(child.content),
       section,
       space,

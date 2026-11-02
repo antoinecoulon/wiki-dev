@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-24
+> Mise à jour : 2026-10-25
 
 ## Grille
 
@@ -15,7 +15,7 @@
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
 | **Documentation** | ↖ inclus dans Gestion de projet N0 | ■ Catégories / tags | □ Promotion des TIL | □ Templates de doc |
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
-| **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | ◧ Confort de lecture |  |
+| **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | ■ Confort de lecture |  |
 | **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
 | **Personnalisation** | ■ Accueil avec projets récents ; thème (style terminal) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
@@ -36,13 +36,11 @@
 
 ## Tranche en cours
 
-Mobile N2 · confort de lecture (choix du 2026-10-24 ; tableaux et liens longs déjà corrects) :
+Retrouver · ordre stable de la sidebar (noté pour plus tard, choix du 2026-10-25) :
 
-- [x] Blocs de code : défilement horizontal, lignes intactes (tous écrans)
-- [x] Barre d'outils de l'éditeur masquée sur téléphone
-- [x] Titre long : retour à la ligne (tous écrans), plus petit sur téléphone
-- [x] Sélecteurs sous le titre repliés sur téléphone (bouton « Propriétés »), tags affichés en lecture
-- [ ] Validé en prod (téléphone)
+- [x] Sidebar (racine et sous-pages) et sous-pages de la page triées par date de création, égalités départagées par titre
+- [x] Nouveau projet : sous-pages du noyau créées dans l'ordre du modèle
+- [ ] Validé en prod
 
 ## À tester
 
@@ -58,6 +56,11 @@ Mobile N2 · confort de lecture (choix du 2026-10-24 ; tableaux et liens longs d
   - [ ] `/documentation` depuis l'en-tête de la sidebar, filtre par un puis deux tags
   - [ ] Ctrl+K trouve une page par son tag
   - [ ] `/documentation` lisible sur le téléphone
+- [ ] Mobile N2 (2026-10-24), sur le téléphone :
+  - [ ] bloc de code long : défile horizontalement, indentation intacte
+  - [ ] titre long : passe à la ligne, y compris après rotation de l'écran
+  - [ ] « Propriétés » déplie les sélecteurs ; tags visibles repliés
+  - [ ] barre d'outils absente, menu « / » toujours là
 
 ## Notés pour plus tard
 
@@ -65,7 +68,6 @@ Mobile N2 · confort de lecture (choix du 2026-10-24 ; tableaux et liens longs d
 
 - Accès de Claude à l'app (jeton d'API ou serveur MCP) pour remplir un projet en coopération, à réfléchir (Accès / Gestion de projet)
 - Vue d'ensemble des projets : page `/projects`, résumé, ou stats / suivi type BI, à décider (Gestion de projet)
-- Ordre des sous-pages dans la sidebar : par date de modification, donc Colonne / DoD / Journal / Décisions changent de place (Retrouver)
 - Icône personnalisée par page, visible dans la sidebar (Personnalisation)
 - Au-delà de la limite d'arborescence : liens entre pages, groupes / projets (Retrouver)
 
@@ -169,7 +171,7 @@ DoD : voir [dod.md](dod.md)
 - **Tranches :**
   - [N0] ■ Une page s'ouvre et se lit sans zoomer
   - [N1] ■ Navigation mobile (sidebar rétractable ; validé par les tests du 2026-10-22)
-  - [N2] ◧ Confort de lecture (typo, blocs de code et tableaux qui défilent)
+  - [N2] ■ Confort de lecture (typo, blocs de code et tableaux qui défilent)
   - [N3] pas prévu (PWA)
 
 - je consulte une page sur mon téléphone
