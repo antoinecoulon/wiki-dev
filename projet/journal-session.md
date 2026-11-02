@@ -5,6 +5,14 @@
 
 ---
 
+## 36 · 2026-11-02 · <1h> · tranche : clôture des tests en prod
+
+- **Fait :** Accès N2, Documentation N1, Mobile N2 et l'ordre stable de la sidebar validés en prod (smartphone et poste pro) ; « À tester » vidé. Guide technique : session longue à expiration glissante (section 5) et tags libres en colonne JSON + `UInputMenu` (section 9).
+- **Blocage / question :** /
+- **➜ Prochaine action :** choisir la prochaine tranche (piste : Documentation N3, templates de doc pour les notes Unity / C#).
+
+---
+
 ## 35 · 2026-10-25 · <1h> · tranche : Retrouver · ordre stable de la sidebar
 
 - **Fait :** Mobile N2 passée dans « À tester ». Sidebar (racine et sous-pages) et boutons des sous-pages triés par création puis titre, au lieu de la date de modification ; « Récentes » inchangé. Création d'un projet : dates des sous-pages du noyau décalées d'1 ms pour garder l'ordre du modèle (les projets existants, créés d'un bloc, sont départagés par titre). Testé en local (nouveau projet, Journal modifié, ordre inchangé) ; lint + typecheck OK.

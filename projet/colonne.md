@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-10-25
+> Mise à jour : 2026-11-02
 
 ## Grille
 
@@ -36,31 +36,11 @@
 
 ## Tranche en cours
 
-Retrouver · ordre stable de la sidebar (noté pour plus tard, choix du 2026-10-25) :
-
-- [x] Sidebar (racine et sous-pages) et sous-pages de la page triées par date de création, égalités départagées par titre
-- [x] Nouveau projet : sous-pages du noyau créées dans l'ordre du modèle
-- [ ] Validé en prod
+Aucune (prochaine tranche à choisir).
 
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
-
-- [ ] Accès N2 (2026-10-24), smartphone et poste pro :
-  - [ ] reconnexion une dernière fois, puis toujours connecté le lendemain
-  - [ ] modale de reconnexion : supprimer le cookie `nuxt-session` pendant l'écriture, se reconnecter, la sauvegarde repart
-  - [ ] lien direct en navigation privée : login, puis retour sur la page
-  - [ ] déconnexion
-- [ ] Documentation N1 (2026-10-24) :
-  - [ ] ajouter des tags : suggestions des tags existants, Entrée en crée un
-  - [ ] `/documentation` depuis l'en-tête de la sidebar, filtre par un puis deux tags
-  - [ ] Ctrl+K trouve une page par son tag
-  - [ ] `/documentation` lisible sur le téléphone
-- [ ] Mobile N2 (2026-10-24), sur le téléphone :
-  - [ ] bloc de code long : défile horizontalement, indentation intacte
-  - [ ] titre long : passe à la ligne, y compris après rotation de l'écran
-  - [ ] « Propriétés » déplie les sélecteurs ; tags visibles repliés
-  - [ ] barre d'outils absente, menu « / » toujours là
 
 ## Notés pour plus tard
 

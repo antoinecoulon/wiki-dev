@@ -400,6 +400,51 @@ pnpm -s hash-password '<mot de passe>' | tr -d '\n' | pnpm wrangler secret put N
 
 Les secrets survivent aux déploiements. Le hash scrypt par défaut (`n=16384`) tient dans la limite CPU du plan gratuit.
 
+### Session longue (expiration glissante)
+
+Par défaut, le cookie de session a une durée fixe. Pour rester connecté tant qu'on revient au moins une fois par semaine, on donne une durée au cookie et on le réécrit régulièrement : chaque `setUserSession` repart de zéro.
+
+```ts
+// nuxt.config.ts
+runtimeConfig: {
+  session: {
+    password: '', // NUXT_SESSION_PASSWORD
+    cookie: { maxAge: 60 * 60 * 24 * 7 }
+  }
+}
+```
+
+```ts
+// shared/types/auth.d.ts : champ ajouté à la session
+declare module '#auth-utils' {
+  interface UserSession { refreshedAt?: number }
+}
+export {}
+```
+
+```ts
+// server/middleware/auth.ts, avant le contrôle d'accès
+const SESSION_TTL = 7 * 24 * 60 * 60 * 1000
+const REFRESH_EVERY = 60 * 60 * 1000 // évite de réécrire le cookie à chaque requête
+
+const session = await getUserSession(event)
+if (session.user) {
+  const age = Date.now() - (session.refreshedAt ?? Date.now())
+  if (age > SESSION_TTL) {
+    await clearUserSession(event)
+    session.user = undefined
+  } else if (!session.refreshedAt || age > REFRESH_EVERY) {
+    await setUserSession(event, { refreshedAt: Date.now() }) // fusionné avec la session existante
+  }
+}
+```
+
+Le login pose aussi `refreshedAt: Date.now()`. Le `maxAge` seul ne suffit pas, car le contenu du cookie n'est pas daté. `refreshedAt` donne une expiration côté serveur, même si le navigateur garde le cookie.
+
+**Retour à la page demandée** : le middleware client passe la route dans `?redirect=`. Sur `/login`, n'accepter que les chemins internes (`startsWith('/') && !startsWith('//')`) : `//site.com` mènerait vers un autre domaine.
+
+**Expiration pendant l'écriture** : si la sauvegarde auto reçoit un 401, ne pas rediriger (le texte non sauvegardé serait perdu). Ouvrir une modale de mot de passe, qui appelle `POST /api/login` puis `useUserSession().fetch()`, puis relancer la sauvegarde.
+
 ## 6. Éditeur riche (UEditor) et contenu en JSON
 
 `UEditor` (Nuxt UI v4) est un éditeur TipTap prêt à l'emploi. Stocker le JSON TipTap (format natif, sans perte) dans une colonne `text`.
@@ -851,6 +896,48 @@ do {
 - Fichiers Blob aux noms uniques (UUID) jamais réécrits : on ne télécharge que ceux absents du dossier.
 - **Restaurer** : `turso db create mon-app-restore`, puis `turso db shell mon-app-restore < dump.sql` ; pointer `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` (section 4 bis) vers la nouvelle base et redéployer.
 - Tester une restauration une fois, dans une base jetable (`turso db destroy … --yes` ensuite).
+
+## 9. Tags libres (colonne JSON + UInputMenu)
+
+Des tags sans table dédiée : un tableau JSON dans la ligne. Ça suffit tant qu'on filtre côté client (quelques centaines de pages).
+
+```ts
+// server/db/schema.ts
+tags: text('tags', { mode: 'json' }).$type<string[]>().notNull().default([]),
+```
+
+La migration générée (`ALTER TABLE … ADD tags text DEFAULT '[]' NOT NULL`) remplit les lignes existantes. Drizzle sérialise et parse le JSON lui-même.
+
+Côté API, valider et normaliser (sinon « Unity » et « unity » font deux tags) :
+
+```ts
+if (tags !== undefined && (!Array.isArray(tags) || tags.length > 20 || tags.some(t => typeof t !== 'string' || !t.trim() || t.length > 40))) {
+  throw createError({ status: 400, statusText: 'Tags invalides' })
+}
+const normalized = tags && [...new Set(tags.map(t => t.trim().toLowerCase()))]
+```
+
+Côté page, `UInputMenu` en mode multiple avec création :
+
+```vue
+<script setup lang="ts">
+const tags = ref<string[]>(page.value.tags)
+// Suggestions : tous les tags déjà utilisés
+const tagItems = computed(() => [...new Set([...pages.value.flatMap(p => p.tags), ...tags.value])].sort())
+function addTag(tag: string) {
+  const t = tag.trim().toLowerCase() // même normalisation que l'API
+  if (t && !tags.value.includes(t)) tags.value = [...tags.value, t]
+}
+</script>
+
+<template>
+  <UInputMenu v-model="tags" :items="tagItems" multiple create-item placeholder="Ajouter un tag…" @create="addTag" />
+</template>
+```
+
+- `create-item` affiche « Créer … » quand la saisie ne correspond à aucune suggestion, et Entrée le déclenche. L'ajout au modèle se fait dans `@create`, le composant ne le fait pas.
+- Filtre par plusieurs tags (cumulatif) : `pages.filter(p => selected.every(t => p.tags.includes(t)))`.
+- Pour une recherche par tag dans `UCommandPalette`, ajouter les tags au `suffix` de l'item : ils font partie du texte cherché.
 
 ## Arborescence
 
