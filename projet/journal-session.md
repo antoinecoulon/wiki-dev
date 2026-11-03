@@ -5,6 +5,14 @@
 
 ---
 
+## 39 · 2026-11-04 · <2h> · tranche : test d'Accès Claude N1 en prod (session Claude dédiée)
+
+- **Fait :** le contenu du repo a été transposé dans le projet « wiki.dev » de l'app via MCP : fiche, Colonne, Décisions, Journal et briques C4, Modèle de données, Wireframes avec `edit_page` ; fin du journal avec `append_to_page` ; pages de doc « Méthode Colonne » et guide technique (50 Ko, envoyé par un script JSON-RPC, relu sans perte) avec `create_page`. `edit_page`, les messages d'erreur et `list_revisions` / `restore_revision` sont validés.
+- **Blocage / question :** `&` rendu en `&amp;` dans les tableaux par `get_page` ; le Markdown renvoyé diffère un peu de la source (`\*`, liens, largeur des tableaux), donc relire la page avant de recopier un passage ; pas d'import de gros fichier. Le `&amp;` et l'import notés pour plus tard dans la Colonne.
+- **➜ Prochaine action :** vérifier dans le navigateur le rendu des pages transposées, le kanban et le conflit 409, puis clore N1.
+
+---
+
 ## 38 · 2026-11-04 · <2h> · tranche : Accès Claude N1
 
 - **Fait :** D-009. Test de fidélité JSON → Markdown → JSON sur les 17 pages réelles (sauvegarde fraîche) : 13 identiques, 4 écarts mineurs (espaces en fin de cellule, puce vide, lien automatique sur `www.`) → conversion bloc par bloc, une modification ne reconvertit que les blocs touchés. Outils MCP `edit_page` (passage unique, erreurs explicites si introuvable ou ambigu), `list_revisions`, `restore_revision` (restauration elle-même annulable) ; table `page_revisions` (10 versions par page, supprimées avec la page), version gardée aussi avant `append_to_page`. Contrôle de version : l'autosave envoie `baseUpdatedAt`, l'API répond 409, fenêtre « Page modifiée ailleurs » (Recharger / Écraser). Testé en local (blocs non touchés identiques, historique, 409, fenêtre de conflit dans un navigateur headless) ; lint + typecheck OK.

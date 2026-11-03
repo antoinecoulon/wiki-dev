@@ -43,12 +43,14 @@ Aucune (prochaine tranche à choisir).
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] **Accès Claude N1** : après déploiement (migration `page_revisions`), demander à Claude de modifier un passage d'une page, vérifier que le reste ne bouge pas ; « annule ta dernière modification » ; page ouverte dans l'app pendant que Claude la modifie → « Page modifiée ailleurs » (Recharger / Écraser)
+- [ ] **Accès Claude N1** : côté MCP validé en prod le 2026-11-04 (`edit_page`, erreurs, `list_revisions` / `restore_revision`, en transposant le repo dans le projet « wiki.dev » de l'app) ; reste à vérifier dans le navigateur : rendu des pages transposées, kanban sur la nouvelle grille, conflit « Page modifiée ailleurs » (Recharger / Écraser)
 
 ## Notés pour plus tard
 
 > Retours de test non traités, à reprendre au choix d'une prochaine tranche.
 
+- MCP : `get_page` affiche `&` en `&amp;` dans les cellules de tableau (stockage correct, lecture et recherche de passage gênées) (Accès Claude)
+- MCP : import d'un gros fichier Markdown sans tout recopier dans l'appel (piste : script `pnpm` d'import), si le besoin revient (Accès Claude)
 - Vue d'ensemble des projets : page `/projects`, résumé, ou stats / suivi type BI, à décider (Gestion de projet)
 - Icône personnalisée par page, visible dans la sidebar (Personnalisation)
 - Au-delà de la limite d'arborescence : liens entre pages, groupes / projets (Retrouver)
