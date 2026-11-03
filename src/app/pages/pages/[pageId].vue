@@ -431,6 +431,9 @@ const displayedStatus = computed(() => uploading.value
   : statusDisplay[status.value])
 let timer: ReturnType<typeof setTimeout> | undefined
 let dirty = false
+// Version de la page chargée (D-009) : l'API refuse la sauvegarde (409) si la page a changé ailleurs entre-temps
+let baseUpdatedAt: string | undefined = page.value!.updatedAt
+const conflict = ref(false)
 let current: Promise<void> | undefined
 
 watch([title, content, section, space, parentId, projectStatus, tags], () => {
@@ -450,8 +453,9 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value, tags: tags.value }
-  }).then(async () => {
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value, tags: tags.value, baseUpdatedAt }
+  }).then(async (saved) => {
+    baseUpdatedAt = saved.updatedAt
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
   }).catch((err) => {
@@ -460,6 +464,10 @@ async function flush() {
     // Session expirée : on se reconnecte sur place, le texte reste à l'écran
     if ((err as { statusCode?: number }).statusCode === 401) {
       relogin.open = true
+      return
+    }
+    if ((err as { statusCode?: number }).statusCode === 409) {
+      conflict.value = true
       return
     }
     toast.add({ title: 'Échec de l\'enregistrement', description: 'Tes modifications sont toujours à l\'écran, réessaie.', color: 'error' })
@@ -504,6 +512,19 @@ async function submitRelogin() {
   } finally {
     relogin.loading = false
   }
+}
+
+// Conflit : recharger (la version enregistrée s'affiche, les modifications à l'écran sont perdues) ou écraser
+function reloadPage() {
+  clearTimeout(timer)
+  dirty = false
+  window.location.reload()
+}
+async function overwrite() {
+  conflict.value = false
+  baseUpdatedAt = undefined
+  dirty = true
+  await flush()
 }
 
 async function remove() {
@@ -797,6 +818,26 @@ async function remove() {
             label="Supprimer"
             color="error"
             @click="remove"
+          />
+        </template>
+      </UModal>
+
+      <UModal
+        v-model:open="conflict"
+        title="Page modifiée ailleurs"
+        description="Cette page a changé depuis que tu l'as ouverte (Claude ou un autre appareil). Tes modifications sont toujours à l'écran, mais pas enregistrées."
+      >
+        <template #footer>
+          <UButton
+            label="Recharger la page"
+            color="neutral"
+            variant="outline"
+            @click="reloadPage"
+          />
+          <UButton
+            label="Écraser avec ma version"
+            color="warning"
+            @click="overwrite"
           />
         </template>
       </UModal>

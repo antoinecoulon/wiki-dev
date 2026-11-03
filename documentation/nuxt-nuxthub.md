@@ -999,7 +999,22 @@ manager.parse(markdown) // → JSON TipTap
 - Aller-retour sans perte vérifié : titres, gras, blocs de code avec langage, checklists, tableaux, images, citations.
 - Une extension avec NodeView Vue (ex. bloc de code personnalisé) ne s'importe pas côté serveur : utiliser l'extension de base **de même nom** (`codeBlock` de StarterKit), le JSON est identique.
 - Les paquets TipTap déjà tirés par `@nuxt/ui` (`@tiptap/markdown`, `@tiptap/starter-kit`, `@tiptap/extension-image`) sont à ajouter en dépendances directes (pnpm strict).
-- Ajouter en fin de page = concaténer `doc.content` ; réécrire une page entière en Markdown risque de perdre ce qui n'a pas d'équivalent Markdown.
+- Ajouter en fin de page = concaténer `doc.content`.
+- **Modifier un passage** (outil façon « rechercher / remplacer ») : sérialiser **chaque bloc racine séparément** et les joindre par `\n\n` (le même Markdown est renvoyé à la lecture, pour que le passage recopié corresponde). Trouver les blocs touchés par le passage, ne reparser que ceux-là, garder les autres nœuds JSON tels quels. L'aller-retour n'est pas neutre sur tout (espaces en fin de cellule supprimés, puce vide → paragraphe, `www.site.fr` devient un lien) : reconvertir toute la page altérerait des blocs non modifiés.
+- Refuser un passage introuvable ou présent plusieurs fois, avec un message qui dit quoi faire (« relire la page », « allonger le passage »).
+
+### Contrôle de version (écritures concurrentes)
+
+Un autosave qui renvoie toute la page écrase sans bruit une modification faite ailleurs (autre appareil, API, MCP). Contrôle optimiste avec `updatedAt` :
+
+```ts
+// API PATCH : le client envoie la version qu'il a chargée
+if (baseUpdatedAt && baseUpdatedAt !== current.updatedAt) {
+  throw createError({ status: 409, statusText: 'Page modifiée ailleurs' })
+}
+```
+
+Côté client : garder `baseUpdatedAt` (valeur chargée, puis `updatedAt` renvoyé par chaque sauvegarde réussie) ; sur 409, garder le texte à l'écran et proposer « Recharger » ou « Écraser » (renvoyer sans `baseUpdatedAt`).
 
 ## Arborescence
 

@@ -11,10 +11,47 @@ const manager = new MarkdownManager({
   extensions: [StarterKit, Image, TaskList, TaskItem.configure({ nested: true }), TableKit]
 })
 
+const SEPARATOR = '\n\n'
+
+// Markdown de chaque bloc racine, séparément : une modification ne reconvertit que les blocs qu'elle touche
+// (l'aller-retour Markdown n'est pas tout à fait neutre : espaces en fin de cellule, puces vides, liens automatiques)
+function blocksOf(content: JSONContent | null) {
+  return (content?.content ?? []).map(block => manager.serialize({ type: 'doc', content: [block] }).trim())
+}
+
 export function toMarkdown(content: JSONContent | null) {
-  return content ? manager.serialize(content) : ''
+  return blocksOf(content).join(SEPARATOR)
 }
 
 export function fromMarkdown(markdown: string): JSONContent {
   return manager.parse(markdown)
+}
+
+// Remplace un passage unique du Markdown de la page ; seuls les blocs qu'il recouvre sont reconvertis
+export function editMarkdown(content: JSONContent | null, oldText: string, newText: string): JSONContent {
+  const blocks = blocksOf(content)
+  const markdown = blocks.join(SEPARATOR)
+  const start = markdown.indexOf(oldText)
+  if (start === -1) {
+    throw new Error('Passage introuvable : relire la page avec get_page et recopier le passage à l\'identique')
+  }
+  if (markdown.indexOf(oldText, start + 1) !== -1) {
+    throw new Error('Passage présent plusieurs fois : l\'allonger pour qu\'il soit unique')
+  }
+  const end = start + oldText.length
+
+  // Blocs touchés par le passage [start, end[ ; le séparateur qui suit un bloc compte pour ce bloc
+  const spans = blocks.map((block, index) => {
+    const from = blocks.slice(0, index).reduce((sum, previous) => sum + previous.length + SEPARATOR.length, 0)
+    return { from, to: from + block.length }
+  })
+  const touched = spans.flatMap(({ from, to }, index) => start < to + SEPARATOR.length && end > from ? [index] : [])
+  const first = touched[0]!
+  const last = touched.at(-1)!
+
+  const segment = markdown.slice(spans[first]!.from, start) + newText + markdown.slice(end, spans[last]!.to)
+  const replaced = segment.trim() ? (fromMarkdown(segment).content ?? []) : []
+
+  const nodes = content?.content ?? []
+  return { type: 'doc', content: [...nodes.slice(0, first), ...replaced, ...nodes.slice(last + 1)] }
 }

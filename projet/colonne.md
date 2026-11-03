@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-11-03
+> Mise à jour : 2026-11-04
 
 ## Grille
 
@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | **Socle technique** | ■ **v1** Nuxt + lint + DB + déployé | ■ **v1** Sauvegardes DB | □ Tests (CI lint + typecheck et déploiement continu déjà en place) |  |
 | **Accès** | ■ **v1** Je me connecte | ■ Testé au travail et sur mobile | ■ Session longue + expiration | □ Sécurité renforcée |
-| **Accès Claude** | ■ MCP : lire + ajouter | □ Modifier le contenu existant | □ Connecteur claude.ai (OAuth) |  |
+| **Accès Claude** | ■ MCP : lire + ajouter | ■ Modifier le contenu existant | □ Connecteur claude.ai (OAuth) |  |
 | **Pages** | ■ **v1** Créer / écrire / supprimer (texte brut) | ■ **v1** Sauvegarde auto + mise en forme + checklists + code ; images | ■ Citation, tableau | ■ Drag & drop des blocs + bouton « + » |
 | **Retrouver** | ■ **v1** Liste dans la sidebar | ■ **v1** Recherche par titre | ■ Arborescence (sous-pages, déplacer) | ■ Favoris / pages récentes (sidebar) |
 | **Gestion de projet** | ■ **v1** Page rangée dans une section (Projets / Doc) | ■ Noyau + statut (dogfooding) | ■ Briques à la demande + kanban des tranches |  |
@@ -42,6 +42,8 @@ Aucune (prochaine tranche à choisir).
 ## À tester
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
+
+- [ ] **Accès Claude N1** : après déploiement (migration `page_revisions`), demander à Claude de modifier un passage d'une page, vérifier que le reste ne bouge pas ; « annule ta dernière modification » ; page ouverte dans l'app pendant que Claude la modifie → « Page modifiée ailleurs » (Recharger / Écraser)
 
 ## Notés pour plus tard
 
@@ -128,7 +130,7 @@ DoD : voir [dod.md](dod.md)
 - **Écrans :** aucun (serveur MCP `/mcp`)
 - **Tranches :**
   - [N0] ■ Serveur MCP distant protégé par jeton : recherche, liste des projets, lecture d'une page (et de son arborescence) en Markdown ; création de page, ajout en fin de page, statut et tags (D-008)
-  - [N1] □ Modifier / remplacer le contenu existant (conversion Markdown → JSON TipTap avec pertes possibles)
+  - [N1] ■ Modifier le contenu existant : remplacement ciblé, contrôle de version, historique (D-009)
   - [N2] □ Connecteur claude.ai web / mobile (OAuth)
   - [N3] pas prévu
 

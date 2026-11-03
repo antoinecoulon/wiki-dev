@@ -7,8 +7,8 @@ type Status = typeof schema.pages.$inferInsert.status
 
 export default defineEventHandler(async (event) => {
   const pageId = getRouterParam(event, 'pageId')!
-  const { title, content, section, space, parentId, status, favorite, tags } = await readValidatedBody(event, (body) => {
-    const { title, content, section, space, parentId, status, favorite, tags } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown, favorite?: unknown, tags?: unknown }
+  const { title, content, section, space, parentId, status, favorite, tags, baseUpdatedAt } = await readValidatedBody(event, (body) => {
+    const { title, content, section, space, parentId, status, favorite, tags, baseUpdatedAt } = (body ?? {}) as { title?: unknown, content?: unknown, section?: unknown, space?: unknown, parentId?: unknown, status?: unknown, favorite?: unknown, tags?: unknown, baseUpdatedAt?: unknown }
     if (title !== undefined && (typeof title !== 'string' || !title.trim())) {
       throw createError({ status: 400, statusText: 'Titre invalide' })
     }
@@ -30,16 +30,23 @@ export default defineEventHandler(async (event) => {
     if (favorite !== undefined && typeof favorite !== 'boolean') {
       throw createError({ status: 400, statusText: 'Favori invalide' })
     }
+    if (baseUpdatedAt !== undefined && typeof baseUpdatedAt !== 'string') {
+      throw createError({ status: 400, statusText: 'Version invalide' })
+    }
     if (tags !== undefined && (!Array.isArray(tags) || tags.length > 20 || tags.some(tag => typeof tag !== 'string' || !tag.trim() || tag.length > 40))) {
       throw createError({ status: 400, statusText: 'Tags invalides' })
     }
     const normalizedTags = tags === undefined ? undefined : normalizeTags(tags as string[])
-    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite, tags: normalizedTags }
+    return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite, tags: normalizedTags, baseUpdatedAt }
   })
 
-  const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true } })
+  const current = await db.query.pages.findFirst({ where: eq(schema.pages.id, pageId), columns: { space: true, section: true, parentId: true, updatedAt: true } })
   if (!current) {
     throw createError({ status: 404, statusText: 'Page introuvable' })
+  }
+  // Contrôle de version (D-009) : la page a changé depuis que l'éditeur l'a chargée (Claude via MCP, autre appareil)
+  if (baseUpdatedAt && baseUpdatedAt !== current.updatedAt) {
+    throw createError({ status: 409, statusText: 'Page modifiée ailleurs' })
   }
   const nextSpace = space ?? current.space
   const nextSection = section ?? current.section

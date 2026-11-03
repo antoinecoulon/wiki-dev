@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const pages = sqliteTable('pages', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
@@ -19,3 +19,12 @@ export const pages = sqliteTable('pages', {
   createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString()),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 })
+
+// Versions précédentes d'une page, enregistrées avant chaque modification par Claude via MCP (D-009) ; 10 dernières par page
+export const pageRevisions = sqliteTable('page_revisions', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  pageId: text('page_id').notNull(),
+  title: text('title').notNull(),
+  content: text('content'),
+  createdAt: text('created_at').notNull().$defaultFn(() => new Date().toISOString())
+}, table => [index('page_revisions_page_id_idx').on(table.pageId)])

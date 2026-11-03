@@ -43,14 +43,14 @@ function pathOf(page: PageMeta, byId: Map<string, PageMeta>) {
 async function findPage(id: string) {
   const page = await db.query.pages.findFirst({ where: eq(schema.pages.id, id) })
   if (!page) throw new Error(`Page introuvable : ${id}`)
-  return { ...page, content: (page.content ? JSON.parse(page.content) : null) as JSONContent | null }
+  return { ...page, raw: page.content, content: (page.content ? JSON.parse(page.content) : null) as JSONContent | null }
 }
 
 export function buildMcpServer() {
   const server = new McpServer({ name: 'wiki-dev', version: '0.1.0' }, {
     instructions: 'wiki-dev : wiki personnel de dev (perso et pro). Les pages sont rangées par espace (perso / pro) et par section (Projets / Documentation), en arborescence de 5 niveaux max. '
       + 'Un projet est une page racine de la section Projets (sa fiche) avec un statut ; ses sous-pages forment le noyau de la méthode Colonne : Colonne (grille des tranches, états □ prévue · ◧ en cours · ■ faite), DoD, Journal, Décisions, plus des briques facultatives. '
-      + 'Le contenu s\'échange en Markdown. On peut lire, créer et ajouter du contenu en fin de page ; on ne peut ni réécrire ni supprimer du contenu existant (à faire dans l\'app).'
+      + 'Le contenu s\'échange en Markdown. On peut lire, créer, ajouter en fin de page et modifier un passage (edit_page) ; chaque modification garde la version précédente (list_revisions, restore_revision). On ne peut pas supprimer de page (à faire dans l\'app).'
   })
 
   server.registerTool('search_pages', {
@@ -178,12 +178,66 @@ export function buildMcpServer() {
     inputSchema: z.object({ id: pageId, markdown: z.string().min(1).describe('Contenu à ajouter, en Markdown') })
   }, async ({ id, markdown }) => {
     const page = await findPage(id)
+    await saveRevision({ id, title: page.title, content: page.raw })
     const added = fromMarkdown(markdown).content ?? []
     const content: JSONContent = { type: 'doc', content: [...(page.content?.content ?? []), ...added] }
     await db.update(schema.pages)
       .set({ content: JSON.stringify(content), updatedAt: new Date().toISOString() })
       .where(eq(schema.pages.id, id))
     return json({ id, title: page.title, addedBlocks: added.length })
+  })
+
+  server.registerTool('edit_page', {
+    title: 'Modifier un passage d\'une page',
+    description: 'Remplace un passage du Markdown d\'une page (tel que renvoyé par get_page, recopié à l\'identique, assez long pour être unique) par un nouveau texte Markdown ; new_text vide pour supprimer le passage. Seuls les blocs touchés sont reconvertis, le reste de la page ne bouge pas. La version précédente est gardée (restore_revision). Relire la page avec get_page juste avant : elle a pu changer dans l\'app.',
+    inputSchema: z.object({
+      id: pageId,
+      old_text: z.string().min(1).describe('Passage exact à remplacer'),
+      new_text: z.string().describe('Nouveau texte (Markdown), vide pour supprimer')
+    })
+  }, async ({ id, old_text, new_text }) => {
+    const page = await findPage(id)
+    const content = editMarkdown(page.content, old_text, new_text)
+    await saveRevision({ id, title: page.title, content: page.raw })
+    await db.update(schema.pages)
+      .set({ content: JSON.stringify(content), updatedAt: new Date().toISOString() })
+      .where(eq(schema.pages.id, id))
+    return json({ id, title: page.title, edited: true })
+  })
+
+  server.registerTool('list_revisions', {
+    title: 'Versions précédentes d\'une page',
+    description: 'Liste les versions précédentes d\'une page (enregistrées avant chaque modification via MCP, 10 dernières), de la plus récente à la plus ancienne.',
+    inputSchema: z.object({ id: pageId }),
+    annotations: { readOnlyHint: true }
+  }, async ({ id }) => {
+    const revisions = await db.select().from(schema.pageRevisions)
+      .where(eq(schema.pageRevisions.pageId, id))
+      .orderBy(desc(schema.pageRevisions.createdAt))
+    return json(revisions.map(revision => ({
+      revisionId: revision.id,
+      savedAt: revision.createdAt,
+      title: revision.title,
+      length: toMarkdown(revision.content ? JSON.parse(revision.content) : null).length
+    })))
+  })
+
+  server.registerTool('restore_revision', {
+    title: 'Restaurer une version précédente',
+    description: 'Remet le contenu d\'une page à une version précédente (revisionId de list_revisions ; sans revisionId, la plus récente, c\'est-à-dire l\'état avant la dernière modification via MCP). Le contenu actuel est lui-même gardé comme version, la restauration peut donc s\'annuler.',
+    inputSchema: z.object({ id: pageId, revisionId: z.string().optional().describe('Version à restaurer (défaut : la plus récente)') })
+  }, async ({ id, revisionId }) => {
+    const page = await findPage(id)
+    const [revision] = await db.select().from(schema.pageRevisions)
+      .where(and(eq(schema.pageRevisions.pageId, id), revisionId ? eq(schema.pageRevisions.id, revisionId) : undefined))
+      .orderBy(desc(schema.pageRevisions.createdAt))
+      .limit(1)
+    if (!revision) throw new Error('Aucune version précédente pour cette page')
+    await saveRevision({ id, title: page.title, content: page.raw })
+    await db.update(schema.pages)
+      .set({ content: revision.content, updatedAt: new Date().toISOString() })
+      .where(eq(schema.pages.id, id))
+    return json({ id, title: page.title, restoredFrom: revision.createdAt })
   })
 
   server.registerTool('set_page_meta', {

@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/core'
-import { sql } from 'drizzle-orm'
+import { and, desc, eq, notInArray, sql } from 'drizzle-orm'
 import { db, schema } from 'hub:db'
 
 type Space = typeof schema.pages.$inferInsert.space
@@ -38,4 +38,17 @@ export async function createProject(space: Space, options: { title?: string, fic
 // « Unity » et « unity » : un seul tag
 export function normalizeTags(tags: string[]) {
   return [...new Set(tags.map(tag => tag.trim().toLowerCase()))]
+}
+
+const KEEP_REVISIONS = 10
+
+// Version précédente d'une page, avant une modification par Claude (D-009) ; garde les 10 dernières
+export async function saveRevision(page: { id: string, title: string, content: string | null }) {
+  await db.insert(schema.pageRevisions).values({ pageId: page.id, title: page.title, content: page.content })
+  const kept = db.select({ id: schema.pageRevisions.id }).from(schema.pageRevisions)
+    .where(eq(schema.pageRevisions.pageId, page.id))
+    .orderBy(desc(schema.pageRevisions.createdAt))
+    .limit(KEEP_REVISIONS)
+  await db.delete(schema.pageRevisions)
+    .where(and(eq(schema.pageRevisions.pageId, page.id), notInArray(schema.pageRevisions.id, kept)))
 }

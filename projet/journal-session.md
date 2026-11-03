@@ -5,6 +5,14 @@
 
 ---
 
+## 38 · 2026-11-04 · <2h> · tranche : Accès Claude N1
+
+- **Fait :** D-009. Test de fidélité JSON → Markdown → JSON sur les 17 pages réelles (sauvegarde fraîche) : 13 identiques, 4 écarts mineurs (espaces en fin de cellule, puce vide, lien automatique sur `www.`) → conversion bloc par bloc, une modification ne reconvertit que les blocs touchés. Outils MCP `edit_page` (passage unique, erreurs explicites si introuvable ou ambigu), `list_revisions`, `restore_revision` (restauration elle-même annulable) ; table `page_revisions` (10 versions par page, supprimées avec la page), version gardée aussi avant `append_to_page`. Contrôle de version : l'autosave envoie `baseUpdatedAt`, l'API répond 409, fenêtre « Page modifiée ailleurs » (Recharger / Écraser). Testé en local (blocs non touchés identiques, historique, 409, fenêtre de conflit dans un navigateur headless) ; lint + typecheck OK.
+- **Blocage / question :** « Écraser avec ma version » perd la modification de Claude (l'historique garde l'état d'avant Claude, pas celui de Claude).
+- **➜ Prochaine action :** déployer et suivre « À tester ».
+
+---
+
 ## 37 · 2026-11-03 · <2h> · tranche : Accès Claude N0
 
 - **Fait :** réflexion sur l'accès de Claude à l'app → D-008 (MCP distant, jeton fixe, lecture + ajout seul) et nouvelle vertèbre « Accès Claude ». Route `/mcp` (SDK `@modelcontextprotocol/server` v2, stateless, jeton Bearer comparé en SHA-256), conversion Markdown ↔ JSON TipTap avec `@tiptap/markdown`, 6 outils (`search_pages`, `list_projects`, `get_page` avec branche entière, `create_page` dont nouveau projet avec noyau, `append_to_page`, `set_page_meta`), script `pnpm mcp-token`. Factorisés dans `server/utils/pages.ts` : niveau d'une page, création d'un projet, normalisation des tags. Testé en local (tous les outils, 401 sans jeton, refus attendus) ; lint + typecheck OK. Guide technique : section 10 (serveur MCP, TipTap ↔ Markdown).

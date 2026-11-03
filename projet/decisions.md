@@ -4,6 +4,15 @@
 
 ---
 
+## D-009 · 2026-11-04 · Accès Claude N1 : remplacement ciblé, contrôle de version, historique
+
+- **Contexte :** Claude doit pouvoir modifier une page existante (D-008 se limitait à l'ajout). L'autosave de l'éditeur renvoie toute la page sans vérifier qu'elle n'a pas changé : une page ouverte écrase en silence une modification faite par Claude (déjà vrai en N0).
+- **Choix :** outil `edit_page(id, ancien, nouveau)` qui remplace un passage unique du Markdown de la page, puis reconvertit en JSON TipTap ; la sauvegarde de l'éditeur envoie la version chargée (`updatedAt`), l'API répond 409 si la page a changé (message + rechargement, texte gardé à l'écran) ; avant chaque modification par Claude, l'ancien contenu va dans une table d'historique (10 dernières versions par page), restaurable via MCP. Écartés : réécriture complète de la page (gros volume renvoyé, risque d'erreur), rechargement au retour sur l'onglet (écrasement encore possible), s'en remettre aux sauvegardes (restauration manuelle de toute la base).
+- **Pourquoi :** même façon de travailler que l'édition de fichiers ; le contrôle de version protège aussi l'usage sur deux appareils ; une erreur de Claude se corrige en une demande.
+- **Conséquences :** test de fidélité JSON → Markdown → JSON sur toutes les pages réelles avant d'écrire l'outil ; nouvelle table (migration) ; pas d'écran d'historique pour l'instant.
+
+---
+
 ## D-008 · 2026-11-03 · Accès Claude : serveur MCP distant dans l'app, jeton fixe, lecture + ajout seul
 
 - **Contexte :** faire communiquer Claude (Claude Code, y compris depuis le poste pro) et l'app : lire un projet comme contexte, le compléter, créer des pages de doc. Le contenu est en JSON TipTap (D-003), que Claude ne manipule pas bien directement.

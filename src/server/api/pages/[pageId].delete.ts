@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
       )
       SELECT id FROM tree`)).map(row => row.id)
     await db.delete(schema.pages).where(inArray(schema.pages.id, [pageId, ...descendants]))
+    await db.delete(schema.pageRevisions).where(inArray(schema.pageRevisions.pageId, [pageId, ...descendants]))
     setResponseStatus(event, 204)
     return
   }
@@ -24,5 +25,6 @@ export default defineEventHandler(async (event) => {
     .set({ parentId: page.parentId })
     .where(eq(schema.pages.parentId, pageId))
   await db.delete(schema.pages).where(eq(schema.pages.id, pageId))
+  await db.delete(schema.pageRevisions).where(eq(schema.pageRevisions.pageId, pageId))
   setResponseStatus(event, 204)
 })
