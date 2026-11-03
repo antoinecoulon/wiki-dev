@@ -33,8 +33,7 @@ export default defineEventHandler(async (event) => {
     if (tags !== undefined && (!Array.isArray(tags) || tags.length > 20 || tags.some(tag => typeof tag !== 'string' || !tag.trim() || tag.length > 40))) {
       throw createError({ status: 400, statusText: 'Tags invalides' })
     }
-    // « Unity » et « unity » : un seul tag
-    const normalizedTags = tags === undefined ? undefined : [...new Set((tags as string[]).map(tag => tag.trim().toLowerCase()))]
+    const normalizedTags = tags === undefined ? undefined : normalizeTags(tags as string[])
     return { title: title?.trim(), content, section: section as Section, space: space as Space, parentId, status: status as Status, favorite, tags: normalizedTags }
   })
 
@@ -66,14 +65,8 @@ export default defineEventHandler(async (event) => {
   // Niveau du parent + hauteur de la branche déplacée (la page et ses sous-pages) ; vérifié seulement si le parent change,
   // pour que l'autosave d'une page déjà trop profonde (créée avant la limite) reste possible
   if (parentId && parentId !== current.parentId) {
-    const [level] = await db.all<{ depth: number }>(sql`
-      WITH RECURSIVE up(id, depth) AS (
-        SELECT parent_id, 1 FROM pages WHERE id = ${parentId}
-        UNION ALL SELECT pages.parent_id, up.depth + 1 FROM pages JOIN up ON pages.id = up.id WHERE up.depth < ${MAX_PAGE_DEPTH}
-      )
-      SELECT max(depth) AS depth FROM up`)
     const height = 1 + Math.max(0, ...tree.map(row => row.depth))
-    if (level!.depth + height > MAX_PAGE_DEPTH) {
+    if (await pageLevel(parentId) + height > MAX_PAGE_DEPTH) {
       throw createError({ status: 400, statusText: `Arborescence limitée à ${MAX_PAGE_DEPTH} niveaux` })
     }
   }

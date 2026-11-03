@@ -4,6 +4,15 @@
 
 ---
 
+## D-008 · 2026-11-03 · Accès Claude : serveur MCP distant dans l'app, jeton fixe, lecture + ajout seul
+
+- **Contexte :** faire communiquer Claude (Claude Code, y compris depuis le poste pro) et l'app : lire un projet comme contexte, le compléter, créer des pages de doc. Le contenu est en JSON TipTap (D-003), que Claude ne manipule pas bien directement.
+- **Choix :** route MCP (Streamable HTTP) dans l'app Nuxt sur Vercel, protégée par un jeton Bearer (hash en variable d'environnement). Échange en Markdown, converti côté serveur avec `@tiptap/markdown`. Outils : chercher, lister, lire (avec arborescence), créer, ajouter en fin de page, statut / tags. Écartés : API REST + `curl` (moins pratique), MCP local branché sur Turso (contourne la logique de l'app, proxy incertain), export Markdown (copie qui vieillit), OAuth (seulement utile pour claude.ai), remplacement de contenu (conversion Markdown → JSON avec pertes).
+- **Pourquoi :** outils natifs pour Claude, même domaine que l'app (validé derrière le proxy), la logique serveur existante est réutilisée ; l'ajout seul limite les dégâts possibles.
+- **Conséquences :** pas de suppression ni de réécriture via MCP ; jeton révocable en changeant la variable ; images rendues en liens à la lecture ; modification du contenu existant → Accès Claude N1, claude.ai → N2.
+
+---
+
 ## D-007 · 2026-10-22 · Projet = page racine de Projets + sous-pages du noyau
 
 - **Contexte :** Gestion de projet N1 (méthode Colonne dans wiki-dev) ; il faudra ensuite ajouter des briques facultatives (N2).

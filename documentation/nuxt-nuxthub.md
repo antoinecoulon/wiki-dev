@@ -939,6 +939,68 @@ function addTag(tag: string) {
 - Filtre par plusieurs tags (cumulatif) : `pages.filter(p => selected.every(t => p.tags.includes(t)))`.
 - Pour une recherche par tag dans `UCommandPalette`, ajouter les tags au `suffix` de l'item : ils font partie du texte cherché.
 
+## 10. Serveur MCP dans l'app (Claude Code)
+
+Exposer les données de l'app à Claude Code via MCP (Streamable HTTP), sur le même domaine que l'app. SDK `@modelcontextprotocol/server` v2 : `createMcpHandler` prend une `Request` web et rend une `Response`, ça se branche directement dans un handler h3.
+
+```bash
+pnpm add @modelcontextprotocol/server zod
+```
+
+```ts
+// server/routes/mcp.ts : hors de /api/, donc hors du middleware de session
+import { createHash, timingSafeEqual } from 'node:crypto'
+import { createMcpHandler, McpServer } from '@modelcontextprotocol/server'
+import { z } from 'zod'
+
+function buildServer() {
+  const server = new McpServer({ name: 'mon-app', version: '0.1.0' }, { instructions: 'Ce que contient l\'app, pour le modèle' })
+  server.registerTool('get_item', {
+    description: 'Lit un élément', // décrire précisément : le modèle s'appuie dessus
+    inputSchema: z.object({ id: z.string() }),
+    annotations: { readOnlyHint: true }
+  }, async ({ id }) => ({ content: [{ type: 'text', text: JSON.stringify({ id }) }] }))
+  return server
+}
+
+// Stateless (défaut) : une instance par requête, adapté au serverless
+const handler = createMcpHandler(() => buildServer())
+
+export default defineEventHandler((event) => {
+  const token = getHeader(event, 'authorization')?.match(/^Bearer (.+)$/)?.[1]
+  const expected = Buffer.from(useRuntimeConfig(event).mcpTokenHash, 'hex')
+  const hash = token && createHash('sha256').update(token).digest()
+  if (!hash || hash.length !== expected.length || !timingSafeEqual(hash, expected)) {
+    throw createError({ status: 401, statusText: 'Jeton invalide' })
+  }
+  return handler.fetch(toWebRequest(event))
+})
+```
+
+- **Jeton** : `randomBytes(32).toString('base64url')`, seul son SHA-256 est en variable d'environnement (`NUXT_MCP_TOKEN_HASH` → `runtimeConfig.mcpTokenHash`). Pour un jeton aléatoire, SHA-256 suffit ; scrypt (fait pour les mots de passe) coûterait ~100 ms par appel.
+- **Côté Claude Code** (scope user : disponible dans tous les repos) :
+  `claude mcp add --scope user --transport http mon-app https://mon-app.vercel.app/mcp --header "Authorization: Bearer <jeton>"`
+- Une erreur levée dans un outil revient au modèle comme résultat `isError` avec son message : écrire des messages actionnables.
+- Test sans client : `curl -X POST …/mcp -H 'Accept: application/json, text/event-stream' -H 'Content-Type: application/json' -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'` (réponse en SSE, lignes `data:`).
+
+### Contenu TipTap ↔ Markdown côté serveur
+
+Le modèle travaille en Markdown, pas en JSON TipTap. `@tiptap/markdown` convertit sans éditeur ni DOM :
+
+```ts
+import { MarkdownManager } from '@tiptap/markdown'
+import StarterKit from '@tiptap/starter-kit'
+// + les mêmes extensions que l'éditeur : Image, TaskList / TaskItem, TableKit…
+const manager = new MarkdownManager({ extensions: [StarterKit /* … */] })
+manager.serialize(json) // → Markdown
+manager.parse(markdown) // → JSON TipTap
+```
+
+- Aller-retour sans perte vérifié : titres, gras, blocs de code avec langage, checklists, tableaux, images, citations.
+- Une extension avec NodeView Vue (ex. bloc de code personnalisé) ne s'importe pas côté serveur : utiliser l'extension de base **de même nom** (`codeBlock` de StarterKit), le JSON est identique.
+- Les paquets TipTap déjà tirés par `@nuxt/ui` (`@tiptap/markdown`, `@tiptap/starter-kit`, `@tiptap/extension-image`) sont à ajouter en dépendances directes (pnpm strict).
+- Ajouter en fin de page = concaténer `doc.content` ; réécrire une page entière en Markdown risque de perdre ce qui n'a pas d'équivalent Markdown.
+
 ## Arborescence
 
 ```

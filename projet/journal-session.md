@@ -5,6 +5,14 @@
 
 ---
 
+## 37 · 2026-11-03 · <2h> · tranche : Accès Claude N0
+
+- **Fait :** réflexion sur l'accès de Claude à l'app → D-008 (MCP distant, jeton fixe, lecture + ajout seul) et nouvelle vertèbre « Accès Claude ». Route `/mcp` (SDK `@modelcontextprotocol/server` v2, stateless, jeton Bearer comparé en SHA-256), conversion Markdown ↔ JSON TipTap avec `@tiptap/markdown`, 6 outils (`search_pages`, `list_projects`, `get_page` avec branche entière, `create_page` dont nouveau projet avec noyau, `append_to_page`, `set_page_meta`), script `pnpm mcp-token`. Factorisés dans `server/utils/pages.ts` : niveau d'une page, création d'un projet, normalisation des tags. Testé en local (tous les outils, 401 sans jeton, refus attendus) ; lint + typecheck OK. Guide technique : section 10 (serveur MCP, TipTap ↔ Markdown).
+- **Blocage / question :** à valider en prod (variable Vercel, `claude mcp add`, poste pro).
+- **➜ Prochaine action :** suivre « À tester » de la Colonne, puis essayer en vrai sur un projet Unity.
+
+---
+
 ## 36 · 2026-11-02 · <1h> · tranche : clôture des tests en prod
 
 - **Fait :** Accès N2, Documentation N1, Mobile N2 et l'ordre stable de la sidebar validés en prod (smartphone et poste pro) ; « À tester » vidé. Guide technique : session longue à expiration glissante (section 5) et tags libres en colonne JSON + `UInputMenu` (section 9).

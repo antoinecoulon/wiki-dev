@@ -18,6 +18,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     adminPasswordHash: '',
+    // Hash SHA-256 du jeton MCP (NUXT_MCP_TOKEN_HASH, généré par pnpm mcp-token)
+    mcpTokenHash: '',
     // Cookie gardé 7 jours, prolongé à chaque visite par server/middleware/auth.ts
     // password : fourni par NUXT_SESSION_PASSWORD
     session: {
