@@ -43,8 +43,6 @@ Aucune (prochaine tranche à choisir).
 
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
-- [ ] **Accès Claude N0** : `pnpm mcp-token`, hash dans `NUXT_MCP_TOKEN_HASH` (Vercel, Production), push, `claude mcp add` (scope user) ; lire un projet, créer une page de doc, ajouter à une page, changer statut / tags ; contenu ajouté correct dans l'app ; idem depuis le poste pro (proxy)
-
 ## Notés pour plus tard
 
 > Retours de test non traités, à reprendre au choix d'une prochaine tranche.
