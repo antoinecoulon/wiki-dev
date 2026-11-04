@@ -33,6 +33,9 @@ const filtered = computed(() => docPages.value.filter(page => selected.value.eve
             <span class="text-muted">{{ spaceLabel }} /</span> Documentation
           </span>
         </template>
+        <template #right>
+          <ThemePicker />
+        </template>
       </UDashboardNavbar>
     </template>
 

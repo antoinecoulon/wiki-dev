@@ -579,6 +579,7 @@ async function remove() {
             :ui="{ label: 'max-sm:hidden' }"
             @click="confirmDelete = true"
           />
+          <ThemePicker />
         </template>
       </UDashboardNavbar>
     </template>

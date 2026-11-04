@@ -56,6 +56,7 @@ async function createPage() {
             aria-label="Nouvelle page"
             @click="createPage"
           />
+          <ThemePicker />
         </template>
       </UDashboardNavbar>
     </template>

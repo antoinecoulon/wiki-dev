@@ -10,10 +10,12 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/css/main.css'],
-  // Thème terminal : sombre uniquement ; nouvelle clé pour ignorer une préférence « system » déjà stockée
+  // Thème terminal : sombre par défaut, clair au choix (sélecteur de thème, pas de « system »).
+  // Cookie : lu au rendu serveur, la bonne classe est posée dès le HTML (comme l'espace et le thème)
   colorMode: {
     preference: 'dark',
     fallback: 'dark',
+    storage: 'cookie',
     storageKey: 'wiki-color-mode'
   },
   runtimeConfig: {
