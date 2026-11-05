@@ -1058,6 +1058,7 @@ mon-app/
 | Barre d'actions qui déborde sur mobile | libellés des boutons | `:ui="{ label: 'max-sm:hidden' }"` + `aria-label` |
 | Mode sombre terne : textes surchargés restent ceux du mode clair | `:root { --ui-… }` hors `@layer` : une règle hors couche bat toujours celles de `@layer theme`, dont `.dark` de Nuxt UI | déclarer les surcharges dans `@layer theme`, et les redéclarer sous `.dark` |
 | `turso db create --from-dump dump.sql` : base créée **vide**, sans erreur | — | créer la base vide puis `turso db shell <base> < dump.sql` |
+| Markdown de `@tiptap/markdown` plein de `&amp;`, `&lt;` (ex. `List&lt;int&gt;`), passage recopié introuvable | `serialize` encode `& < >` dans tout texte hors code (décodés au `parse`) | remplacer la méthode `encodeTextForMarkdown` de l'instance : n'encoder que `&` devant une entité et `>` en début de ligne (sans extension HTML, `<` reste du texte) |
 
 ## Références
 

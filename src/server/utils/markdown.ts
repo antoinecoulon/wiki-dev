@@ -11,6 +11,21 @@ const manager = new MarkdownManager({
   extensions: [StarterKit, Image, TaskList, TaskItem.configure({ nested: true }), TableKit]
 })
 
+// @tiptap/markdown encode & < > en entités dans tout le texte (hors code) : Markdown illisible (`List&lt;int&gt;`)
+// et passages introuvables par edit_page. Sans extension HTML, < et > restent du texte à la relecture ; on n'encode
+// donc que ce qui changerait de sens : & devant une entité décodée au parsing, > en début de texte (citation)
+const ENTITY_AHEAD = /&(?=#\d{1,7};|#[xX][0-9a-fA-F]{1,6};|(?:lt|gt|quot|amp);)/g
+type TextEncoder = { escapeMarkdownSyntax: (text: string) => string, codeTypes: Set<string> }
+type Node = { marks?: (string | { type: string })[] }
+Object.assign(manager, {
+  encodeTextForMarkdown(this: TextEncoder, text: string, node: Node, parentNode?: { type?: string }) {
+    const inCode = (parentNode?.type != null && this.codeTypes.has(parentNode.type))
+      || (node.marks ?? []).some(mark => this.codeTypes.has(typeof mark === 'string' ? mark : mark.type))
+    if (inCode) return text
+    return this.escapeMarkdownSyntax(text.replace(ENTITY_AHEAD, '&amp;').replace(/^>|(?<=\n)>/g, '&gt;'))
+  }
+})
+
 const SEPARATOR = '\n\n'
 
 // Markdown de chaque bloc racine, séparément : une modification ne reconvertit que les blocs qu'elle touche

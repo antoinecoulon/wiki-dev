@@ -7,9 +7,9 @@
 
 ## 40 · 2026-11-05 · <1h> · tranche : sélecteur de thème (hors tranche)
 
-- **Fait :** sélecteur de thème (bouton dans la barre du haut : mode clair / sombre, 4 paires d'accents Perso / Pro, choix par cookie lu au rendu) validé en prod. Sauvegarde de la base (`backups/db/wiki-dev-2026-11-05T12-39.sql`, 1 nouvelle image).
+- **Fait :** sélecteur de thème (bouton dans la barre du haut : mode clair / sombre, 4 paires d'accents Perso / Pro, choix par cookie lu au rendu) validé en prod. Sauvegarde de la base (`backups/db/wiki-dev-2026-11-05T12-39.sql`, 1 nouvelle image). Anomalie MCP `&amp;` corrigée : `@tiptap/markdown` encodait `& < >` dans tout le texte ; on n'encode plus que `&` devant une entité et `>` en début de ligne. Aller-retour identique avant/après sur les 719 blocs des 25 pages de la sauvegarde ; lint + typecheck OK.
 - **Blocage / question :** /
-- **➜ Prochaine action :** vérifier Accès Claude N1 dans le navigateur (rendu des pages transposées, kanban, conflit 409), puis choisir la prochaine tranche (piste : Documentation N3).
+- **➜ Prochaine action :** corriger « Écraser avec ma version » (garder la version de Claude dans l'historique), puis tester Accès Claude N1 en prod (« À tester » : navigateur + `&` / `List<int>` via MCP) et le clore ; ensuite choisir la prochaine tranche (piste : Documentation N3).
 
 ---
 
