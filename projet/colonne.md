@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-11-04
+> Mise à jour : 2026-11-05
 
 ## Grille
 
@@ -18,7 +18,7 @@
 | **Espaces** |  | ■ Switch Perso / Pro | ■ Déplacer entre espaces (couvert par N1) |  |
 | **Mobile** | ■ **v1** Une page lisible | ■ Navigation mobile | ■ Confort de lecture |  |
 | **Performance** (bonus) | ■ Liste des pages allégée |  |  |  |
-| **Personnalisation** | ■ Accueil avec projets récents ; thème (style terminal) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
+| **Personnalisation** | ■ Accueil avec projets récents ; thème (style terminal, sélecteur clair/sombre + accents) | □ Disposition de l'accueil | □ Sidebar personnalisable |  |
 
 > **Hors Colonne :** la migration depuis Notion et dev-docs est **manuelle** (copier-coller), ce n'est pas une capacité de l'app. Possible depuis Socle N1 (sauvegardes DB) ; faite **petit à petit, quand j'ai le temps**, sans bloquer les tranches. À migrer aussi : les notes du dossier `documentation/` du repo (dont le guide technique).
 
@@ -183,7 +183,7 @@ DoD : voir [dod.md](dod.md)
 - **Rôle :** permettre la personnalisation de mon workspace
 - **Écrans :** `/settings`
 - **Tranches :**
-  - [N0] ■ Page d'accueil avec projets récents
+  - [N0] ■ Page d'accueil avec projets récents ; thème style terminal ; sélecteur de thème (mode clair/sombre, 4 paires d'accents Perso / Pro, retenus par cookie), validé le 2026-11-05
   - [N1] □ Personnalisation de la disposition de la page d'accueil
   - [N2] □ Personnalisation de la sidebar
   - [N3] pas prévu (statistiques)

@@ -5,6 +5,14 @@
 
 ---
 
+## 40 · 2026-11-05 · <1h> · tranche : sélecteur de thème (hors tranche)
+
+- **Fait :** sélecteur de thème (bouton dans la barre du haut : mode clair / sombre, 4 paires d'accents Perso / Pro, choix par cookie lu au rendu) validé en prod. Sauvegarde de la base (`backups/db/wiki-dev-2026-11-05T12-39.sql`, 1 nouvelle image).
+- **Blocage / question :** /
+- **➜ Prochaine action :** vérifier Accès Claude N1 dans le navigateur (rendu des pages transposées, kanban, conflit 409), puis choisir la prochaine tranche (piste : Documentation N3).
+
+---
+
 ## 39 · 2026-11-04 · <2h> · tranche : test d'Accès Claude N1 en prod (session Claude dédiée)
 
 - **Fait :** le contenu du repo a été transposé dans le projet « wiki.dev » de l'app via MCP : fiche, Colonne, Décisions, Journal et briques C4, Modèle de données, Wireframes avec `edit_page` ; fin du journal avec `append_to_page` ; pages de doc « Méthode Colonne » et guide technique (50 Ko, envoyé par un script JSON-RPC, relu sans perte) avec `create_page`. `edit_page`, les messages d'erreur et `list_revisions` / `restore_revision` sont validés.
