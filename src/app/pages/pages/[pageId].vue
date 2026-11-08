@@ -434,6 +434,8 @@ let dirty = false
 // Version de la page chargée (D-009) : l'API refuse la sauvegarde (409) si la page a changé ailleurs entre-temps
 let baseUpdatedAt: string | undefined = page.value!.updatedAt
 const conflict = ref(false)
+// Gardé jusqu'à la réussite de la sauvegarde qui écrase (une erreur réseau ne le perd pas)
+let overwriteNext = false
 let current: Promise<void> | undefined
 
 watch([title, content, section, space, parentId, projectStatus, tags], () => {
@@ -453,9 +455,10 @@ async function flush() {
   current = $fetch(`/api/pages/${pageId}`, {
     method: 'PATCH',
     // Titre vide : refusé par l'API, on garde l'ancien en base
-    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value, tags: tags.value, baseUpdatedAt }
+    body: { title: title.value.trim() || undefined, content: content.value ?? undefined, section: section.value, space: space.value, parentId: parentId.value, status: projectStatus.value, tags: tags.value, baseUpdatedAt, overwrite: overwriteNext || undefined }
   }).then(async (saved) => {
     baseUpdatedAt = saved.updatedAt
+    overwriteNext = false
     if (!dirty) status.value = 'saved'
     await refreshNuxtData('pages')
   }).catch((err) => {
@@ -522,7 +525,7 @@ function reloadPage() {
 }
 async function overwrite() {
   conflict.value = false
-  baseUpdatedAt = undefined
+  overwriteNext = true
   dirty = true
   await flush()
 }

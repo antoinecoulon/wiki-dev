@@ -42,7 +42,7 @@ export function normalizeTags(tags: string[]) {
 
 const KEEP_REVISIONS = 10
 
-// Version précédente d'une page, avant une modification par Claude (D-009) ; garde les 10 dernières
+// Version précédente d'une page, avant une modification par Claude ou un écrasement après conflit (D-009) ; garde les 10 dernières
 export async function saveRevision(page: { id: string, title: string, content: string | null }) {
   await db.insert(schema.pageRevisions).values({ pageId: page.id, title: page.title, content: page.content })
   const kept = db.select({ id: schema.pageRevisions.id }).from(schema.pageRevisions)
