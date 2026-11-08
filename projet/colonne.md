@@ -2,7 +2,7 @@
 
 > ■ faite · ◧ en cours (une seule !) · □ prévue · (vide) pas prévu
 > **v1** = périmètre de la version 1 (recadrage du 2026-10-18, D-005)
-> Mise à jour : 2026-11-05
+> Mise à jour : 2026-11-08
 
 ## Grille
 
@@ -44,6 +44,7 @@ Aucune (prochaine tranche à choisir).
 > Tranches livrées sans avoir pu être testées dans l'app réelle (ex. session depuis le téléphone). Cocher puis retirer une fois validé ; si ça échoue, la tranche repasse en cours.
 
 - [ ] **Accès Claude N1** : côté MCP validé en prod le 2026-11-04 (`edit_page`, erreurs, `list_revisions` / `restore_revision`, en transposant le repo dans le projet « wiki.dev » de l'app) ; reste à vérifier dans le navigateur : rendu des pages transposées, kanban sur la nouvelle grille, conflit « Page modifiée ailleurs » (Recharger / Écraser)
+- [ ] **Accès Claude N1 · « Écraser avec ma version »** (corrigé le 2026-11-08, testé en local par l'API) : modifier une page via MCP pendant qu'elle est ouverte dans le navigateur, taper, « Écraser avec ma version », puis `list_revisions` doit montrer la version de Claude
 - [ ] **Accès Claude N1 · `&`, `<`, `>` en clair** (corrigé le 2026-11-05, testé sur la sauvegarde du jour) : `get_page` sur une page avec `&` ou du C# générique (`List<int>`) hors code, puis `edit_page` d'un passage recopié tel quel
 
 ## Notés pour plus tard

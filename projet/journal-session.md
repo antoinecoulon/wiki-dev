@@ -5,6 +5,14 @@
 
 ---
 
+## 41 · 2026-11-08 · <1h> · tranche : Accès Claude N1 (correctif)
+
+- **Fait :** « Écraser avec ma version » garde la version écrasée (celle de Claude ou d'un autre appareil) dans l'historique : l'éditeur envoie `overwrite: true` (gardé jusqu'à la réussite de la sauvegarde) au lieu de retirer `baseUpdatedAt`, et l'API range la version en base avec `saveRevision` avant d'écrire. Testé en local par l'API (409 puis écrasement, version de Claude dans `page_revisions`) ; lint + typecheck OK.
+- **Blocage / question :** /
+- **➜ Prochaine action :** déployer, tester Accès Claude N1 en prod (« À tester » de la Colonne) et le clore ; puis choisir la prochaine tranche.
+
+---
+
 ## 40 · 2026-11-05 · <1h> · tranche : sélecteur de thème (hors tranche)
 
 - **Fait :** sélecteur de thème (bouton dans la barre du haut : mode clair / sombre, 4 paires d'accents Perso / Pro, choix par cookie lu au rendu) validé en prod. Sauvegarde de la base (`backups/db/wiki-dev-2026-11-05T12-39.sql`, 1 nouvelle image). Anomalie MCP `&amp;` corrigée : `@tiptap/markdown` encodait `& < >` dans tout le texte ; on n'encode plus que `&` devant une entité et `>` en début de ligne. Aller-retour identique avant/après sur les 719 blocs des 25 pages de la sauvegarde ; lint + typecheck OK.
